@@ -1,0 +1,298 @@
+openapi: 3.0.3
+info:
+  title: API.Rasp.Yandex.Net
+  description: API Яндекс.Расписаний
+  version: 3.0.0
+servers:
+- url: https://api.rasp.yandex.net
+tags:
+- name: Список ближайших станций
+  description: Список ближайших станций
+paths:
+  /v3.0/nearest_stations/:
+    get:
+      tags:
+      - getNearestStations
+      summary: Список ближайших станций
+      operationId: getNearestStations
+      parameters:
+      - name: apikey
+        in: query
+        description: API key
+        required: true
+        schema:
+          type: string
+      - name: lat
+        in: query
+        description: широта
+        required: true
+        schema:
+          type: number
+      - name: lng
+        in: query
+        description: долгота
+        required: true
+        schema:
+          type: number
+      - name: distance
+        in: query
+        description: радиус охвата
+        required: true
+        schema:
+          type: integer
+      - name: format
+        in: query
+        description: json или xml
+        required: false
+        schema:
+          type: string
+      - name: lang
+        in: query
+        description: lang
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stations'
+  /v3.0/thread/:
+    get:
+      tags:
+      - getRoutes
+      operationId: getRoutes
+      summary: Получение информации о нитке маршрута
+      description: Запрашивает информацию о нитке маршрута, используя идентификатор нитки (UID).
+        Дополнительно могут быть указаны параметры, такие как станция отправления, станция назначения, формат данных, язык и дата.
+      parameters:
+        - name: apikey
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Ключ доступа к API.
+        - name: uid
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Идентификатор нитки маршрута.
+        - name: from
+          in: query
+          schema:
+            type: string
+          description: Код станции отправления.
+        - name: to
+          in: query
+          schema:
+            type: string
+          description: Код станции назначения.
+        - name: format
+          in: query
+          schema:
+            type: string
+          description: json или xml
+        - name: lang
+          in: query
+          schema:
+            type: string
+          description: Язык, на котором возвращаются данные.
+        - name: date
+          in: query
+          schema:
+            type: string
+          description: Дата, для которой запрашивается информация.
+        - name: show_systems
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+          description: Коды систем, которые должны быть включены в ответ.
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreadResponse'
+components:
+  schemas:
+    Stations:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        stations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Station'
+    Pagination:
+      type: object
+      properties:
+        total:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+    Station:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        short_title:
+          type: string
+        popular_title:
+          type: string
+        code:
+          type: string
+        lat:
+          type: number
+        lng:
+          type: number
+        station_type:
+          type: string
+        station_type_name:
+          type: string
+        transport_type:
+          type: string
+        distance:
+          type: number
+        majority:
+          type: integer
+        type_choices:
+          $ref: '#/components/schemas/Schedule'
+    Schedule:
+      type: object
+      properties:
+        desktop_url:
+          type: string
+        touch_url:
+          type: string
+    ThreadResponse:
+      type: object
+      properties:
+        except_days:
+          type: string
+        arrival_date:
+          type: string
+          nullable: true
+        from:
+          type: string
+          nullable: true
+        uid:
+          type: string
+        title:
+          type: string
+        interval:
+          type: object
+          properties:
+            density:
+              type: string
+            end_time:
+              type: string
+            begin_time:
+              type: string
+        departure_date:
+          type: string
+          nullable: true
+        start_time:
+          type: string
+        number:
+          type: string
+        short_title:
+          type: string
+        days:
+          type: string
+        to:
+          type: string
+          nullable: true
+        carrier:
+          type: object
+          properties:
+            code:
+              type: integer
+            offices:
+              type: array
+              items: {}
+            codes:
+              type: object
+              properties:
+                icao:
+                  type: string
+                  nullable: true
+                sirena:
+                  type: string
+                  nullable: true
+                iata:
+                  type: string
+                  nullable: true
+            title:
+              type: string
+        transport_type:
+          type: string
+        stops:
+          type: array
+          items:
+            type: object
+            properties:
+              arrival:
+                type: string
+                nullable: true
+              departure:
+                type: string
+              terminal:
+                type: string
+                nullable: true
+              platform:
+                type: string
+              station:
+                type: object
+                properties:
+                  codes:
+                    type: object
+                    properties:
+                      express:
+                        type: string
+                      yandex:
+                        type: string
+                      esr:
+                        type: string
+                  title:
+                    type: string
+                  popular_title:
+                    type: string
+                  short_title:
+                    type: string
+                  code:
+                    type: string
+                  type:
+                    type: string
+              stop_time:
+                type: string
+                nullable: true
+              duration:
+                type: number
+        vehicle:
+          type: object
+          nullable: true
+        start_date:
+          type: string
+        transport_subtype:
+          type: object
+          properties:
+            color:
+              type: string
+            code:
+              type: string
+            title:
+              type: string
+        express_type:
+          type: object
+          nullable: true
