@@ -7,8 +7,8 @@
 
 import Foundation
 
-typealias Routes = Components.Schemas.ThreadResponse
+typealias Route = Components.Schemas.Route
 
-protocol RoutesServiceProtocol {
-    func getRoutes(uid: String, from origin: String?, to destination: String?, date: String?) async throws -> Routes
+protocol RouteServiceProtocol {
+    func getRoute(uid: String, from origin: String?, to destination: String?, date: String?) async throws -> Route
 }

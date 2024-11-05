@@ -5,9 +5,6 @@ info:
   version: 3.0.0
 servers:
 - url: https://api.rasp.yandex.net
-tags:
-- name: Список ближайших станций
-  description: Список ближайших станций
 paths:
   /v3.0/nearest_stations/:
     get:
@@ -15,6 +12,7 @@ paths:
       - getNearestStations
       summary: Список ближайших станций
       operationId: getNearestStations
+      description: Запрос позволяет получить список станций, находящихся в указанном радиусе от указанной точки. Максимальное количество возвращаемых станций — 50.
       parameters:
       - name: apikey
         in: query
@@ -62,8 +60,8 @@ paths:
   /v3.0/thread/:
     get:
       tags:
-      - getRoutes
-      operationId: getRoutes
+      - getRoute
+      operationId: getRoute
       summary: Получение информации о нитке маршрута
       description: Запрашивает информацию о нитке маршрута, используя идентификатор нитки (UID).
         Дополнительно могут быть указаны параметры, такие как станция отправления, станция назначения, формат данных, язык и дата.
@@ -118,7 +116,62 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ThreadResponse'
+                $ref: '#/components/schemas/Route'
+  /v3.0/nearest_settlement:
+    get:
+      tags:
+      - getCity
+      operationId: getCity
+      summary: Запрос позволяет получить информацию о ближайшем к указанной точке городе.
+      description: Возвращает информацию о ближайшем к указанной точке городе относительно заданных координат.
+      parameters:
+        - name: apikey
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Ключ доступа к API.
+        - name: lat
+          in: query
+          required: true
+          schema:
+            type: number
+            format: double
+          description: Широта точки.
+        - name: lng
+          in: query
+          required: true
+          schema:
+            type: number
+            format: double
+          description: Долгота точки.
+        - name: distance
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Радиус охвата в метрах.
+        - name: lang
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [ru, en]
+          description: Язык ответа.
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [json, xml]
+          description: Формат ответа.
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/City'
 components:
   schemas:
     Stations:
@@ -175,7 +228,7 @@ components:
           type: string
         touch_url:
           type: string
-    ThreadResponse:
+    Route:
       type: object
       properties:
         except_days:
@@ -296,3 +349,35 @@ components:
         express_type:
           type: object
           nullable: true
+    City:
+      type: object
+      properties:
+        distance:
+          type: number
+          format: double
+          description: Расстояние до найденного города, в километрах.
+        code:
+          type: string
+          description: Код города в системе кодирования Яндекс Расписаний.
+        title:
+          type: string
+          description: Название города.
+        popular_title:
+          type: string
+          description: Общепринятое название города.
+        short_title:
+          type: string
+          description: Краткое название города.
+        lat:
+          type: number
+          format: double
+          description: Широта, на которой находится город.
+        lng:
+          type: number
+          format: double
+          description: Долгота, на которой находится город.
+        type:
+          type: string
+          description: Тип транспортного пункта (station — станция, settlement — поселение)
+          example: settlement
+            

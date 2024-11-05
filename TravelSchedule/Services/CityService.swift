@@ -1,5 +1,5 @@
 //
-//  RoutesService.swift
+//  CityService.swift
 //  TravelSchedule
 //
 //  Created by Roman Romanov on 05.11.2024.
@@ -9,7 +9,7 @@ import Foundation
 import OpenAPIRuntime
 import OpenAPIURLSession
 
-final class RoutesService: RoutesServiceProtocol {
+final class CityService: CityServiceProtocol {
     private let client: Client
     private let apikey: String
     
@@ -18,13 +18,11 @@ final class RoutesService: RoutesServiceProtocol {
         self.apikey = apikey
     }
     
-    func getRoutes(uid: String, from origin: String?, to destination: String?, date: String?) async throws -> Routes {
-        let response = try await client.getRoutes(query: .init(
+    func getCity(lat: Double, lng: Double) async throws -> City {
+        let response = try await client.getCity(query: .init(
             apikey: apikey,
-            uid: uid,
-            from: origin,
-            to: destination,
-            date: date
+            lat: lat,
+            lng: lng
         ))
         return try response.ok.body.json
     }
