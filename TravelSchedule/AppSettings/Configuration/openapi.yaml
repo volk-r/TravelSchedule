@@ -212,6 +212,86 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Carriers'
+  /v3.0/schedule:
+    get:
+      tags:
+      - getSchedule
+      operationId: getSchedule
+      summary: Получение расписания по станции
+      description: Позволяет получить список рейсов, отправляющихся от указанной станции и информацию по каждому рейсу.
+      parameters:
+        - name: apikey
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Ключ доступа к API
+        - name: station
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Код станции
+        - name: lang
+          in: query
+          schema:
+            type: string
+            default: ru
+          description: Язык представления данных
+        - name: format
+          in: query
+          schema:
+            type: string
+            enum: ['json', 'xml']
+            default: json
+          description: Формат возвращаемых данных
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Дата, на которую необходимо получить список рейсов. Должна быть указана в формате, соответствующем стандарту ISO 8601. Например, YYYY-MM-DD.
+        - name: transport_types
+          in: query
+          schema:
+            type: string
+            enum: ["plane", "train", "suburban", "bus", "water", "helicopter"]
+          description: Типы транспорта, для которых нужно получить расписание
+        - name: event
+          in: query
+          schema:
+            type: string
+            enum: ['arrival', 'departure']
+          description: Событие (прибытие или отправление)
+        - name: system
+          in: query
+          schema:
+            type: string
+            enum: ['yandex', 'iata', 'sirena', 'express', 'esr']
+          description: Система кодирования, в которой указывается код станции (параметр station) в запросе
+        - name: show_systems
+          in: query
+          schema:
+            type: string
+            enum: ['yandex', 'esr', 'all']
+          description: Система кодирования, в которой необходимо получить коды станций в элементе ответа codes, вложенном в элемент station
+        - name: direction
+          in: query
+          schema:
+            type: string
+          description: Код направления, по которому необходимо получить список рейсов электричек по станции (например, «arrival», «all» или «на Москву»).
+        - name: result_timezone
+          in: query
+          schema:
+            type: string
+          description: Часовой пояс, для которого следует указывать даты и времена в ответе. Если параметр не передан, каждая дата и время в ответе будут указаны в часовом поясе соответствующей станции.
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleResponse'
 components:
   schemas:
     Stations:
@@ -457,3 +537,82 @@ components:
           type: string
         email:
           type: string
+    DateTimeString:
+      type: string
+      format: date-time
+    ScheduleItem:
+      type: object
+      properties:
+        except_days:
+          type: string
+        arrival:
+          $ref: '#/components/schemas/DateTimeString'
+        thread:
+          $ref: '#/components/schemas/Route'
+        is_fuzzy:
+          type: boolean
+        days:
+          type: string
+        stops:
+          type: string
+        departure:
+          $ref: '#/components/schemas/DateTimeString'
+        terminal:
+          type: string
+        platform:
+          type: string
+    IntervalScheduleItem:
+      type: object
+      properties:
+        except_days:
+          type: string
+        thread:
+          $ref: '#/components/schemas/Route'
+        is_fuzzy:
+          type: boolean
+        days:
+          type: string
+        stops:
+          type: string
+        terminal:
+          type: string
+        platform:
+          type: string
+    ScheduleDirection:
+      type: object
+      properties:
+        code:
+          type: string
+        title:
+          type: string
+    Direction:
+      type: object
+      properties:
+        code:
+          type: string
+        title:
+          type: string
+    ScheduleResponse:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        station:
+          $ref: '#/components/schemas/Station'
+        schedule:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduleItem'
+        interval_schedule:
+          type: array
+          items:
+            $ref: '#/components/schemas/IntervalScheduleItem'
+        schedule_direction:
+          $ref: '#/components/schemas/ScheduleDirection'
+        directions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Direction'

@@ -1,8 +1,8 @@
 //
-//  CarrierService.swift
+//  ScheduleService.swift
 //  TravelSchedule
 //
-//  Created by Roman Romanov on 05.11.2024.
+//  Created by Roman Romanov on 06.11.2024.
 //
 
 import Foundation
@@ -10,7 +10,7 @@ import Foundation
 import OpenAPIRuntime
 import OpenAPIURLSession
 
-final class CarrierService: CarrierServiceProtocol {
+final class ScheduleService: ScheduleServiceProtocol {
     private let client: Client
     private let apikey: String
     
@@ -19,8 +19,8 @@ final class CarrierService: CarrierServiceProtocol {
         self.apikey = apikey
     }
     
-    func getCarriers(code: String) async throws -> Carriers {
-        let response = try await client.getCarriers(query: .init(apikey: apikey, code: code))
+    func getSchedule(station: String) async throws -> ScheduleResponse {
+        let response = try await client.getSchedule(query: .init(apikey: apikey, station: station))
         return try response.ok.body.json
     }
 }
