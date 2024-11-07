@@ -172,7 +172,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/City'
-  /v3.0//carrier:
+  /v3.0/carrier:
     get:
       tags:
       - getCarriers
