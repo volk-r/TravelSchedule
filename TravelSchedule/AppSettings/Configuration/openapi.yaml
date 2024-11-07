@@ -383,7 +383,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchResponse'
-                
   /v3.0/stations_list:
     get:
       tags:
@@ -414,8 +413,55 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StationsList'
+  /v3.0/copyright:
+    get:
+      tags:
+      - getCopyright
+      operationId: getCopyright
+      summary: Получение информации об авторских правах
+      description: Запрос позволяет получить данные о Яндекс Расписаниях - URL сервиса, баннер в различных цветовых представлениях и уведомительный текст
+      parameters:
+        - name: apikey
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Copyright'
 components:
   schemas:
+    Copyright:
+      type: object
+      properties:
+        copyright:
+          type: object
+          properties:
+            logo_vm:
+              type: string
+            url:
+              type: string
+            logo_vd:
+              type: string
+            logo_hy:
+              type: string
+            logo_hd:
+              type: string
+            logo_vy:
+              type: string
+            logo_hm:
+              type: string
+            text:
+              type: string
     StationsList:
       type: object
       properties:
