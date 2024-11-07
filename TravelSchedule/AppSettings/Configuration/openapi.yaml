@@ -292,8 +292,292 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ScheduleResponse'
+  /v3.0/search:
+    get:
+      tags:
+      - getRouteList
+      operationId: getRouteList
+      summary: Получение информации о рейсах между станциями
+      description: Запрос позволяет получить список рейсов, следующих от указанной станции отправления к указанной станции прибытия и информацию по каждому рейсу.
+      parameters:
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Код станции отправления
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Код станции прибытия
+        - name: format
+          in: query
+          schema:
+            type: string
+            enum: [xml, json]
+          description: Формат ответа (XML или JSON)
+        - name: lang
+          in: query
+          schema:
+            type: string
+          description: Язык ответа
+        - name: apikey
+          in: query
+          schema:
+            type: string
+          description: Ключ доступа к API
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Дата поиска рейсов
+        - name: transport_types
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+          description: Типы транспорта для поиска
+        - name: system
+          in: query
+          schema:
+            type: string
+          description: Система кодирования параметров to и from
+        - name: show_systems
+          in: query
+          schema:
+            type: string
+          description: Система кодирования для ответа
+        - name: offset
+          in: query
+          schema:
+            type: integer
+          description: Сдвиг относительно первого рейса в ответе
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          description: Ограничение на количество рейсов в ответе
+        - name: add_days_mask
+          in: query
+          schema:
+            type: string
+          description: Запрос календаря хождения рейсов
+        - name: result_timezone
+          in: query
+          schema:
+            type: string
+          description: Часовой пояс
+        - name: transfers
+          in: query
+          schema:
+            type: boolean
+          description: Признак запроса маршрутов с пересадками
+      responses:
+        '200':
+          description: sucess
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
 components:
   schemas:
+    SearchResponse:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        interval_segments:
+          type: array
+          items:
+            type: object
+            properties:
+              from:
+                $ref: '#/components/schemas/StationInfo'
+              thread:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  title:
+                    type: string
+                  interval:
+                    type: object
+                    properties:
+                      density:
+                        type: string
+                      end_time:
+                        $ref: '#/components/schemas/DateTimeString'
+                      begin_time:
+                        $ref: '#/components/schemas/DateTimeString'
+                  number:
+                    type: string
+                  short_title:
+                    type: string
+                  thread_method_link:
+                    type: string
+                  carrier:
+                    $ref: '#/components/schemas/CarrierInfo'
+                  transport_type:
+                    type: string
+                  vehicle:
+                    type: string
+                  transport_subtype:
+                    $ref: '#/components/schemas/TransportSubtype'
+                  express_type:
+                    type: string
+              has_transfers:
+                type: boolean
+              tickets_info:
+                $ref: '#/components/schemas/TicketsInfo'
+              duration:
+                type: integer
+              arrival_terminal:
+                type: string
+              start_date:
+                type: string
+                format: date
+              arrival_platform:
+                type: string
+        segments:
+          type: array
+          items:
+            type: object
+            properties:
+              arrival:
+                $ref: '#/components/schemas/DateTimeString'
+              from:
+                $ref: '#/components/schemas/StationInfo'
+              thread:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  title:
+                    type: string
+                  number:
+                    type: string
+                  short_title:
+                    type: string
+                  thread_method_link:
+                    type: string
+                  carrier:
+                    $ref: '#/components/schemas/CarrierInfo'
+                  transport_type:
+                    type: string
+                  vehicle:
+                    type: string
+                  transport_subtype:
+                    $ref: '#/components/schemas/TransportSubtype'
+                  express_type:
+                    type: string
+              departure_platform:
+                type: string
+              departure:
+                $ref: '#/components/schemas/DateTimeString'
+              to:
+                $ref: '#/components/schemas/StationInfo'
+              has_transfers:
+                type: boolean
+              tickets_info:
+                $ref: '#/components/schemas/TicketsInfo'
+              duration:
+                type: integer
+              arrival_terminal:
+                type: string
+              start_date:
+                type: string
+                format: date
+              arrival_platform:
+                type: string
+        search:
+          type: object
+          properties:
+            date:
+              type: string
+              format: date
+            to:
+              $ref: '#/components/schemas/SearchPoint'
+            from:
+              $ref: '#/components/schemas/SearchPoint'
+    TransportSubtype:
+      type: object
+      properties:
+        color:
+          type: string
+        code:
+          type: string
+        title:
+          type: string
+    StationInfo:
+      type: object
+      properties:
+        code:
+          type: string
+        title:
+          type: string
+        transport_type:
+          type: string
+        station_type:
+          type: string
+        station_type_name:
+          type: string
+    CarrierInfo:
+        type: object
+        properties:
+          code:
+            type: integer
+          contacts:
+            type: string
+          url:
+            type: string
+          title:
+            type: string
+          address:
+            type: string
+          email:
+            type: string
+          logo:
+            type: string
+    SearchPoint:
+      type: object
+      properties:
+        code:
+          type: string
+        type:
+          type: string
+        popular_title:
+          type: string
+        short_title:
+          type: string
+        title:
+          type: string
+    TicketsInfo:
+      type: object
+      properties:
+        et_marker:
+          type: boolean
+        places:
+          $ref: '#/components/schemas/Places'
+    Places:
+      type: array
+      items:
+        type: object
+        properties:
+          currency:
+            type: string
+          price:
+            type: object
+            properties:
+              cents:
+                type: integer
+              whole:
+                type: integer
+          name:
+            type: string
     Stations:
       type: object
       properties:
@@ -395,17 +679,7 @@ components:
               type: array
               items: {}
             codes:
-              type: object
-              properties:
-                icao:
-                  type: string
-                  nullable: true
-                sirena:
-                  type: string
-                  nullable: true
-                iata:
-                  type: string
-                  nullable: true
+              $ref: '#/components/schemas/Codes'
             title:
               type: string
         transport_type:
@@ -458,14 +732,7 @@ components:
         start_date:
           type: string
         transport_subtype:
-          type: object
-          properties:
-            color:
-              type: string
-            code:
-              type: string
-            title:
-              type: string
+          $ref: '#/components/schemas/TransportSubtype'
         express_type:
           type: object
           nullable: true
@@ -521,22 +788,25 @@ components:
         phone:
           type: string
         codes:
-          type: object
-          properties:
-            icao:
-              type: string
-              nullable: true
-            sirena:
-              type: string
-              nullable: true
-            iata:
-              type: string
+          $ref: '#/components/schemas/Codes'
         address:
           type: string
         logo:
           type: string
         email:
           type: string
+    Codes:
+      type: object
+      properties:
+        icao:
+          type: string
+          nullable: true
+        sirena:
+          type: string
+          nullable: true
+        iata:
+          type: string
+          nullable: true
     DateTimeString:
       type: string
       format: date-time
