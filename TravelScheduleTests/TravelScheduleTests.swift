@@ -26,7 +26,7 @@ final class TravelScheduleTests: XCTestCase {
         )
         
         let stations = try await service.getStationsList()
-        XCTAssertNotNil(stations.countries)
+        XCTAssertNotNil(stations.countries, "Stations list not found")
     }
     
     func testCarrierService() async throws {
@@ -58,5 +58,15 @@ final class TravelScheduleTests: XCTestCase {
         
         let copyright = try await service.getCopyright()
         XCTAssertEqual(copyright.copyright?.text?.contains("Яндекс.Расписания"), true, "Copyright does not match")
+    }
+    
+    func testNearestStationsService() async throws {
+        let service = NearestStationsService(
+            client: try getService(),
+            apikey: AppConstants.apiScheduleKey
+        )
+        
+        let stations = try await service.getNearestStations(lat: 59.864177, lng: 30.319163, distance: 1)
+        XCTAssertNotNil(stations.stations, "Nearest Stations not found")
     }
 }

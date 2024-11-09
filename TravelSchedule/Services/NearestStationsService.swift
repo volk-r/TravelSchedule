@@ -40,7 +40,7 @@ final class NearestStationsService: NearestStationsServiceProtocol {
         self.apikey = apikey
     }
     
-    func getNearestStations(lat: Double, lng: Double, distance: Int) async throws -> NearestStations {
+    func getNearestStations(lat: Double, lng: Double, distance: Int = AppConstants.defaultDistance) async throws -> NearestStations {
         let response = try await client.getNearestStations(query: .init(
             apikey: apikey,
             lat: lat,

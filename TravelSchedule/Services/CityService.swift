@@ -19,7 +19,7 @@ final class CityService: CityServiceProtocol {
         self.apikey = apikey
     }
     
-    func getCity(lat: Double, lng: Double, distance: Int? = 50) async throws -> City {
+    func getCity(lat: Double, lng: Double, distance: Int = AppConstants.defaultDistance) async throws -> City {
         let response = try await client.getCity(query: .init(
             apikey: apikey,
             lat: lat,
