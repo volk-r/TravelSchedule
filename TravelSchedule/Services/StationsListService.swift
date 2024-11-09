@@ -18,6 +18,8 @@ final class StationsListService: StationsListServiceProtocol {
     
     func getStationsList() async throws -> StationsList {
         let response = try await client.getStationsList(query: .init(apikey: apikey))
-        return try response.ok.body.json
+        let httpBody = try response.ok.body.html
+        let stationList = try await JSONDecoder().decode(from: httpBody, to: StationsList.self)
+        return stationList
     }
 }

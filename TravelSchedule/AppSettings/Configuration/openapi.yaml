@@ -172,7 +172,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/City'
-  /v3.0//carrier:
+  /v3.0/carrier:
     get:
       tags:
       - getCarriers
@@ -189,7 +189,7 @@ paths:
           in: query
           required: true
           schema:
-            type: string
+            type: integer
         - name: format
           in: query
           required: false
@@ -207,7 +207,7 @@ paths:
             type: string
       responses:
         '200':
-          description: Successful response
+          description: success
           content:
             application/json:
               schema:
@@ -408,9 +408,9 @@ paths:
             type: string
       responses:
         '200':
-          description: Успешный ответ
+          description: success
           content:
-            application/json:
+            text/html:
               schema:
                 $ref: '#/components/schemas/StationsList'
   /v3.0/copyright:
@@ -468,57 +468,58 @@ components:
         countries:
           type: array
           items:
-            type: object
-            properties:
-              regions:
-                $ref: '#/components/schemas/Regions'
-              codes:
-                $ref: '#/components/schemas/StationCodes'
-              title:
-                type: string
-    Regions:
-      type: array
-      items:
-        type: object
-        properties:
-          settlements:
-            $ref: '#/components/schemas/Settlements'
-          codes:
-            $ref: '#/components/schemas/StationCodes'
-          title:
-            type: string
-    Settlements:
-      type: array
-      items:
-        type: object
-        properties:
-          title:
-            type: string
-          codes:
-            $ref: '#/components/schemas/StationCodes'
-          stations:
-            type: array
-            items:
-              type: object
-              properties:
-                direction:
-                  type: string
-                codes:
-                  $ref: '#/components/schemas/StationCodes'
-                station_type:
-                  type: string
-                title:
-                  type: string
-                longitude:
-                  type: number
-                transport_type:
-                  type: string
-                latitude:
-                  type: number
-    StationCodes:
+            $ref: '#/components/schemas/Country'
+    CountiesCodes:
       type: object
-      additionalProperties:
-        type: string
+      properties:
+        esr_code:
+          type: string
+        yandex_code:
+          type: string
+    Country:
+      type: object
+      properties:
+        regions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Region'
+        codes:
+          $ref: '#/components/schemas/CountiesCodes'
+        title:
+          type: string
+    Region:
+      type: object
+      properties:
+        settlements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Settlement'
+        codes:
+          $ref: '#/components/schemas/CountiesCodes'
+        title:
+          type: string
+    Settlement:
+      type: object
+      properties:
+        stations:
+          type: array
+          items:
+            $ref: '#/components/schemas/SettlementStations'
+        codes:
+          $ref: '#/components/schemas/CountiesCodes'
+        title:
+          type: string
+    SettlementStations:
+      type: object
+      properties:
+        direction:
+          type: string
+        codes:
+          $ref: '#/components/schemas/CountiesCodes'
+        station_type:
+          type: string
+        title:
+          type: string
     SearchResponse:
       type: object
       properties:
