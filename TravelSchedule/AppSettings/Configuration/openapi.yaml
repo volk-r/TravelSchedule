@@ -5,6 +5,23 @@ info:
   version: 3.0.0
 servers:
 - url: https://api.rasp.yandex.net
+tags:
+- name: getNearestStations
+  description: Список ближайших станций
+- name: getRoute
+  description: Получение информации о нитке маршрута
+- name: getCity
+  description: Получение информации о ближайшем к указанной точке городе
+- name: getCarriers
+  description: Получение информации о перевозчике по указанному коду перевозчика
+- name: getSchedule
+  description: Получение списка рейсов, отправляющихся от указанной станции и информацию по каждому рейсу
+- name: getRouteList
+  description: Получение списка рейсов, следующих от указанной станции отправления к указанной станции прибытия и информацию по каждому рейсу
+- name: getStationsList
+  description: Получение списка станций, находящихся в указанном радиусе от указанной точки. Максимальное количество возвращаемых станций — 50
+- name: getCopyright
+  description: Получение данных о Яндекс Расписаниях. URL сервиса, баннер в различных цветовых представлениях и уведомительный текст. Все эти данные следует разместить ниже или выше места, в котором расположена информация о расписаниях
 paths:
   /v3.0/nearest_stations/:
     get:
@@ -85,6 +102,7 @@ paths:
           description: Код станции отправления.
         - name: to
           in: query
+          required: false
           schema:
             type: string
           description: Код станции назначения.
@@ -95,20 +113,26 @@ paths:
           description: json или xml
         - name: lang
           in: query
+          required: false
           schema:
             type: string
           description: Язык, на котором возвращаются данные.
         - name: date
           in: query
+          required: false
           schema:
             type: string
           description: Дата, для которой запрашивается информация.
         - name: show_systems
           in: query
+          required: false
           schema:
-            type: array
-            items:
-              type: string
+            type: string
+            enum:
+              - yandex
+              - esr
+              - all
+            default: all
           description: Коды систем, которые должны быть включены в ответ.
       responses:
         '200':
@@ -287,7 +311,7 @@ paths:
           description: Часовой пояс, для которого следует указывать даты и времена в ответе. Если параметр не передан, каждая дата и время в ответе будут указаны в часовом поясе соответствующей станции.
       responses:
         '200':
-          description: Успешный ответ
+          description: success
           content:
             application/json:
               schema:
@@ -378,7 +402,7 @@ paths:
           description: Признак запроса маршрутов с пересадками
       responses:
         '200':
-          description: sucess
+          description: success
           content:
             application/json:
               schema:
@@ -826,12 +850,10 @@ components:
             properties:
               arrival:
                 type: string
-                nullable: true
               departure:
                 type: string
               terminal:
                 type: string
-                nullable: true
               platform:
                 type: string
               station:
@@ -857,20 +879,17 @@ components:
                   type:
                     type: string
               stop_time:
-                type: string
-                nullable: true
+                type: integer
               duration:
-                type: number
+                type: integer
         vehicle:
           type: object
-          nullable: true
         start_date:
           type: string
         transport_subtype:
           $ref: '#/components/schemas/TransportSubtype'
         express_type:
-          type: object
-          nullable: true
+          type: string
     City:
       type: object
       properties:

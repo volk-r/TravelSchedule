@@ -19,13 +19,20 @@ final class RouteService: RouteServiceProtocol {
         self.apikey = apikey
     }
     
-    func getRoute(uid: String, from origin: String?, to destination: String?, date: String?) async throws -> Route {
+    func getRoute(
+        uid: String,
+        stationCode: StationCode? = nil,
+        from origin: String? = nil,
+        to destination: String? = nil,
+        date: String? = nil
+    ) async throws -> Route {
         let response = try await client.getRoute(query: .init(
             apikey: apikey,
             uid: uid,
             from: origin,
             to: destination,
-            date: date
+            date: date,
+            show_systems: stationCode
         ))
         return try response.ok.body.json
     }

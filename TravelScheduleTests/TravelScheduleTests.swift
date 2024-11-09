@@ -69,4 +69,14 @@ final class TravelScheduleTests: XCTestCase {
         let stations = try await service.getNearestStations(lat: 59.864177, lng: 30.319163, distance: 1)
         XCTAssertNotNil(stations.stations, "Nearest Stations not found")
     }
+    
+    func testRouteService() async throws {
+        let service = RouteService(
+            client: try getService(),
+            apikey: AppConstants.apiScheduleKey
+        )
+
+        let route = try await service.getRoute(uid: "6296x6294x6292x6291_0_9613602_g24_4", stationCode: .all)
+        XCTAssertNotNil(route.except_days, "Thread not found")
+    }
 }
