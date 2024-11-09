@@ -7,8 +7,8 @@
 
 import Foundation
 
-typealias Carriers = Components.Schemas.Carriers
+typealias Carrier = Components.Schemas.CarrierResponse
 
 protocol CarrierServiceProtocol {
-    func getCarriers(code: String) async throws -> Carriers
+    func getCarriers(code: Int) async throws -> Carrier
 }

@@ -26,17 +26,17 @@ final class TravelScheduleTests: XCTestCase {
         )
         
         let stations = try await service.getStationsList()
-        print("stations: \(stations)")
         XCTAssertNotNil(stations.countries)
     }
     
     func testCarrierService() async throws {
-//        let service = CarrierService(
-//            client: try getService(),
-//            apikey: AppConstants.apiScheduleKey
-//        )
-//        
-//        let carriers = try await service.getCarriers(code: 100)
-//        XCTAssertNotNil(carriers.carrier)
+        let service = CarrierService(
+            client: try getService(),
+            apikey: AppConstants.apiScheduleKey
+        )
+        
+        let carriersCode = 680
+        let carriers = try await service.getCarriers(code: carriersCode)
+        XCTAssertEqual(carriers.carrier?.code, carriersCode, "Carrier code does not match")
     }
 }

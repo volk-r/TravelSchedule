@@ -19,7 +19,7 @@ final class CarrierService: CarrierServiceProtocol {
         self.apikey = apikey
     }
     
-    func getCarriers(code: String) async throws -> Carriers {
+    func getCarriers(code: Int) async throws -> Carrier {
         let response = try await client.getCarriers(query: .init(apikey: apikey, code: code))
         return try response.ok.body.json
     }

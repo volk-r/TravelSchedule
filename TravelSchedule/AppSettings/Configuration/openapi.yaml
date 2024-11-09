@@ -211,7 +211,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Carriers'
+                $ref: '#/components/schemas/CarrierResponse'
   /v3.0/schedule:
     get:
       tags:
@@ -902,13 +902,11 @@ components:
           type: string
           description: Тип транспортного пункта (station — станция, settlement — поселение)
           example: settlement
-    Carriers:
+    CarrierResponse:
       type: object
       properties:
-        carriers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Carrier'
+        carrier:
+          $ref: '#/components/schemas/Carrier'
     Carrier:
       type: object
       properties:
