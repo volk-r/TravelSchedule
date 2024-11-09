@@ -49,4 +49,14 @@ final class TravelScheduleTests: XCTestCase {
         let city = try await service.getCity(lat: 50, lng: 40)
         XCTAssertEqual(city.title, "Митрофановка", "City title does not match")
     }
+    
+    func testCopyrightService() async throws {
+        let service = CopyrightService(
+            client: try getService(),
+            apikey: AppConstants.apiScheduleKey
+        )
+        
+        let copyright = try await service.getCopyright()
+        XCTAssertEqual(copyright.copyright?.text?.contains("Яндекс.Расписания"), true, "Copyright does not match")
+    }
 }
