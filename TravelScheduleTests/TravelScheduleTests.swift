@@ -39,4 +39,14 @@ final class TravelScheduleTests: XCTestCase {
         let carriers = try await service.getCarriers(code: carriersCode)
         XCTAssertEqual(carriers.carrier?.code, carriersCode, "Carrier code does not match")
     }
+    
+    func testCityService() async throws {
+        let service = CityService(
+            client: try getService(),
+            apikey: AppConstants.apiScheduleKey
+        )
+        
+        let city = try await service.getCity(lat: 50, lng: 40)
+        XCTAssertEqual(city.title, "Митрофановка", "City title does not match")
+    }
 }

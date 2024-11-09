@@ -19,11 +19,12 @@ final class CityService: CityServiceProtocol {
         self.apikey = apikey
     }
     
-    func getCity(lat: Double, lng: Double) async throws -> City {
+    func getCity(lat: Double, lng: Double, distance: Int? = 50) async throws -> City {
         let response = try await client.getCity(query: .init(
             apikey: apikey,
             lat: lat,
-            lng: lng
+            lng: lng,
+            distance: distance
         ))
         return try response.ok.body.json
     }

@@ -10,5 +10,5 @@ import Foundation
 typealias City = Components.Schemas.City
 
 protocol CityServiceProtocol {
-    func getCity(lat: Double, lng: Double) async throws -> City
+    func getCity(lat: Double, lng: Double, distance: Int?) async throws -> City
 }
