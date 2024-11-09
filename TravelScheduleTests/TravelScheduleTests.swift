@@ -79,4 +79,14 @@ final class TravelScheduleTests: XCTestCase {
         let route = try await service.getRoute(uid: "6296x6294x6292x6291_0_9613602_g24_4", stationCode: .all)
         XCTAssertNotNil(route.except_days, "Thread not found")
     }
+    
+    func testScheduleService() async throws {
+        let service = ScheduleService(
+            client: try getService(),
+            apikey: AppConstants.apiScheduleKey
+        )
+        
+        let scheduleResponse = try await service.getSchedule(station: "s9613062")
+        XCTAssertNotNil(scheduleResponse.schedule, "Schedule not found")
+    }
 }

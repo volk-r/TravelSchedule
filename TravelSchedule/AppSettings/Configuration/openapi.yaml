@@ -968,7 +968,8 @@ components:
         except_days:
           type: string
         arrival:
-          $ref: '#/components/schemas/DateTimeString'
+          type: string
+          format: date
         thread:
           $ref: '#/components/schemas/Route'
         is_fuzzy:
@@ -978,7 +979,8 @@ components:
         stops:
           type: string
         departure:
-          $ref: '#/components/schemas/DateTimeString'
+          type: string
+          format: date
         terminal:
           type: string
         platform:
@@ -1016,7 +1018,7 @@ components:
         pagination:
           $ref: '#/components/schemas/Pagination'
         station:
-          $ref: '#/components/schemas/Station'
+          $ref: '#/components/schemas/ScheduleStation'
         schedule:
           type: array
           items:
@@ -1031,3 +1033,33 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Direction'
+    ScheduleStation:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Код станции в системе кодирования Яндекс Расписаний.
+        station_type:
+          type: string
+          description: Тип станции.
+        station_type_name:
+          type: string
+          description: Название типа станции, зависит от языка ответа. Возможные значения на русском — в списке значений ключа station_type.
+        title:
+          type: string
+          description: Название станции.
+        popular_title:
+          type: string
+          description: Общепринятое название станции.
+        short_title:
+          type: string
+          description: Короткое название станции.
+        codes:
+          type: string
+          description: Список кодов станции в системах кодирования, заданных параметром show_systems.
+        transport_type:
+          type: string
+          description: Тип транспорта, обслуживаемый станцией.
+        type:
+          type: string
+          description: Вид станции. Для запроса расписания по станции возможно только одно значение — station.
