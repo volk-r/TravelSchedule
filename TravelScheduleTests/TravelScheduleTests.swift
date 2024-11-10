@@ -89,4 +89,17 @@ final class TravelScheduleTests: XCTestCase {
         let scheduleResponse = try await service.getSchedule(station: "s9613062")
         XCTAssertNotNil(scheduleResponse.schedule, "Schedule not found")
     }
+    
+    func testSearchRoutesService() async throws {
+        let service = SearchRoutesService(
+            client: try getService(),
+            apikey: AppConstants.apiScheduleKey
+        )
+        
+        let searchResponse = try await service.searchRoutes(from: "s9613061", to: "s9613181")
+        XCTAssertNotNil(searchResponse.pagination, "Search response has no pagination")
+        XCTAssertNotNil(searchResponse.interval_segments, "Search response has no interval_segments")
+        XCTAssertNotNil(searchResponse.segments, "Search response has no segments")
+        XCTAssertNotNil(searchResponse.search, "Search response has no search data")
+    }
 }

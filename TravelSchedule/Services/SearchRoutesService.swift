@@ -20,7 +20,13 @@ final class SearchRoutesService: SearchRoutesServiceProtocol {
     }
     
     func searchRoutes(from origin: String, to destination: String) async throws -> SearchResponse {
-        let response = try await client.getRouteList(query: .init(from: origin, to: destination))
+        let response = try await client.getRouteList(
+            query: .init(
+                apikey: apikey,
+                from: origin,
+                to: destination
+            )
+        )
         return try response.ok.body.json
     }
 }

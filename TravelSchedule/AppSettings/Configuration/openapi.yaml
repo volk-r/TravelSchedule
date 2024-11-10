@@ -74,6 +74,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Stations'
+        "404":
+          description: fail, data not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
   /v3.0/thread/:
     get:
       tags:
@@ -141,6 +147,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Route'
+        "404":
+          description: fail, data not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
   /v3.0/nearest_settlement:
     get:
       tags:
@@ -196,6 +208,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/City'
+        "404":
+          description: fail, data not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
   /v3.0/carrier:
     get:
       tags:
@@ -236,6 +254,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CarrierResponse'
+        "404":
+          description: fail, data not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
   /v3.0/schedule:
     get:
       tags:
@@ -316,6 +340,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ScheduleResponse'
+        "404":
+          description: fail, data not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
   /v3.0/search:
     get:
       tags:
@@ -324,6 +354,12 @@ paths:
       summary: Получение информации о рейсах между станциями
       description: Запрос позволяет получить список рейсов, следующих от указанной станции отправления к указанной станции прибытия и информацию по каждому рейсу.
       parameters:
+        - name: apikey
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Ключ доступа к API
         - name: from
           in: query
           required: true
@@ -347,33 +383,28 @@ paths:
           schema:
             type: string
           description: Язык ответа
-        - name: apikey
-          in: query
-          schema:
-            type: string
-          description: Ключ доступа к API
         - name: date
           in: query
           schema:
             type: string
-            format: date
           description: Дата поиска рейсов
         - name: transport_types
           in: query
           schema:
-            type: array
-            items:
-              type: string
+            type: string
+            enum: ["plane", "train", "suburban", "bus", "water", "helicopter"]
           description: Типы транспорта для поиска
         - name: system
           in: query
           schema:
             type: string
+            enum: ["yandex", "iata", "sirena", "express", "esr"]
           description: Система кодирования параметров to и from
         - name: show_systems
           in: query
           schema:
             type: string
+            enum: ["yandex", "esr"]
           description: Система кодирования для ответа
         - name: offset
           in: query
@@ -384,22 +415,23 @@ paths:
           in: query
           schema:
             type: integer
-          description: Ограничение на количество рейсов в ответе
+          description: Максимальное количество результатов поиска в ответе, по умолчанию — 100.
         - name: add_days_mask
           in: query
           schema:
-            type: string
-          description: Запрос календаря хождения рейсов
+            type: boolean
+            default: false
+          description: Признак, который указывает, что для каждой нитки в ответе следует вернуть календарь хождения — элемент schedule, вложенный в элемент segments.
         - name: result_timezone
           in: query
           schema:
             type: string
-          description: Часовой пояс
+          description: Часовой пояс, для которого следует указывать даты и времена в ответе. Если параметр не передан, каждая дата и время в ответе будут указаны в часовом поясе соответствующей станции.
         - name: transfers
           in: query
           schema:
             type: boolean
-          description: Признак запроса маршрутов с пересадками
+          description: Признак, разрешающий добавить к результатам поиска маршруты с пересадками.
       responses:
         '200':
           description: success
@@ -407,6 +439,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchResponse'
+        "404":
+          description: fail, data not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
   /v3.0/stations_list:
     get:
       tags:
@@ -552,62 +590,14 @@ components:
         interval_segments:
           type: array
           items:
-            type: object
-            properties:
-              from:
-                $ref: '#/components/schemas/StationInfo'
-              thread:
-                type: object
-                properties:
-                  uid:
-                    type: string
-                  title:
-                    type: string
-                  interval:
-                    type: object
-                    properties:
-                      density:
-                        type: string
-                      end_time:
-                        $ref: '#/components/schemas/DateTimeString'
-                      begin_time:
-                        $ref: '#/components/schemas/DateTimeString'
-                  number:
-                    type: string
-                  short_title:
-                    type: string
-                  thread_method_link:
-                    type: string
-                  carrier:
-                    $ref: '#/components/schemas/CarrierInfo'
-                  transport_type:
-                    type: string
-                  vehicle:
-                    type: string
-                  transport_subtype:
-                    $ref: '#/components/schemas/TransportSubtype'
-                  express_type:
-                    type: string
-              has_transfers:
-                type: boolean
-              tickets_info:
-                $ref: '#/components/schemas/TicketsInfo'
-              duration:
-                type: integer
-              arrival_terminal:
-                type: string
-              start_date:
-                type: string
-                format: date
-              arrival_platform:
-                type: string
+            $ref: '#/components/schemas/IntervalSegment'
         segments:
           type: array
           items:
             type: object
             properties:
               arrival:
-                $ref: '#/components/schemas/DateTimeString'
+                type: string
               from:
                 $ref: '#/components/schemas/StationInfo'
               thread:
@@ -636,7 +626,7 @@ components:
               departure_platform:
                 type: string
               departure:
-                $ref: '#/components/schemas/DateTimeString'
+                type: string
               to:
                 $ref: '#/components/schemas/StationInfo'
               has_transfers:
@@ -649,7 +639,6 @@ components:
                 type: string
               start_date:
                 type: string
-                format: date
               arrival_platform:
                 type: string
         search:
@@ -657,11 +646,59 @@ components:
           properties:
             date:
               type: string
-              format: date
             to:
               $ref: '#/components/schemas/SearchPoint'
             from:
               $ref: '#/components/schemas/SearchPoint'
+    IntervalSegment:
+      type: object
+      properties:
+        from:
+          $ref: '#/components/schemas/StationInfo'
+        thread:
+          type: object
+          properties:
+            uid:
+              type: string
+            title:
+              type: string
+            interval:
+              type: object
+              properties:
+                density:
+                  type: string
+                end_time:
+                  type: string
+                begin_time:
+                  type: string
+            number:
+              type: string
+            short_title:
+              type: string
+            thread_method_link:
+              type: string
+            carrier:
+              $ref: '#/components/schemas/CarrierInfo'
+            transport_type:
+              type: string
+            vehicle:
+              type: string
+            transport_subtype:
+              $ref: '#/components/schemas/TransportSubtype'
+            express_type:
+              type: string
+        has_transfers:
+          type: boolean
+        tickets_info:
+          $ref: '#/components/schemas/TicketsInfo'
+        duration:
+          type: integer
+        arrival_terminal:
+          type: string
+        start_date:
+          type: string
+        arrival_platform:
+          type: string
     TransportSubtype:
       type: object
       properties:
@@ -959,9 +996,6 @@ components:
         iata:
           type: string
           nullable: true
-    DateTimeString:
-      type: string
-      format: date-time
     ScheduleItem:
       type: object
       properties:
@@ -1063,3 +1097,25 @@ components:
         type:
           type: string
           description: Вид станции. Для запроса расписания по станции возможно только одно значение — station.
+    NotFoundResponse:
+      type: object
+      description: 404 ошибка - объект не найден
+      properties:
+        error:
+          $ref: '#/components/schemas/NotFoundError'
+    NotFoundError:
+      type: object
+      description: Полное описание ошибки
+      properties:
+        text:
+          type: string
+          description: Описание ошибки
+        http_code:
+          type: integer
+          description: http-код ответа
+        error_code:
+          type: string
+          description: Код ошибки
+        request:
+          type: string
+          description: Оригинальный запрос, вызвавший ошибку
