@@ -30,13 +30,9 @@ paths:
       summary: Список ближайших станций
       operationId: getNearestStations
       description: Запрос позволяет получить список станций, находящихся в указанном радиусе от указанной точки. Максимальное количество возвращаемых станций — 50.
+      security:
+        - apiKey: []
       parameters:
-      - name: apikey
-        in: query
-        description: API key
-        required: true
-        schema:
-          type: string
       - name: lat
         in: query
         description: широта
@@ -88,13 +84,9 @@ paths:
       summary: Получение информации о нитке маршрута
       description: Запрашивает информацию о нитке маршрута, используя идентификатор нитки (UID).
         Дополнительно могут быть указаны параметры, такие как станция отправления, станция назначения, формат данных, язык и дата.
+      security:
+        - apiKey: []
       parameters:
-        - name: apikey
-          in: query
-          required: true
-          schema:
-            type: string
-          description: Ключ доступа к API.
         - name: uid
           in: query
           required: true
@@ -153,20 +145,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-  /v3.0/nearest_settlement:
+  /v3.0/nearest_settlement/:
     get:
       tags:
       - getCity
       operationId: getCity
       summary: Запрос позволяет получить информацию о ближайшем к указанной точке городе.
       description: Возвращает информацию о ближайшем к указанной точке городе относительно заданных координат.
+      security:
+        - apiKey: []
       parameters:
-        - name: apikey
-          in: query
-          required: true
-          schema:
-            type: string
-          description: Ключ доступа к API.
         - name: lat
           in: query
           required: true
@@ -214,19 +202,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-  /v3.0/carrier:
+  /v3.0/carrier/:
     get:
       tags:
       - getCarriers
       operationId: getCarriers
       summary: Получение информации о перевозчике
       description: Запрашивает информацию о перевозчике по заданному коду перевозчика.
+      security:
+        - apiKey: []
       parameters:
-        - name: apikey
-          in: query
-          required: true
-          schema:
-            type: string
         - name: code
           in: query
           required: true
@@ -260,20 +245,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-  /v3.0/schedule:
+  /v3.0/schedule/:
     get:
       tags:
       - getSchedule
       operationId: getSchedule
       summary: Получение расписания по станции
       description: Позволяет получить список рейсов, отправляющихся от указанной станции и информацию по каждому рейсу.
+      security:
+        - apiKey: []
       parameters:
-        - name: apikey
-          in: query
-          required: true
-          schema:
-            type: string
-          description: Ключ доступа к API
         - name: station
           in: query
           required: true
@@ -346,20 +327,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-  /v3.0/search:
+  /v3.0/search/:
     get:
       tags:
       - getRouteList
       operationId: getRouteList
       summary: Получение информации о рейсах между станциями
       description: Запрос позволяет получить список рейсов, следующих от указанной станции отправления к указанной станции прибытия и информацию по каждому рейсу.
+      security:
+        - apiKey: []
       parameters:
-        - name: apikey
-          in: query
-          required: true
-          schema:
-            type: string
-          description: Ключ доступа к API
         - name: from
           in: query
           required: true
@@ -445,19 +422,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-  /v3.0/stations_list:
+  /v3.0/stations_list/:
     get:
       tags:
       - getStationsList
       operationId: getStationsList
       summary: Получение списка станций
       description: Ресурс содержит полный список станций, информацию о которых предоставляют Яндекс Расписания. Список структурирован географически; ответ содержит список стран со вложенными списками регионов и населенных пунктов, в которых находятся станции.
+      security:
+        - apiKey: []
       parameters:
-        - name: apikey
-          in: query
-          required: true
-          schema:
-            type: string
         - name: format
           in: query
           required: false
@@ -475,19 +449,16 @@ paths:
             text/html:
               schema:
                 $ref: '#/components/schemas/StationsList'
-  /v3.0/copyright:
+  /v3.0/copyright/:
     get:
       tags:
       - getCopyright
       operationId: getCopyright
       summary: Получение информации об авторских правах
       description: Запрос позволяет получить данные о Яндекс Расписаниях - URL сервиса, баннер в различных цветовых представлениях и уведомительный текст
+      security:
+        - apiKey: []
       parameters:
-        - name: apikey
-          in: query
-          required: true
-          schema:
-            type: string
         - name: format
           in: query
           required: false
@@ -501,6 +472,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Copyright'
 components:
+  securitySchemes:
+    apiKey:
+      name: Authorization
+      in: header
+      type: apiKey
   schemas:
     Copyright:
       type: object
