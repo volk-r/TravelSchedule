@@ -145,7 +145,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-  /v3.0/nearest_settlement:
+  /v3.0/nearest_settlement/:
     get:
       tags:
       - getCity
@@ -202,7 +202,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-  /v3.0/carrier:
+  /v3.0/carrier/:
     get:
       tags:
       - getCarriers
@@ -245,7 +245,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-  /v3.0/schedule:
+  /v3.0/schedule/:
     get:
       tags:
       - getSchedule
@@ -327,7 +327,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-  /v3.0/search:
+  /v3.0/search/:
     get:
       tags:
       - getRouteList
@@ -422,7 +422,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-  /v3.0/stations_list:
+  /v3.0/stations_list/:
     get:
       tags:
       - getStationsList
@@ -449,7 +449,7 @@ paths:
             text/html:
               schema:
                 $ref: '#/components/schemas/StationsList'
-  /v3.0/copyright:
+  /v3.0/copyright/:
     get:
       tags:
       - getCopyright
