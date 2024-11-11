@@ -477,6 +477,7 @@ components:
       name: Authorization
       in: header
       type: apiKey
+      description: Ключ доступа к API
   schemas:
     Copyright:
       type: object

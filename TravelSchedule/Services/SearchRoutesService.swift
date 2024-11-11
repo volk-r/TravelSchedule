@@ -24,7 +24,6 @@ final class SearchRoutesService: SearchRoutesServiceProtocol {
                 to: destination
             )
         )
-        print(response)
         return try response.ok.body.json
     }
 }
