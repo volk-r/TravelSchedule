@@ -25,6 +25,30 @@
         }
       }
     },
+    "No Internet" : {
+      "comment" : "No Internet message",
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет интернета"
+          }
+        }
+      }
+    },
+    "Server error" : {
+      "comment" : "Server error message",
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ошибка сервера"
+          }
+        }
+      }
+    },
     "To" : {
       "comment" : "Select station: to",
       "extractionState" : "manual",

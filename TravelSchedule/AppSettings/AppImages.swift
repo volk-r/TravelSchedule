@@ -12,4 +12,7 @@ enum AppImages {
     static let settingsPageTabbarImage = "gearshape.fill"
     
     static let changeStationImage = "arrow.2.squarepath"
+    
+    static let serverError = "ServerError"
+    static let noInternetConnection = "NoInternet"
 }
