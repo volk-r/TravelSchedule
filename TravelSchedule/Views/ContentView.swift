@@ -21,18 +21,11 @@ struct ContentView: View {
                 }
                 .tag(TabTags.mainPage)
             
-            ZStack {
-                AppColorSettings.backgroundColor
-                    .edgesIgnoringSafeArea(.all)
-                
-                VStack{
-                    Spacer()
+            SettingsView()
+                .tabItem {
+                    Image(systemName: AppImages.settingsPageTabbarImage)
                 }
-            }
-            .tabItem {
-                Image(systemName: AppImages.settingsPageTabbarImage)
-            }
-            .tag(TabTags.settingsPage)
+                .tag(TabTags.settingsPage)
         }
         .accentColor(AppColorSettings.fontColor)
     }

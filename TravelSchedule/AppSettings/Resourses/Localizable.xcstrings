@@ -1,6 +1,18 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Dark mode" : {
+      "comment" : "Dark mode title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Темная тема"
+          }
+        }
+      }
+    },
     "Find" : {
       "comment" : "Find routes",
       "extractionState" : "manual",
@@ -49,6 +61,17 @@
         }
       }
     },
+    "The application uses the Yandex.Schedules API" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приложение использует API «Яндекс.Расписания»"
+          }
+        }
+      }
+    },
     "To" : {
       "comment" : "Select station: to",
       "extractionState" : "manual",
@@ -57,6 +80,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Куда"
+          }
+        }
+      }
+    },
+    "User Agreement" : {
+      "comment" : "User Agreement",
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пользовательское соглашение"
+          }
+        }
+      }
+    },
+    "Version 1.0 (beta)" : {
+      "comment" : "Yandex.Schedules API version",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version 1.0 (beta)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Версия 1.0 (beta)"
           }
         }
       }
