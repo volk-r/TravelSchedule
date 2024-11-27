@@ -29,6 +29,7 @@ struct SelectStationView: View {
                 findButton
                 
                 Spacer()
+                Divider()
             }
         }
     }

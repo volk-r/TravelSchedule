@@ -22,6 +22,7 @@ struct SettingsView: View {
                 settingsList
                 Spacer()
                 copyright
+                Divider()
             }
         }
     }
