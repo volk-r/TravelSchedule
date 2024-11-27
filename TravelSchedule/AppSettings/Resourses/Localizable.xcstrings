@@ -11,10 +11,34 @@
         }
       }
     },
+    "Carrier information" : {
+      "comment" : "Carrier information",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carrier information"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Информация о перевозчике"
+          }
+        }
+      }
+    },
     "Dark mode" : {
       "comment" : "Dark mode title",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark mode"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23,10 +47,34 @@
         }
       }
     },
+    "E-mail" : {
+      "comment" : "E-mail",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail"
+          }
+        }
+      }
+    },
     "Find" : {
       "comment" : "Find routes",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39,6 +87,12 @@
       "comment" : "Select station: from",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51,6 +105,12 @@
       "comment" : "No Internet message",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Internet"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -59,10 +119,34 @@
         }
       }
     },
+    "Phone" : {
+      "comment" : "Phone",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Телефон"
+          }
+        }
+      }
+    },
     "Server error" : {
       "comment" : "Server error message",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server error"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -72,8 +156,15 @@
       }
     },
     "The application uses the Yandex.Schedules API" : {
+      "comment" : "Used APIs",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The application uses the Yandex.Schedules API"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -86,6 +177,12 @@
       "comment" : "Select station: to",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
