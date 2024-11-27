@@ -12,23 +12,38 @@ struct SettingsView: View {
     // MARK: - Properties
     
     @State private var isDarkModeEnabled = true
+    @State private var path: [PathItem] = []
     
     var body: some View {
-        ZStack {
-            AppColorSettings.backgroundColor
-                .edgesIgnoringSafeArea(.all)
-            
-            VStack{
-                settingsList
-                Spacer()
-                copyright
-                Divider()
+        NavigationStack(path: $path) {
+            ZStack {
+                AppColorSettings.backgroundColor
+                    .edgesIgnoringSafeArea(.all)
+                
+                VStack{
+                    settingsList
+                    Spacer()
+                    copyright
+                    Divider()
+                }
+            }
+            .navigationDestination(for: PathItem.self) { id in
+                if id == .userAgreement {
+                    UserAgreementView()
+                        .toolbar(.hidden, for: .tabBar)
+                }
             }
         }
     }
 }
 
 extension SettingsView {
+    
+    // MARK: - PathItem
+    
+    private enum PathItem: CaseIterable {
+        case userAgreement
+    }
     
     // MARK: - settingsList
     
@@ -43,11 +58,14 @@ extension SettingsView {
                 .tint(AppColorSettings.backgroundButtonColor)
                 .padding(.bottom)
                 
-                Text("User Agreement")
+                Text("User agreement")
                     .font(AppConstants.fontBold17)
                     .badge(
                         Text("\(Image(systemName: "chevron.right"))")
                     )
+                    .onTapGesture {
+                        path.append(.userAgreement)
+                    }
             }
             .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
@@ -62,7 +80,7 @@ extension SettingsView {
         VStack {
             Text("The application uses the Yandex.Schedules API")
                 .font(AppConstants.fontRegular12)
-            Text("Version 1.0 (beta)")
+            Text("Version")
                 .font(AppConstants.fontRegular12)
                 .padding()
         }

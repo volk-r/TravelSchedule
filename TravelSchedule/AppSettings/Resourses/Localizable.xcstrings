@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        }
+      }
+    },
     "Dark mode" : {
       "comment" : "Dark mode title",
       "extractionState" : "manual",
@@ -84,10 +94,15 @@
         }
       }
     },
-    "User Agreement" : {
-      "comment" : "User Agreement",
-      "extractionState" : "manual",
+    "User agreement" : {
+      "comment" : "User agreement",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User agreement"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -96,7 +111,7 @@
         }
       }
     },
-    "Version 1.0 (beta)" : {
+    "Version" : {
       "comment" : "Yandex.Schedules API version",
       "extractionState" : "manual",
       "localizations" : {
