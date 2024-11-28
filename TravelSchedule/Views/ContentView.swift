@@ -17,13 +17,13 @@ struct ContentView: View {
         TabView(selection: $selectedTab) {
             SelectStationView()
                 .tabItem {
-                    Image(systemName: AppImages.mainPageTabbarImage)
+                    Image(systemName: AppImages.mainPageTabbar)
                 }
                 .tag(TabTags.mainPage)
             
             SettingsView()
                 .tabItem {
-                    Image(systemName: AppImages.settingsPageTabbarImage)
+                    Image(systemName: AppImages.settingsPageTabbar)
                 }
                 .tag(TabTags.settingsPage)
         }

@@ -93,7 +93,7 @@ extension SelectStationView {
     
     private var changeStationsButton: some View {
         Button(action: changeStationsButtonTap) {
-            Image(systemName: AppImages.changeStationImage)
+            Image(systemName: AppImages.changeStation)
         }
         .frame(
             width: Constants.changeStationsButtonSize,

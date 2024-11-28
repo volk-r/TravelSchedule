@@ -29,6 +29,40 @@
         }
       }
     },
+    "City not found" : {
+      "comment" : "'City not found' placeholder",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "City not found"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Город не найден"
+          }
+        }
+      }
+    },
+    "City selection" : {
+      "comment" : "City selection screen title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "City selection"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбор городв"
+          }
+        }
+      }
+    },
     "Dark mode" : {
       "comment" : "Dark mode title",
       "extractionState" : "manual",
@@ -61,6 +95,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-mail"
+          }
+        }
+      }
+    },
+    "Enter your query" : {
+      "comment" : "Search bar placeholder",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter your query"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Введите запрос"
           }
         }
       }

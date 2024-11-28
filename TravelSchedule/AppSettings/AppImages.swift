@@ -8,10 +8,12 @@
 import Foundation
 
 enum AppImages {
-    static let mainPageTabbarImage = "arrow.up.message"
-    static let settingsPageTabbarImage = "gearshape.fill"
+    static let mainPageTabbar = "arrow.up.message"
+    static let settingsPageTabbar = "gearshape.fill"
     
-    static let changeStationImage = "arrow.2.squarepath"
+    static let changeStation = "arrow.2.squarepath"
+    
+    static let cityListBadge = "chevron.right"
     
     static let serverError = "ServerError"
     static let noInternetConnection = "NoInternet"
