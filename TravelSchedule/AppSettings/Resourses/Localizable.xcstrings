@@ -206,6 +206,40 @@
         }
       }
     },
+    "Station not found" : {
+      "comment" : "'Station not found' placeholder",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Station not found"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Станция не найдена"
+          }
+        }
+      }
+    },
+    "Station selection" : {
+      "comment" : "Station selection screen title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Station selection"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбор станции"
+          }
+        }
+      }
+    },
     "The application uses the Yandex.Schedules API" : {
       "comment" : "Used APIs",
       "extractionState" : "manual",
