@@ -23,7 +23,11 @@ struct CitySelectionView: View {
         NavigationStack {
             ZStack {
                 cityList
-                placeholder
+                
+                customPlaceholder(
+                    placeholder: Text("City not found"),
+                    isVisible: searchResult.isEmpty
+                )
             }
         }
         .navigationTitle("City selection")
@@ -59,14 +63,6 @@ extension CitySelectionView {
         }
         .listStyle(.plain)
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Enter your query")
-    }
-    
-    // MARK: - placeholder
-    
-    private var placeholder: some View {
-        Text("City not found")
-            .opacity(searchResult.isEmpty ? 1 : 0)
-            .font(AppConstants.fontBold24)
     }
     
     // MARK: - selectCity

@@ -29,8 +29,10 @@ struct NetworkErrorView: View {
                     )
                     .clipShape(RoundedRectangle(cornerRadius: Constants.imageCornerRadius))
                 
-                Text(errorType.model.description)
-                    .font(AppConstants.fontBold24)
+                customPlaceholder(
+                    placeholder: Text(errorType.model.description),
+                    isVisible: true
+                )
             }
         }
     }

@@ -23,7 +23,11 @@ struct StationSelectorView: View {
         NavigationStack {
             ZStack {
                 stationList
-                placeholder
+                
+                customPlaceholder(
+                    placeholder: Text("Station not found"),
+                    isVisible: searchResult.isEmpty
+                )
             }
         }
         .navigationTitle("Station selection")
@@ -59,14 +63,6 @@ extension StationSelectorView {
         }
         .listStyle(.plain)
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Enter your query")
-    }
-    
-    // MARK: - placeholder
-    
-    private var placeholder: some View {
-        Text("Station not found")
-            .opacity(searchResult.isEmpty ? 1 : 0)
-            .font(AppConstants.fontBold24)
     }
     
     // MARK: - selectCity
