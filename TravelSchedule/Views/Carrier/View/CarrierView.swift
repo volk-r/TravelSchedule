@@ -19,13 +19,18 @@ struct CarrierView: View {
     )
     
     var body: some View {
-        VStack(alignment: .center, spacing: Constants.defaultSpacing) {
-            carrierLogo
-            carrierTitle
-            carrierPropertyList
-            Spacer()
+        ZStack {
+            AppColorSettings.backgroundColor
+                .edgesIgnoringSafeArea(.all)
+            
+            VStack(alignment: .center, spacing: Constants.defaultSpacing) {
+                carrierLogo
+                carrierTitle
+                carrierPropertyList
+                Spacer()
+            }
+            .padding()
         }
-        .padding()
         .navigationTitle("Carrier information")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -80,6 +85,7 @@ extension CarrierView {
             }
             .listRowSeparator(.hidden)
             .listRowInsets(EdgeInsets())
+            .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
     }

@@ -22,6 +22,9 @@ struct CitySelectionView: View {
     var body: some View {
         NavigationStack {
             ZStack {
+                AppColorSettings.backgroundColor
+                    .edgesIgnoringSafeArea(.all)
+                
                 cityList
                 
                 customPlaceholder(
@@ -60,6 +63,7 @@ extension CitySelectionView {
             }
             .listRowSeparator(.hidden)
             .frame(height: Constants.rowHeight)
+            .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Enter your query")

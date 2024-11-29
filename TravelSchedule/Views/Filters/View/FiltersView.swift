@@ -14,12 +14,17 @@ struct FiltersView: View {
     @State private var isChecked: Bool = false
     
     var body: some View {
-        VStack(spacing: Constants.defaultSpacing) {
-            departureTimeView
-            transfersView
-                .safeAreaInset(edge: .bottom) {
-                    applyButton
-                }
+        ZStack {
+            AppColorSettings.backgroundColor
+                .edgesIgnoringSafeArea(.all)
+            
+            VStack(spacing: Constants.defaultSpacing) {
+                departureTimeView
+                transfersView
+                    .safeAreaInset(edge: .bottom) {
+                        applyButton
+                    }
+            }
         }
     }
 }
@@ -55,6 +60,7 @@ extension FiltersView {
                 .frame(height: Constants.defaultRowHeight)
                 .listRowSeparator(.hidden)
                 .listRowInsets(EdgeInsets())
+                .listRowBackground(Color.clear)
             }
             .listStyle(.plain)
             .frame(height: Constants.optionsListHeight)
@@ -80,6 +86,7 @@ extension FiltersView {
                 .frame(height: Constants.defaultRowHeight)
                 .listRowSeparator(.hidden)
                 .listRowInsets(EdgeInsets())
+                .listRowBackground(Color.clear)
             }
             .listStyle(.plain)
             .frame(height: Constants.optionsListHeight)
