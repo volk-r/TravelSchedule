@@ -123,7 +123,7 @@ extension SelectStationView {
         )
         .background(AppColorSettings.backgroundButtonColor)
         .foregroundStyle(Constants.findButtonFontColor)
-        .clipShape(RoundedRectangle(cornerRadius: Constants.findButtonCornerRadius))
+        .clipShape(RoundedRectangle(cornerRadius: AppConstants.defaultCornerRadius))
         .opacity(viewModel.fromStation.isEmpty || viewModel.toStation.isEmpty ? 0 : 1)
     }
 }
@@ -145,7 +145,6 @@ extension SelectStationView {
         static let changeStationsButtonColor: Color = .white
         
         static let findButtonPaddingTop: CGFloat = 20
-        static let findButtonCornerRadius: CGFloat = 16
         static let findButtonWidth: CGFloat = 150
         static let findButtonHeight: CGFloat = 60
         static let findButtonFontColor: Color = .white

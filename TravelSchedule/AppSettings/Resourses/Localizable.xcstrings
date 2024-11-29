@@ -11,6 +11,40 @@
         }
       }
     },
+    "Afternoon 12:00 - 18:00" : {
+      "comment" : "Departure time options",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afternoon 12:00 - 18:00"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "День 12:00 - 18:00"
+          }
+        }
+      }
+    },
+    "Apply" : {
+      "comment" : "Apply - button",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apply"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Применить"
+          }
+        }
+      }
+    },
     "Carrier information" : {
       "comment" : "Carrier information",
       "extractionState" : "manual",
@@ -81,6 +115,23 @@
         }
       }
     },
+    "Departure time" : {
+      "comment" : "Departure time - title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Departure time"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Время отправления"
+          }
+        }
+      }
+    },
     "E-mail" : {
       "comment" : "E-mail",
       "extractionState" : "manual",
@@ -112,6 +163,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Введите запрос"
+          }
+        }
+      }
+    },
+    "Evening 18:00 - 00:00" : {
+      "comment" : "Departure time options",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Evening 18:00 - 00:00"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вечер 18:00 - 00:00"
           }
         }
       }
@@ -148,6 +216,56 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Откуда"
+          }
+        }
+      }
+    },
+    "Morning 06:00 - 12:00" : {
+      "comment" : "Departure time options",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Morning 06:00 - 12:00"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Утро 06:00 - 12:00"
+          }
+        }
+      }
+    },
+    "Night 00:00 - 06:00" : {
+      "comment" : "Departure time options",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Night 00:00 - 06:00"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ночь 00:00 - 06:00"
+          }
+        }
+      }
+    },
+    "No" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет"
           }
         }
       }
@@ -202,6 +320,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ошибка сервера"
+          }
+        }
+      }
+    },
+    "Show options with transfers" : {
+      "comment" : "Show options with transfers - title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show options with transfers"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показывать варианты с пересадками"
           }
         }
       }
@@ -307,6 +442,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Версия 1.0 (beta)"
+          }
+        }
+      }
+    },
+    "Yes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yes"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Да"
           }
         }
       }

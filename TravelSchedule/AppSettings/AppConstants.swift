@@ -13,6 +13,8 @@ enum AppConstants {
     
     static let defaultDistance: Int = 50
     
+    static let defaultCornerRadius: CGFloat = 16
+    
     static let fontRegular12: Font = .system(size: 12, weight: .regular, design: .default)
     static let fontRegular17: Font = .system(size: 17, weight: .regular, design: .default)
     

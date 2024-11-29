@@ -17,4 +17,9 @@ enum AppImages {
     
     static let serverError = "ServerError"
     static let noInternetConnection = "NoInternet"
+    
+    static let checkboxChecked = "checkmark.square.fill"
+    static let checkboxUnchecked = "square"
+    static let radioButtonChecked = "record.circle"
+    static let radioButtonUnchecked = "circle"
 }
