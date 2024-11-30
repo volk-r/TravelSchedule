@@ -13,29 +13,44 @@ struct SelectStationView: View {
     
     @StateObject private var viewModel = SelectStationViewModel()
     
+    @State private var path: [PathItem] = []
+    
     var body: some View {
-        ZStack {
-            AppColorSettings.backgroundColor
-                .edgesIgnoringSafeArea(.all)
-            
-            VStack(spacing: Constants.findButtonPaddingTop) {
-                ZStack {
-                    backgroundView
-                    selectStationView
-                        .padding(.horizontal)
+        NavigationStack(path: $path) {
+            ZStack {
+                AppColorSettings.backgroundColor
+                    .edgesIgnoringSafeArea(.all)
+                
+                VStack(spacing: Constants.findButtonPaddingTop) {
+                    ZStack {
+                        backgroundView
+                        selectStationView
+                            .padding(.horizontal)
+                    }
+                    .padding(.top, Constants.stationBoxPaddingTop)
+                    
+                    findButton
+                    
+                    Spacer()
+                    Divider()
                 }
-                .padding(.top, Constants.stationBoxPaddingTop)
-                
-                findButton
-                
-                Spacer()
-                Divider()
+            }
+            .navigationDestination(for: PathItem.self) { id in
+                if id == .chooseCity {
+                    CitySelectionView()
+                }
             }
         }
     }
 }
 
 extension SelectStationView {
+    
+    // MARK: - PathItem
+    
+    private enum PathItem: CaseIterable {
+        case chooseCity
+    }
     
     // MARK: - backgroundView
     
@@ -56,17 +71,23 @@ extension SelectStationView {
             VStack{
                 List {
                     Section {
-                        TextField(
-                            "From",
-                            text: $viewModel.fromStation,
-                            prompt: Text("From")
-                                .foregroundColor(AppColorSettings.secondaryFontColor)
+                        Button(
+                            action: { didSelectStation(viewModel.fromStation) },
+                            label: {
+//                                Text(viewModel.fromStation.stationTitle)
+                                Text("From")
+                                    .foregroundColor(AppColorSettings.secondaryFontColor)
+                                    .lineLimit(1)
+                            }
                         )
-                        TextField(
-                            "From",
-                            text: $viewModel.toStation,
-                            prompt: Text("To")
-                                .foregroundColor(AppColorSettings.secondaryFontColor)
+                        Button(
+                            action: { didSelectStation(viewModel.toStation) },
+                            label: {
+//                                Text(viewModel.fromStation.stationTitle)
+                                Text("To")
+                                    .foregroundColor(AppColorSettings.secondaryFontColor)
+                                    .lineLimit(1)
+                            }
                         )
                         .padding(.bottom)
                     }
@@ -125,6 +146,13 @@ extension SelectStationView {
         .foregroundStyle(Constants.findButtonFontColor)
         .clipShape(RoundedRectangle(cornerRadius: AppConstants.defaultCornerRadius))
         .opacity(viewModel.fromStation.isEmpty || viewModel.toStation.isEmpty ? 0 : 1)
+    }
+    
+    // Mark: - didSelectStation
+    
+    private func didSelectStation(_ stationData: String) {
+        viewModel.selectStation(stationData)
+//        path.append(.chooseCity)// TODO: crash
     }
 }
 

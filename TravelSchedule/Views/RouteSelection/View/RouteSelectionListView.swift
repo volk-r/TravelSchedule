@@ -8,28 +8,119 @@
 import SwiftUI
 
 struct RouteSelectionListView: View {
+    
+    @State private var path: [PathItem] = []
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack {//(path: $path) {// TODO: crash
             ZStack {
                 AppColorSettings.backgroundColor
                     .edgesIgnoringSafeArea(.all)
                 
-                List(mockData, id: \.self) { routeCard in
-                    RouteSelectionView(routeCardData: routeCard)
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(
-                            top: 2,
-                            leading: 8,
-                            bottom: 2,
-                            trailing: 8
-                        ))
+                VStack {
+                    pageTitle
+                    routeList
+                        .safeAreaInset(edge: .bottom) {
+                            filterButton
+                        }
                 }
-                .listStyle(.plain)
+                
+                customPlaceholder(
+                    placeholder: Text("There are no options"),
+                    isVisible: mockData.isEmpty
+                )
             }
+            // TODO: crash
+//            .navigationDestination(for: PathItem.self) { id in
+//                if id == .filtersPage {
+//                    FiltersView()
+//                }
+//            }
         }
-//        .navigationTitle()
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
+    }
+}
+
+extension RouteSelectionListView {
+    
+    // MARK: - PathItem
+    
+    private enum PathItem: CaseIterable {
+        case filtersPage
+    }
+    
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let filterButtonPaddingTop: CGFloat = 20
+        static let filterButtonWidth: CGFloat = 343
+        static let filterButtonHeight: CGFloat = 60
+        static let filterButtonFontColor: Color = .white
+        
+        static let filterButtonCircleSize: CGFloat = 8
+        static let filterButtonCircleColor: Color = Color(uiColor: UIColor(hexString: "#F56B6C"))
+    }
+    
+    // MARK: - pageTitle
+    
+    private var pageTitle: some View {
+        Text(mockDataPageTitle)
+            .font(AppConstants.fontBold24)
+            .padding()
+    }
+    
+    // MARK: - routeList
+    
+    private var routeList: some View {
+        List(mockData, id: \.self) { routeCard in
+            RouteSelectionView(routeCardData: routeCard)
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets(
+                    top: 2,
+                    leading: 8,
+                    bottom: 2,
+                    trailing: 8
+                ))
+        }
+        .listStyle(.plain)
+    }
+    
+    // MARK: - filterButton
+    
+    private var filterButton: some View {
+        Button(
+            action: didTapFilterButton,
+            label: {
+                HStack(alignment: .center) {
+                    Text("Specify time")
+                    Circle()
+                        .fill(Constants.filterButtonCircleColor)
+                        .frame(
+                            minWidth: Constants.filterButtonCircleSize,
+                            idealWidth: Constants.filterButtonCircleSize,
+                            maxHeight: Constants.filterButtonCircleSize
+                        )
+                        .opacity(mockData.isEmpty ? 1 : 0)
+                }
+                .frame(
+                    maxWidth: .infinity,
+                    minHeight: Constants.filterButtonHeight
+                )
+                .font(AppConstants.fontBold17)
+            }
+        )
+        .background(AppColorSettings.backgroundButtonColor)
+        .foregroundStyle(Constants.filterButtonFontColor)
+        .clipShape(RoundedRectangle(cornerRadius: AppConstants.defaultCornerRadius))
+        .padding(.horizontal)
+    }
+    
+    // MARK: - didTapFilterButton
+    
+    private func didTapFilterButton() {
+        print("didTapFilterButton")
+        path.append(.filtersPage)
     }
 }
 
@@ -37,6 +128,7 @@ struct RouteSelectionListView: View {
     RouteSelectionListView()
 }
 
+let mockDataPageTitle: String = "Москва (Ярославский вокзал) → Санкт Петербург (Балтийский вокзал)"
 let mockData: [RouteCardData] =
 [
     RouteCardData(

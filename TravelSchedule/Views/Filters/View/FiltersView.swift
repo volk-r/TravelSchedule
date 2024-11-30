@@ -14,16 +14,18 @@ struct FiltersView: View {
     @State private var isChecked: Bool = false
     
     var body: some View {
-        ZStack {
-            AppColorSettings.backgroundColor
-                .edgesIgnoringSafeArea(.all)
-            
-            VStack(spacing: Constants.defaultSpacing) {
-                departureTimeView
-                transfersView
-                    .safeAreaInset(edge: .bottom) {
-                        applyButton
-                    }
+        NavigationStack {
+            ZStack {
+                AppColorSettings.backgroundColor
+                    .edgesIgnoringSafeArea(.all)
+                
+                VStack(spacing: Constants.defaultSpacing) {
+                    departureTimeView
+                    transfersView
+                        .safeAreaInset(edge: .bottom) {
+                            applyButton
+                        }
+                }
             }
         }
     }

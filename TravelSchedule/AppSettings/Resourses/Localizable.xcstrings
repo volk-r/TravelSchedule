@@ -42,7 +42,7 @@
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "%lld часов"
                 }
               },
@@ -54,7 +54,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "%lld часа"
                 }
               }
@@ -393,6 +393,23 @@
         }
       }
     },
+    "Specify time" : {
+      "comment" : "Specify time for searching routes",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Specify time"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уточнить время"
+          }
+        }
+      }
+    },
     "Station not found" : {
       "comment" : "'Station not found' placeholder",
       "localizations" : {
@@ -441,6 +458,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Приложение использует API «Яндекс.Расписания»"
+          }
+        }
+      }
+    },
+    "There are no options" : {
+      "comment" : "Routes no found",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There are no options"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет вариантов"
           }
         }
       }
@@ -494,6 +528,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Версия 1.0 (beta)"
+          }
+        }
+      }
+    },
+    "With a transfer in" : {
+      "comment" : "Transfer title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "With a transfer in"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "С пересадкой в"
           }
         }
       }

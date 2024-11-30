@@ -41,7 +41,7 @@ struct RouteCardData: Identifiable, Hashable {
 
     func getTransferTitle() -> String? {
         if hasTransfers, let transferTitle = transferTitle {
-            return "С пересадкой в" + " " + transferTitle
+            return String(localized: "With a transfer in") + " " + transferTitle
         } else {
             return nil
         }
