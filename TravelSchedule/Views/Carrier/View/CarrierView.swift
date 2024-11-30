@@ -11,12 +11,7 @@ struct CarrierView: View {
     
     // MARK: - Properties
     
-    @State private var carrier = (
-        title: "ОАО «РЖД»",
-        phone: "+7 (904) 329-27-71",
-        logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",
-        email: "i.lozgkina@yandex.ru"
-    )
+    var carrier: CarrierMock?
     
     var body: some View {
         ZStack {
@@ -50,7 +45,7 @@ extension CarrierView {
     // MARK: - carrierLogo
     
     var carrierLogo: some View {
-        AsyncImage(url: URL(string: carrier.logo)) { image in
+        AsyncImage(url: URL(string: carrier?.logo ?? "")) { image in
             image.resizable()
         } placeholder: {
             ProgressView()
@@ -63,7 +58,7 @@ extension CarrierView {
     
     var carrierTitle: some View {
         HStack {
-            Text(carrier.title)
+            Text(carrier?.title ?? "")
                 .font(AppConstants.fontBold24)
             Spacer()
         }
@@ -76,11 +71,11 @@ extension CarrierView {
             Group {
                 carrierProperty(
                     caption: Text("E-mail"),
-                    value: carrier.email
+                    value: carrier?.email ?? ""
                 )
                 carrierProperty(
                     caption: Text("Phone"),
-                    value: carrier.phone
+                    value: carrier?.phone ?? ""
                 )
             }
             .listRowSeparator(.hidden)
@@ -105,5 +100,11 @@ extension CarrierView {
 }
 
 #Preview {
-    CarrierView()
+    var carrier = CarrierMock(
+        title: "ОАО «РЖД»",
+        phone: "+7 (904) 329-27-71",
+        logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",
+        email: "i.lozgkina@yandex.ru"
+    )
+    CarrierView(carrier: carrier)
 }
