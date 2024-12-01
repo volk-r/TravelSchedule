@@ -13,44 +13,29 @@ struct SelectStationView: View {
     
     @StateObject private var viewModel = SelectStationViewModel()
     
-    @State private var path: [PathItem] = []
-    
     var body: some View {
-        NavigationStack(path: $path) {
-            ZStack {
-                AppColorSettings.backgroundColor
-                    .edgesIgnoringSafeArea(.all)
+        ZStack {
+            AppColorSettings.backgroundColor
+                .edgesIgnoringSafeArea(.all)
+            
+            VStack(spacing: Constants.findButtonPaddingTop) {
+                ZStack {
+                    backgroundView
+                    selectStationView
+                        .padding(.horizontal)
+                }
+                .padding(.top, Constants.stationBoxPaddingTop)
                 
-                VStack(spacing: Constants.findButtonPaddingTop) {
-                    ZStack {
-                        backgroundView
-                        selectStationView
-                            .padding(.horizontal)
-                    }
-                    .padding(.top, Constants.stationBoxPaddingTop)
-                    
-                    findButton
-                    
-                    Spacer()
-                    Divider()
-                }
-            }
-            .navigationDestination(for: PathItem.self) { id in
-                if id == .chooseCity {
-                    CitySelectionView()
-                }
+                findButton
+                
+                Spacer()
+                Divider()
             }
         }
     }
 }
 
 extension SelectStationView {
-    
-    // MARK: - PathItem
-    
-    private enum PathItem: CaseIterable {
-        case chooseCity
-    }
     
     // MARK: - backgroundView
     
@@ -71,25 +56,8 @@ extension SelectStationView {
             VStack{
                 List {
                     Section {
-                        Button(
-                            action: { didSelectStation(viewModel.fromStation) },
-                            label: {
-//                                Text(viewModel.fromStation.stationTitle)
-                                Text("From")
-                                    .foregroundColor(AppColorSettings.secondaryFontColor)
-                                    .lineLimit(1)
-                            }
-                        )
-                        Button(
-                            action: { didSelectStation(viewModel.toStation) },
-                            label: {
-//                                Text(viewModel.fromStation.stationTitle)
-                                Text("To")
-                                    .foregroundColor(AppColorSettings.secondaryFontColor)
-                                    .lineLimit(1)
-                            }
-                        )
-                        .padding(.bottom)
+                        fromStation
+                        toStation
                     }
                     .foregroundColor(Constants.stationBoxFontColor)
                     .listRowSeparator(.hidden)
@@ -108,6 +76,56 @@ extension SelectStationView {
             
             changeStationsButton
         }
+    }
+    
+    // MARK: - fromStation
+    
+    private var fromStation: some View {
+        Button(
+            action: { didSelectFromStation(viewModel.fromStation) },
+            label: {
+                TextField(
+                    "From",
+                    text: $viewModel.fromStation,
+                    prompt: Text("From")
+                        .foregroundColor(AppColorSettings.secondaryFontColor)
+                )
+                .lineLimit(1)
+                .disabled(true)
+            }
+        )
+        .fullScreenCover(isPresented: $viewModel.isFromStationPresented) {
+            CitySelectionView(
+                stationData: $viewModel.fromStation,
+                isShowRootLink: $viewModel.isFromStationPresented
+            )
+        }
+    }
+    
+    // MARK: - toStation
+    
+    private var toStation: some View {
+        Button(
+            action: { didSelectToStation(viewModel.toStation) },
+            label: {
+                TextField(
+                    "To",
+                    text: $viewModel.toStation,
+                    prompt: Text("To")
+                        .foregroundColor(AppColorSettings.secondaryFontColor)
+                )
+                .lineLimit(1)
+                .disabled(true)
+            }
+        )
+        .fullScreenCover(isPresented: $viewModel.isToStationPresented
+        ) {
+            CitySelectionView(
+                stationData: $viewModel.toStation,
+                isShowRootLink: $viewModel.isToStationPresented
+            )
+        }
+        .padding(.bottom)
     }
     
     // MARK: - changeStationsButton
@@ -148,11 +166,16 @@ extension SelectStationView {
         .opacity(viewModel.fromStation.isEmpty || viewModel.toStation.isEmpty ? 0 : 1)
     }
     
-    // Mark: - didSelectStation
+    // MARK: - didSelectFromStation
     
-    private func didSelectStation(_ stationData: String) {
-        viewModel.selectStation(stationData)
-//        path.append(.chooseCity)// TODO: crash
+    private func didSelectFromStation(_ stationData: String) {
+        viewModel.selectFromStation(stationData)
+    }
+    
+    // MARK: - didSelectToStation
+    
+    private func didSelectToStation(_ stationData: String) {
+        viewModel.selectToStation(stationData)
     }
 }
 

@@ -14,6 +14,9 @@ struct CitySelectionView: View {
     let cities = ["Mосква", "Санкт-Петербург", "Сочи", "Горный воздух", "Краснодар", "Казань", "Омск"]
     @State private var searchText: String = ""
     
+    @Binding var stationData: String
+    @Binding var isShowRootLink: Bool
+    
     var searchResult: [String] {
         guard !searchText.isEmpty else { return cities }
         return cities.filter { $0.contains(searchText) }
@@ -76,6 +79,12 @@ extension CitySelectionView {
     }
 }
 
+final class CitySelectionViewPreview: ObservableObject {
+    @State var stationData = ""
+    @State var isShowRootLink: Bool = true
+}
+
 #Preview {
-    CitySelectionView()
+    let params = CitySelectionViewPreview()
+    CitySelectionView(stationData: params.$stationData, isShowRootLink: params.$isShowRootLink)
 }

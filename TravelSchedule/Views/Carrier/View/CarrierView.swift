@@ -100,7 +100,7 @@ extension CarrierView {
 }
 
 #Preview {
-    var carrier = CarrierMock(
+    let carrier = CarrierMock(
         title: "ОАО «РЖД»",
         phone: "+7 (904) 329-27-71",
         logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",
