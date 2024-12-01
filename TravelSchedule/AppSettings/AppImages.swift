@@ -14,6 +14,7 @@ enum AppImages {
     static let changeStation = "arrow.2.squarepath"
     
     static let cityListBadge = "chevron.right"
+    static let backButton = "chevron.left"
     
     static let serverError = "ServerError"
     static let noInternetConnection = "NoInternet"

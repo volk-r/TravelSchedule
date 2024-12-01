@@ -38,6 +38,14 @@ struct CitySelectionView: View {
         }
         .navigationTitle("City selection")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
+        .toolbar{
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: { isShowRootLink.toggle() }) {
+                    Image(systemName: AppImages.backButton)
+                }
+            }
+        }
     }
 }
 
