@@ -14,20 +14,22 @@ struct ContentView: View {
     @State private var selectedTab: TabTags = .mainPage
     
     var body: some View {
-        TabView(selection: $selectedTab) {
-            SelectStationView()
-                .tabItem {
-                    Image(systemName: AppImages.mainPageTabbar)
-                }
-                .tag(TabTags.mainPage)
-            
-            SettingsView()
-                .tabItem {
-                    Image(systemName: AppImages.settingsPageTabbar)
-                }
-                .tag(TabTags.settingsPage)
+        NavigationStack {
+            TabView(selection: $selectedTab) {
+                SelectStationView()
+                    .tabItem {
+                        Image(systemName: AppImages.mainPageTabbar)
+                    }
+                    .tag(TabTags.mainPage)
+                
+                SettingsView()
+                    .tabItem {
+                        Image(systemName: AppImages.settingsPageTabbar)
+                    }
+                    .tag(TabTags.settingsPage)
+            }
+            .accentColor(AppColorSettings.fontColor)
         }
-        .accentColor(AppColorSettings.fontColor)
     }
 }
 

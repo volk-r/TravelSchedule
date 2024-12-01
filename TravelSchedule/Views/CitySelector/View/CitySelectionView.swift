@@ -11,11 +11,13 @@ struct CitySelectionView: View {
     
     // MARK: - Properties
     
+    @Binding var stationData: String
+    @Binding var isShowRoot: Bool
+    
     let cities = ["Mосква", "Санкт-Петербург", "Сочи", "Горный воздух", "Краснодар", "Казань", "Омск"]
     @State private var searchText: String = ""
     
-    @Binding var stationData: String
-    @Binding var isShowRootLink: Bool
+    @StateObject private var viewModel = CitySelectionViewModel()
     
     var searchResult: [String] {
         guard !searchText.isEmpty else { return cities }
@@ -23,29 +25,28 @@ struct CitySelectionView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                AppColorSettings.backgroundColor
-                    .edgesIgnoringSafeArea(.all)
-                
-                cityList
-                
-                customPlaceholder(
-                    placeholder: Text("City not found"),
-                    isVisible: searchResult.isEmpty
-                )
-            }
+        ZStack {
+            AppColorSettings.backgroundColor
+                .edgesIgnoringSafeArea(.all)
+            
+            cityList
+            
+            customPlaceholder(
+                placeholder: Text("City not found"),
+                isVisible: searchResult.isEmpty
+            )
+        }
+        .navigationDestination(isPresented: $viewModel.isCitySelected) {
+            StationSelectorView(
+                stationData: $stationData,
+                city: $viewModel.citySelected,
+                isShowRoot: $viewModel.isCitySelected
+            )
         }
         .navigationTitle("City selection")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
-        .toolbar{
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: { isShowRootLink.toggle() }) {
-                    Image(systemName: AppImages.backButton)
-                }
-            }
-        }
+        .backButtonToolbarItem(isShowRoot: $isShowRoot)
     }
 }
 
@@ -63,12 +64,12 @@ extension CitySelectionView {
         List(searchResult, id: \.self) { city in
             HStack {
                 Button(
-                     action: { selectCity(city) },
-                     label: {
-                         Text(city)
-                             .font(AppConstants.fontRegular17)
-                     }
-                 )
+                    action: { selectCity(city) },
+                    label: {
+                        Text(city)
+                            .font(AppConstants.fontRegular17)
+                    }
+                )
                 Spacer()
                 Image(systemName: AppImages.cityListBadge)
             }
@@ -83,16 +84,21 @@ extension CitySelectionView {
     // MARK: - selectCity
     
     func selectCity(_ city: String) {
-        print("Tapped -> \(city)")
+        viewModel.selectCity(city)
     }
 }
 
 final class CitySelectionViewPreview: ObservableObject {
     @State var stationData = ""
-    @State var isShowRootLink: Bool = true
+    @State var isShowRoot: Bool = true
 }
 
 #Preview {
     let params = CitySelectionViewPreview()
-    CitySelectionView(stationData: params.$stationData, isShowRootLink: params.$isShowRootLink)
+    NavigationStack {
+        CitySelectionView(
+            stationData: params.$stationData,
+            isShowRoot: params.$isShowRoot
+        )
+    }
 }

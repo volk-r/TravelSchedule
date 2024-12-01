@@ -13,4 +13,15 @@ extension View {
             .opacity(isVisible ? 1 : 0)
             .font(AppConstants.fontBold24)
     }
+    
+    func backButtonToolbarItem(isShowRoot: Binding<Bool>) -> some View {
+        self.toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: { isShowRoot.wrappedValue.toggle() }) {
+                    Image(systemName: AppImages.backButton)
+                        .accentColor(AppColorSettings.fontColor)
+                }
+            }
+        }
+    }
 }

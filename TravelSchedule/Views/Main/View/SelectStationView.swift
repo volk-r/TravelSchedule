@@ -14,24 +14,34 @@ struct SelectStationView: View {
     @StateObject private var viewModel = SelectStationViewModel()
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                AppColorSettings.backgroundColor
-                    .edgesIgnoringSafeArea(.all)
-                
-                VStack(spacing: Constants.findButtonPaddingTop) {
-                    ZStack {
-                        backgroundView
-                        selectStationView
-                    }
-                    .padding(.top, Constants.stationBoxPaddingTop)
-                    
-                    findButton
-                    
-                    Spacer()
-                    Divider()
+        ZStack {
+            AppColorSettings.backgroundColor
+                .edgesIgnoringSafeArea(.all)
+            
+            VStack(spacing: Constants.findButtonPaddingTop) {
+                ZStack {
+                    backgroundView
+                    selectStationView
                 }
+                .padding(.top, Constants.stationBoxPaddingTop)
+                
+                findButton
+                
+                Spacer()
+                Divider()
             }
+        }
+        .navigationDestination(isPresented: $viewModel.isFromStationPresented) {
+            CitySelectionView(
+                stationData: $viewModel.fromStation,
+                isShowRoot: $viewModel.isFromStationPresented
+            )
+        }
+        .navigationDestination(isPresented: $viewModel.isToStationPresented) {
+            CitySelectionView(
+                stationData: $viewModel.toStation,
+                isShowRoot: $viewModel.isToStationPresented
+            )
         }
     }
 }
@@ -78,13 +88,6 @@ extension SelectStationView {
             changeStationsButton
         }
         .padding(.horizontal)
-        .navigationDestination(isPresented: $viewModel.isFromStationPresented) {
-            CitySelectionView(
-                stationData: $viewModel.fromStation,
-                isShowRootLink: $viewModel.isFromStationPresented
-            )
-            .toolbar(.hidden, for: .tabBar)
-        }
     }
     
     // MARK: - fromStation
@@ -122,13 +125,6 @@ extension SelectStationView {
             }
         )
         .padding(.bottom)
-        .navigationDestination(isPresented: $viewModel.isToStationPresented) {
-            CitySelectionView(
-                stationData: $viewModel.toStation,
-                isShowRootLink: $viewModel.isToStationPresented
-            )
-            .toolbar(.hidden, for: .tabBar)
-        }
     }
     
     // MARK: - changeStationsButton
@@ -216,5 +212,7 @@ extension SelectStationView {
 }
 
 #Preview {
-    SelectStationView()
+    NavigationStack {    
+        SelectStationView()
+    }
 }

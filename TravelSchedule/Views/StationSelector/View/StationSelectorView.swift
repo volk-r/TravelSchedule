@@ -11,6 +11,10 @@ struct StationSelectorView: View {
     
     // MARK: - Properties
     
+    @Binding var stationData: String
+    @Binding var city: String
+    @Binding var isShowRoot: Bool
+    
     let stations = ["Киевский вокзал", "Курский вокзал", "Ярославский вокзал", "Белорусский вокзал", "Савеловский вокзал", "Ленинградский вокзал"]
     @State private var searchText: String = ""
     
@@ -20,21 +24,21 @@ struct StationSelectorView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                AppColorSettings.backgroundColor
-                    .edgesIgnoringSafeArea(.all)
-                
-                stationList
-                
-                customPlaceholder(
-                    placeholder: Text("Station not found"),
-                    isVisible: searchResult.isEmpty
-                )
-            }
+        ZStack {
+            AppColorSettings.backgroundColor
+                .edgesIgnoringSafeArea(.all)
+            
+            stationList
+            
+            customPlaceholder(
+                placeholder: Text("Station not found"),
+                isVisible: searchResult.isEmpty
+            )
         }
         .navigationTitle("Station selection")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
+        .backButtonToolbarItem(isShowRoot: $isShowRoot)
     }
 }
 
@@ -52,12 +56,12 @@ extension StationSelectorView {
         List(searchResult, id: \.self) { station in
             HStack {
                 Button(
-                     action: { selectStation(station) },
-                     label: {
-                         Text(station)
-                             .font(AppConstants.fontRegular17)
-                     }
-                 )
+                    action: { selectStation(station) },
+                    label: {
+                        Text(station)
+                            .font(AppConstants.fontRegular17)
+                    }
+                )
                 Spacer()
                 Image(systemName: AppImages.cityListBadge)
             }
@@ -76,6 +80,18 @@ extension StationSelectorView {
     }
 }
 
+
+final class StationSelectorViewPreview: ObservableObject {
+    @State var stationData: String = ""
+    @State var city: String = ""
+    @State var isShowRoot: Bool = true
+}
+
 #Preview {
-    StationSelectorView()
+    let param = StationSelectorViewPreview()
+    StationSelectorView(
+        stationData: param.$stationData,
+        city: param.$city,
+        isShowRoot: param.$isShowRoot
+    )
 }
