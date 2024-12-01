@@ -11,6 +11,8 @@ struct CarrierView: View {
     
     // MARK: - Properties
     
+    @Binding var isShowRoot: Bool
+    
     var carrier: CarrierMock?
     
     var body: some View {
@@ -28,6 +30,8 @@ struct CarrierView: View {
         }
         .navigationTitle("Carrier information")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
+        .backButtonToolbarItem(isShowRoot: $isShowRoot)
     }
 }
 
@@ -99,12 +103,17 @@ extension CarrierView {
     }
 }
 
+final class CarrierViewPreview: ObservableObject {
+    @State var isShowRoot: Bool = true
+}
+
 #Preview {
+    let params = CarrierViewPreview()
     let carrier = CarrierMock(
         title: "ОАО «РЖД»",
         phone: "+7 (904) 329-27-71",
         logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",
         email: "i.lozgkina@yandex.ru"
     )
-    CarrierView(carrier: carrier)
+    CarrierView(isShowRoot: params.$isShowRoot, carrier: carrier)
 }

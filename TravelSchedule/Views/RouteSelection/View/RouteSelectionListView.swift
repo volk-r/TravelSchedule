@@ -9,10 +9,12 @@ import SwiftUI
 
 struct RouteSelectionListView: View {
     
-    @State private var path: [PathItem] = []
+    // MARK: - Properties
+    
+    @StateObject private var viewModel = RouteSelectionListViewModel()
     
     var body: some View {
-        NavigationStack {//(path: $path) {// TODO: crash
+        VStack {
             ZStack {
                 AppColorSettings.backgroundColor
                     .edgesIgnoringSafeArea(.all)
@@ -30,24 +32,15 @@ struct RouteSelectionListView: View {
                     isVisible: mockData.isEmpty
                 )
             }
-            // TODO: crash
-//            .navigationDestination(for: PathItem.self) { id in
-//                if id == .filtersPage {
-//                    FiltersView()
-//                }
-//            }
+            .navigationDestination(isPresented: $viewModel.isFiltersPagePresented) {
+                FiltersView(isShowRoot: $viewModel.isFiltersPagePresented)
+            }
         }
         .navigationBarBackButtonHidden()
     }
 }
 
 extension RouteSelectionListView {
-    
-    // MARK: - PathItem
-    
-    private enum PathItem: CaseIterable {
-        case filtersPage
-    }
     
     // MARK: - Constants
     
@@ -119,13 +112,14 @@ extension RouteSelectionListView {
     // MARK: - didTapFilterButton
     
     private func didTapFilterButton() {
-        print("didTapFilterButton")
-        path.append(.filtersPage)
+        viewModel.isFiltersPagePresented = true
     }
 }
 
 #Preview {
-    RouteSelectionListView()
+    NavigationStack {
+        RouteSelectionListView()
+    }
 }
 
 let mockDataPageTitle: String = "Москва (Ярославский вокзал) → Санкт Петербург (Балтийский вокзал)"

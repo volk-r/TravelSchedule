@@ -10,24 +10,26 @@ import SwiftUI
 struct FiltersView: View {
     
     // MARK: - Properties
+    
+    @Binding var isShowRoot: Bool
 
     @State private var isChecked: Bool = false
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                AppColorSettings.backgroundColor
-                    .edgesIgnoringSafeArea(.all)
-                
-                VStack(spacing: Constants.defaultSpacing) {
-                    departureTimeView
-                    transfersView
-                        .safeAreaInset(edge: .bottom) {
-                            applyButton
-                        }
-                }
+        ZStack {
+            AppColorSettings.backgroundColor
+                .edgesIgnoringSafeArea(.all)
+            
+            VStack(spacing: Constants.defaultSpacing) {
+                departureTimeView
+                transfersView
+                    .safeAreaInset(edge: .bottom) {
+                        applyButton
+                    }
             }
         }
+        .navigationBarBackButtonHidden()
+        .backButtonToolbarItem(isShowRoot: $isShowRoot)
     }
 }
 
@@ -122,6 +124,11 @@ extension FiltersView {
     }
 }
 
+final class FiltersViewPreview: ObservableObject {
+    @State var isShowRoot: Bool = true
+}
+
 #Preview {
-    FiltersView()
+    let params = FiltersViewPreview()
+    FiltersView(isShowRoot: params.$isShowRoot)
 }

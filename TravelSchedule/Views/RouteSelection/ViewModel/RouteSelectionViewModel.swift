@@ -9,13 +9,9 @@ import Foundation
 
 final class RouteSelectionViewModel: ObservableObject {
     @Published var cardData: RouteCardData?
-    @Published var isCarrierSelected: Bool = false
+    @Published var isCarrierPagePresented: Bool = false
 
     func setup(data: RouteCardData) {
         self.cardData = data
-    }
-
-    func carrierDidSelect() {
-        isCarrierSelected = true
     }
 }

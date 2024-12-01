@@ -15,6 +15,8 @@ struct StationSelectorView: View {
     @Binding var city: String
     @Binding var isShowRoot: Bool
     
+    @StateObject private var viewModel = StationSelectorViewModel()
+    
     let stations = ["Киевский вокзал", "Курский вокзал", "Ярославский вокзал", "Белорусский вокзал", "Савеловский вокзал", "Ленинградский вокзал"]
     @State private var searchText: String = ""
     
@@ -76,7 +78,8 @@ extension StationSelectorView {
     // MARK: - selectCity
     
     func selectStation(_ station: String) {
-        print("Tapped -> \(station)")
+        viewModel.selectStation(station: station, withStationData: &stationData)
+        isShowRoot = false
     }
 }
 

@@ -14,10 +14,7 @@ struct RouteSelectionView: View {
     @StateObject private var viewModel = RouteSelectionViewModel()
     var routeCardData: RouteCardData
     
-    @State private var path: [PathItem] = []
-    
     var body: some View {
-        NavigationStack(path: $path) {
             VStack(spacing: Constants.defaultHorizontalSpacing) {
                 VStack(spacing: 4) {
                     Spacer()
@@ -45,25 +42,18 @@ struct RouteSelectionView: View {
                 viewModel.setup(data: routeCardData)
             }
             .onTapGesture {
-                viewModel.carrierDidSelect()
-                path.append(.carrierInfo)
+                viewModel.isCarrierPagePresented = true
             }
-            .navigationDestination(for: PathItem.self) { id in
-                if id == .carrierInfo {
-                    CarrierView(carrier: routeCardData.carrier)
-                }
+            .navigationDestination(isPresented: $viewModel.isCarrierPagePresented) {
+                CarrierView(
+                    isShowRoot: $viewModel.isCarrierPagePresented,
+                    carrier: routeCardData.carrier
+                )
             }
-        }
     }
 }
 
 extension RouteSelectionView {
-    
-    // MARK: - PathItem
-    
-    private enum PathItem: CaseIterable {
-        case carrierInfo
-    }
     
     // MARK: - Constants
     
