@@ -22,11 +22,15 @@ struct CitySelectionView: View {
                 .edgesIgnoringSafeArea(.all)
             
             cityList
+                .opacity(viewModel.isLoadingError ? 0 : 1)
             
             customPlaceholder(
                 placeholder: Text("City not found"),
                 isVisible: viewModel.searchResult.isEmpty
             )
+            
+            NetworkErrorView(errorType: .noInternetConnection)
+                .opacity(viewModel.isLoadingError ? 1 : 0)
         }
         .navigationDestination(isPresented: $viewModel.isCitySelected) {
             StationSelectorView(
@@ -53,15 +57,15 @@ extension CitySelectionView {
     // MARK: - cityList
     
     private var cityList: some View {
-        List(viewModel.searchResult, id: \.self) { city in
+        EmptyView()
+        // TODO: 
+        /*
+        List($viewModel.searchResult, id: \.self) { city in
             HStack {
-                Button(
-                    action: { viewModel.selectCity(city) },
-                    label: {
-                        Text(city)
-                            .font(AppConstants.fontRegular17)
-                    }
-                )
+                Button(action: { viewModel.selectCity(city) } ) {
+                    Text(city)
+                        .font(AppConstants.fontRegular17)
+                }
                 Spacer()
                 Image(systemName: AppImages.cityListBadge)
             }
@@ -75,6 +79,7 @@ extension CitySelectionView {
             placement: .navigationBarDrawer(displayMode: .always),
             prompt: "Enter your query"
         )
+         */
     }
 }
 

@@ -8,6 +8,8 @@
 import Foundation
 
 final class SelectStationViewModel: ObservableObject {
+    @Published var isLoadingError: Bool = false
+    
     @Published var fromStation: String = ""
     @Published var toStation: String = ""
     

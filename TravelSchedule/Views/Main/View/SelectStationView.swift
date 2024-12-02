@@ -28,6 +28,12 @@ struct SelectStationView: View {
                 findButton
                 
                 Spacer()
+            }
+            .opacity(viewModel.isLoadingError ? 0 : 1)
+            
+            VStack {
+                NetworkErrorView(errorType: .noInternetConnection)
+                    .opacity(viewModel.isLoadingError ? 1 : 0)
                 Divider()
             }
         }
@@ -179,7 +185,7 @@ extension SelectStationView {
 }
 
 #Preview {
-    NavigationStack {    
+    NavigationStack {
         SelectStationView()
     }
 }

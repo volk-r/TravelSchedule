@@ -23,11 +23,15 @@ struct StationSelectorView: View {
                 .edgesIgnoringSafeArea(.all)
             
             stationList
+                .opacity(viewModel.isLoadingError ? 0 : 1)
             
             customPlaceholder(
                 placeholder: Text("Station not found"),
                 isVisible: viewModel.searchResult.isEmpty
             )
+            
+            NetworkErrorView(errorType: .noInternetConnection)
+                .opacity(viewModel.isLoadingError ? 1 : 0)
         }
         .navigationTitle("Station selection")
         .navigationBarTitleDisplayMode(.inline)

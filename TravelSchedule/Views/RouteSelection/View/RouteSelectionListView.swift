@@ -26,11 +26,15 @@ struct RouteSelectionListView: View {
                             filterButton
                         }
                 }
+                .opacity(viewModel.isLoadingError ? 0 : 1)
                 
                 customPlaceholder(
                     placeholder: Text("There are no options"),
                     isVisible: mockData.isEmpty
                 )
+                
+                NetworkErrorView(errorType: .noInternetConnection)
+                    .opacity(viewModel.isLoadingError ? 1 : 0)
             }
             .navigationDestination(isPresented: $viewModel.isFiltersPagePresented) {
                 FiltersView(isShowRoot: $viewModel.isFiltersPagePresented)

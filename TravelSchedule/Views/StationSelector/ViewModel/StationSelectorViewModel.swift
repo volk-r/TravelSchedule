@@ -8,6 +8,7 @@
 import Foundation
 
 final class StationSelectorViewModel: ObservableObject {
+    @Published var isLoadingError: Bool = false
     @Published var searchText: String = ""
     
     var searchResult: [String] {

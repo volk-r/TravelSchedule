@@ -45,4 +45,6 @@ extension ContentView {
 
 #Preview {
     ContentView()
+        .modifier(.colorScheme)
+        .environmentObject(AppSettings())
 }

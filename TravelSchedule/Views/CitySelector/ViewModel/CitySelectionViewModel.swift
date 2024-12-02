@@ -8,6 +8,8 @@
 import Foundation
 
 final class CitySelectionViewModel: ObservableObject {
+    @Published var isLoadingError: Bool = false
+    
     @Published var citySelected: String = ""
     @Published var isCitySelected: Bool = false
     
