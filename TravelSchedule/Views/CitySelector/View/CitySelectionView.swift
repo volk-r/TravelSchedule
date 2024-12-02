@@ -36,7 +36,7 @@ struct CitySelectionView: View {
             StationSelectorView(
                 stationData: $stationData,
                 city: $viewModel.citySelected,
-                isShowRoot: $viewModel.isCitySelected
+                isShowRoot: $isShowRoot
             )
         }
         .navigationTitle("City selection")
@@ -57,17 +57,14 @@ extension CitySelectionView {
     // MARK: - cityList
     
     private var cityList: some View {
-        EmptyView()
-        // TODO: 
-        /*
-        List($viewModel.searchResult, id: \.self) { city in
+        List(viewModel.searchResult, id: \.self) { city in
             HStack {
                 Button(action: { viewModel.selectCity(city) } ) {
                     Text(city)
                         .font(AppConstants.fontRegular17)
                 }
                 Spacer()
-                Image(systemName: AppImages.cityListBadge)
+                Image(systemName: AppImages.listBadge)
             }
             .listRowSeparator(.hidden)
             .frame(height: Constants.rowHeight)
@@ -79,7 +76,6 @@ extension CitySelectionView {
             placement: .navigationBarDrawer(displayMode: .always),
             prompt: "Enter your query"
         )
-         */
     }
 }
 
