@@ -120,7 +120,8 @@ extension FiltersView {
     }
     
     private func applyButtonTap() {
-        print("apply Button tapped")
+        // TODO: save parameters in the future
+        isShowRoot.toggle()
     }
 }
 
