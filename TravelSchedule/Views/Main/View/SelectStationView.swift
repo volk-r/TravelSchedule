@@ -93,44 +93,38 @@ extension SelectStationView {
     // MARK: - fromStation
     
     private var fromStation: some View {
-        Button(
-            action: { didSelectFromStation(viewModel.fromStation) },
-            label: {
-                TextField(
-                    "From",
-                    text: $viewModel.fromStation,
-                    prompt: Text("From")
-                        .foregroundColor(AppColorSettings.secondaryFontColor)
-                )
-                .lineLimit(1)
-                .disabled(true)
-            }
-        )
+        Button(action: viewModel.selectFromStation) {
+            TextField(
+                "From",
+                text: $viewModel.fromStation,
+                prompt: Text("From")
+                    .foregroundColor(AppColorSettings.secondaryFontColor)
+            )
+            .lineLimit(1)
+            .disabled(true)
+        }
     }
     
     // MARK: - toStation
     
     private var toStation: some View {
-        Button(
-            action: { didSelectToStation(viewModel.toStation) },
-            label: {
-                TextField(
-                    "To",
-                    text: $viewModel.toStation,
-                    prompt: Text("To")
-                        .foregroundColor(AppColorSettings.secondaryFontColor)
-                )
-                .lineLimit(1)
-                .disabled(true)
-            }
-        )
+        Button(action: viewModel.selectToStation) {
+            TextField(
+                "To",
+                text: $viewModel.toStation,
+                prompt: Text("To")
+                    .foregroundColor(AppColorSettings.secondaryFontColor)
+            )
+            .lineLimit(1)
+            .disabled(true)
+        }
         .padding(.bottom)
     }
     
     // MARK: - changeStationsButton
     
     private var changeStationsButton: some View {
-        Button(action: changeStationsButtonTap) {
+        Button(action: viewModel.changeStations) {
             Image(systemName: AppImages.changeStation)
         }
         .frame(
@@ -146,35 +140,18 @@ extension SelectStationView {
     // MARK: - findButton
     
     private var findButton: some View {
-        Button(
-            action: {
-                findRoutesButtonTap()
-            },
-            label: {
-                Text("Find")
-                    .frame(
-                        minWidth: Constants.findButtonWidth,
-                        minHeight: Constants.findButtonHeight
-                    )
-                    .font(AppConstants.fontBold17)
-            }
-        )
+        Button(action: viewModel.findRoutes) {
+            Text("Find")
+                .frame(
+                    minWidth: Constants.findButtonWidth,
+                    minHeight: Constants.findButtonHeight
+                )
+                .font(AppConstants.fontBold17)
+        }
         .background(AppColorSettings.backgroundButtonColor)
         .foregroundStyle(Constants.findButtonFontColor)
         .clipShape(RoundedRectangle(cornerRadius: AppConstants.defaultCornerRadius))
         .opacity(viewModel.fromStation.isEmpty || viewModel.toStation.isEmpty ? 0 : 1)
-    }
-    
-    // MARK: - didSelectFromStation
-    
-    private func didSelectFromStation(_ stationData: String) {
-        viewModel.selectFromStation(stationData)
-    }
-    
-    // MARK: - didSelectToStation
-    
-    private func didSelectToStation(_ stationData: String) {
-        viewModel.selectToStation(stationData)
     }
 }
 
@@ -198,16 +175,6 @@ extension SelectStationView {
         static let findButtonWidth: CGFloat = 150
         static let findButtonHeight: CGFloat = 60
         static let findButtonFontColor: Color = .white
-    }
-    
-    // MARK: - changeStationsButtonTap
-    
-    private func changeStationsButtonTap() {
-        viewModel.changeStations()
-    }
-    
-    private func findRoutesButtonTap() {
-        viewModel.findRoutes()
     }
 }
 

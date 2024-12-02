@@ -82,37 +82,28 @@ extension RouteSelectionListView {
     // MARK: - filterButton
     
     private var filterButton: some View {
-        Button(
-            action: didTapFilterButton,
-            label: {
-                HStack(alignment: .center) {
-                    Text("Specify time")
-                    Circle()
-                        .fill(Constants.filterButtonCircleColor)
-                        .frame(
-                            minWidth: Constants.filterButtonCircleSize,
-                            idealWidth: Constants.filterButtonCircleSize,
-                            maxHeight: Constants.filterButtonCircleSize
-                        )
-                        .opacity(mockData.isEmpty ? 1 : 0)
-                }
-                .frame(
-                    maxWidth: .infinity,
-                    minHeight: Constants.filterButtonHeight
-                )
-                .font(AppConstants.fontBold17)
+        Button(action: viewModel.openFiltersPage) {
+            HStack(alignment: .center) {
+                Text("Specify time")
+                Circle()
+                    .fill(Constants.filterButtonCircleColor)
+                    .frame(
+                        minWidth: Constants.filterButtonCircleSize,
+                        idealWidth: Constants.filterButtonCircleSize,
+                        maxHeight: Constants.filterButtonCircleSize
+                    )
+                    .opacity(mockData.isEmpty ? 1 : 0)
             }
-        )
+            .frame(
+                maxWidth: .infinity,
+                minHeight: Constants.filterButtonHeight
+            )
+            .font(AppConstants.fontBold17)
+        }
         .background(AppColorSettings.backgroundButtonColor)
         .foregroundStyle(Constants.filterButtonFontColor)
         .clipShape(RoundedRectangle(cornerRadius: AppConstants.defaultCornerRadius))
         .padding(.horizontal)
-    }
-    
-    // MARK: - didTapFilterButton
-    
-    private func didTapFilterButton() {
-        viewModel.isFiltersPagePresented = true
     }
 }
 

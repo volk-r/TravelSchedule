@@ -14,15 +14,7 @@ struct CitySelectionView: View {
     @Binding var stationData: String
     @Binding var isShowRoot: Bool
     
-    let cities = ["Mосква", "Санкт-Петербург", "Сочи", "Горный воздух", "Краснодар", "Казань", "Омск"]
-    @State private var searchText: String = ""
-    
     @StateObject private var viewModel = CitySelectionViewModel()
-    
-    var searchResult: [String] {
-        guard !searchText.isEmpty else { return cities }
-        return cities.filter { $0.contains(searchText) }
-    }
     
     var body: some View {
         ZStack {
@@ -33,7 +25,7 @@ struct CitySelectionView: View {
             
             customPlaceholder(
                 placeholder: Text("City not found"),
-                isVisible: searchResult.isEmpty
+                isVisible: viewModel.searchResult.isEmpty
             )
         }
         .navigationDestination(isPresented: $viewModel.isCitySelected) {
@@ -61,10 +53,10 @@ extension CitySelectionView {
     // MARK: - cityList
     
     private var cityList: some View {
-        List(searchResult, id: \.self) { city in
+        List(viewModel.searchResult, id: \.self) { city in
             HStack {
                 Button(
-                    action: { selectCity(city) },
+                    action: { viewModel.selectCity(city) },
                     label: {
                         Text(city)
                             .font(AppConstants.fontRegular17)
@@ -78,13 +70,11 @@ extension CitySelectionView {
             .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Enter your query")
-    }
-    
-    // MARK: - selectCity
-    
-    func selectCity(_ city: String) {
-        viewModel.selectCity(city)
+        .searchable(
+            text: $viewModel.searchText,
+            placement: .navigationBarDrawer(displayMode: .always),
+            prompt: "Enter your query"
+        )
     }
 }
 

@@ -17,14 +17,6 @@ struct StationSelectorView: View {
     
     @StateObject private var viewModel = StationSelectorViewModel()
     
-    let stations = ["Киевский вокзал", "Курский вокзал", "Ярославский вокзал", "Белорусский вокзал", "Савеловский вокзал", "Ленинградский вокзал"]
-    @State private var searchText: String = ""
-    
-    var searchResult: [String] {
-        guard !searchText.isEmpty else { return stations }
-        return stations.filter { $0.contains(searchText) }
-    }
-    
     var body: some View {
         ZStack {
             AppColorSettings.backgroundColor
@@ -34,7 +26,7 @@ struct StationSelectorView: View {
             
             customPlaceholder(
                 placeholder: Text("Station not found"),
-                isVisible: searchResult.isEmpty
+                isVisible: viewModel.searchResult.isEmpty
             )
         }
         .navigationTitle("Station selection")
@@ -55,15 +47,12 @@ extension StationSelectorView {
     // MARK: - stationList
     
     private var stationList: some View {
-        List(searchResult, id: \.self) { station in
+        List(viewModel.searchResult, id: \.self) { station in
             HStack {
-                Button(
-                    action: { selectStation(station) },
-                    label: {
-                        Text(station)
-                            .font(AppConstants.fontRegular17)
-                    }
-                )
+                Button(action: { selectStation(station) } ) {
+                    Text(station)
+                        .font(AppConstants.fontRegular17)
+                }
                 Spacer()
                 Image(systemName: AppImages.cityListBadge)
             }
@@ -72,10 +61,14 @@ extension StationSelectorView {
             .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Enter your query")
+        .searchable(
+            text: $viewModel.searchText,
+            placement: .navigationBarDrawer(displayMode: .always),
+            prompt: "Enter your query"
+        )
     }
     
-    // MARK: - selectCity
+    // MARK: - selectStation
     
     func selectStation(_ station: String) {
         viewModel.selectStation(station: station, withStationData: &stationData)
@@ -92,9 +85,11 @@ final class StationSelectorViewPreview: ObservableObject {
 
 #Preview {
     let param = StationSelectorViewPreview()
-    StationSelectorView(
-        stationData: param.$stationData,
-        city: param.$city,
-        isShowRoot: param.$isShowRoot
-    )
+    NavigationStack {
+        StationSelectorView(
+            stationData: param.$stationData,
+            city: param.$city,
+            isShowRoot: param.$isShowRoot
+        )
+    }
 }

@@ -22,11 +22,11 @@ final class SelectStationViewModel: ObservableObject {
         toStation = from
     }
     
-    func selectFromStation(_ stationData: String) {
+    func selectFromStation() {
         isFromStationPresented = true
     }
     
-    func selectToStation(_ stationData: String) {
+    func selectToStation() {
         isToStationPresented = true
     }
     
