@@ -16,6 +16,8 @@ final class SelectStationViewModel: ObservableObject {
     @Published var isFromStationPresented: Bool = false
     @Published var isToStationPresented: Bool = false
     
+    @Published var isFindRoutesPresented: Bool = false
+    
     func changeStations() {
         let from = fromStation
         let to = toStation
@@ -33,6 +35,6 @@ final class SelectStationViewModel: ObservableObject {
     }
     
     func findRoutes() {
-        // TODO: 
+        isFindRoutesPresented = true
     }
 }

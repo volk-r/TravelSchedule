@@ -11,6 +11,8 @@ struct RouteSelectionListView: View {
     
     // MARK: - Properties
     
+    @Binding var isShowRoot: Bool
+    
     @StateObject private var viewModel = RouteSelectionListViewModel()
     
     var body: some View {
@@ -41,6 +43,7 @@ struct RouteSelectionListView: View {
             }
         }
         .navigationBarBackButtonHidden()
+        .backButtonToolbarItem(isShowRoot: $isShowRoot)
     }
 }
 
@@ -111,9 +114,14 @@ extension RouteSelectionListView {
     }
 }
 
+final class RouteSelectionListViewPreview: ObservableObject {
+    @State var isShowRoot: Bool = false
+}
+
 #Preview {
+    let params = RouteSelectionListViewPreview()
     NavigationStack {
-        RouteSelectionListView()
+        RouteSelectionListView(isShowRoot: params.$isShowRoot)
     }
 }
 
