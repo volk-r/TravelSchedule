@@ -18,7 +18,8 @@ final class StationSelectorViewModel: ObservableObject {
     
     private let stations = ["Киевский вокзал", "Курский вокзал", "Ярославский вокзал", "Белорусский вокзал", "Савеловский вокзал", "Ленинградский вокзал"]
     
-    func selectStation(station: String, withStationData stationData: inout String) {
-        stationData = station
+    func selectStation(station: String, from city: String, withStationData stationData: inout StationData) {
+        stationData.city = city
+        stationData.station = station
     }
 }

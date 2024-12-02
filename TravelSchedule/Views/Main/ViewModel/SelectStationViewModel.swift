@@ -10,9 +10,8 @@ import Foundation
 final class SelectStationViewModel: ObservableObject {
     @Published var isLoadingError: Bool = false
     
-    @Published var fromStation: String = ""
-    @Published var toStation: String = ""
-    
+    @Published var fromStation: StationData = StationData(stationType: .from)
+    @Published var toStation: StationData = StationData(stationType: .to)
     @Published var isFromStationPresented: Bool = false
     @Published var isToStationPresented: Bool = false
     

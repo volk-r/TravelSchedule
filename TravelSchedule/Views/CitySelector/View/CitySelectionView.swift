@@ -11,7 +11,7 @@ struct CitySelectionView: View {
     
     // MARK: - Properties
     
-    @Binding var stationData: String
+    @Binding var stationData: StationData
     @Binding var isShowRoot: Bool
     
     @StateObject private var viewModel = CitySelectionViewModel()
@@ -80,7 +80,7 @@ extension CitySelectionView {
 }
 
 final class CitySelectionViewPreview: ObservableObject {
-    @State var stationData = ""
+    @State var stationData = StationData(stationType: .from)
     @State var isShowRoot: Bool = true
 }
 

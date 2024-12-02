@@ -103,14 +103,13 @@ extension SelectStationView {
     
     private var fromStation: some View {
         Button(action: viewModel.selectFromStation) {
-            TextField(
-                "From",
-                text: $viewModel.fromStation,
-                prompt: Text("From")
-                    .foregroundColor(AppColorSettings.secondaryFontColor)
-            )
-            .lineLimit(1)
-            .disabled(true)
+            Text(viewModel.fromStation.description)
+                .foregroundColor(
+                    (viewModel.fromStation.station?.isEmpty != nil)
+                    ? Constants.stationBoxFontColor
+                    : AppColorSettings.secondaryFontColor
+                )
+                .lineLimit(1)
         }
     }
     
@@ -118,14 +117,13 @@ extension SelectStationView {
     
     private var toStation: some View {
         Button(action: viewModel.selectToStation) {
-            TextField(
-                "To",
-                text: $viewModel.toStation,
-                prompt: Text("To")
-                    .foregroundColor(AppColorSettings.secondaryFontColor)
-            )
-            .lineLimit(1)
-            .disabled(true)
+            Text(viewModel.toStation.description)
+                .foregroundColor(
+                    (viewModel.toStation.station?.isEmpty != nil)
+                    ? Constants.stationBoxFontColor
+                    : AppColorSettings.secondaryFontColor
+                )
+                .lineLimit(1)
         }
         .padding(.bottom)
     }
@@ -160,7 +158,7 @@ extension SelectStationView {
         .background(AppColorSettings.backgroundButtonColor)
         .foregroundStyle(Constants.findButtonFontColor)
         .clipShape(RoundedRectangle(cornerRadius: AppConstants.defaultCornerRadius))
-        .opacity(viewModel.fromStation.isEmpty || viewModel.toStation.isEmpty ? 0 : 1)
+        .opacity(viewModel.fromStation.description.isEmpty || viewModel.toStation.description.isEmpty ? 0 : 1)
     }
 }
 

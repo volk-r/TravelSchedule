@@ -11,7 +11,7 @@ struct StationSelectorView: View {
     
     // MARK: - Properties
     
-    @Binding var stationData: String
+    @Binding var stationData: StationData
     @Binding var city: String
     @Binding var isShowRoot: Bool
     
@@ -53,7 +53,7 @@ extension StationSelectorView {
     private var stationList: some View {
         List(viewModel.searchResult, id: \.self) { station in
             HStack {
-                Button(action: { selectStation(station) } ) {
+                Button(action: { selectStation(station, from: city) } ) {
                     Text(station)
                         .font(AppConstants.fontRegular17)
                 }
@@ -74,15 +74,15 @@ extension StationSelectorView {
     
     // MARK: - selectStation
     
-    func selectStation(_ station: String) {
-        viewModel.selectStation(station: station, withStationData: &stationData)
+    func selectStation(_ station: String, from: String) {
+        viewModel.selectStation(station: station, from: city, withStationData: &stationData)
         isShowRoot = false
     }
 }
 
 
 final class StationSelectorViewPreview: ObservableObject {
-    @State var stationData: String = ""
+    @State var stationData: StationData = StationData(stationType: .from)
     @State var city: String = ""
     @State var isShowRoot: Bool = true
 }
