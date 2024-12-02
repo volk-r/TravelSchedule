@@ -54,7 +54,7 @@ extension StationSelectorView {
                         .font(AppConstants.fontRegular17)
                 }
                 Spacer()
-                Image(systemName: AppImages.cityListBadge)
+                Image(systemName: AppImages.listBadge)
             }
             .listRowSeparator(.hidden)
             .frame(height: Constants.rowHeight)

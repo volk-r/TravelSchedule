@@ -11,39 +11,32 @@ struct SettingsView: View {
     
     // MARK: - Properties
     
-    @State private var isDarkModeEnabled = true
-    @State private var path: [PathItem] = []
+    @EnvironmentObject private var appSettings: AppSettings
+    
+    @StateObject private var viewModel = SettingsViewModel()
     
     var body: some View {
-        NavigationStack(path: $path) {
-            ZStack {
-                AppColorSettings.backgroundColor
-                    .edgesIgnoringSafeArea(.all)
-                
-                VStack{
-                    settingsList
-                    Spacer()
-                    copyright
-                    Divider()
-                }
+        ZStack {
+            AppColorSettings.backgroundColor
+                .edgesIgnoringSafeArea(.all)
+            
+            VStack{
+                settingsList
+                Spacer()
+                copyright
+                Divider()
             }
-            .navigationDestination(for: PathItem.self) { id in
-                if id == .userAgreement {
-                    UserAgreementView()
-                        .toolbar(.hidden, for: .tabBar)
-                }
-            }
+        }
+        .navigationDestination(isPresented: $viewModel.isUserAgreementPresented) {
+            UserAgreementView(isShowRoot: $viewModel.isUserAgreementPresented)
+        }
+        .onAppear {
+            self.viewModel.loadAppSetting(self.appSettings)
         }
     }
 }
 
 extension SettingsView {
-    
-    // MARK: - PathItem
-    
-    private enum PathItem: CaseIterable {
-        case userAgreement
-    }
     
     // MARK: - settingsList
     
@@ -52,19 +45,22 @@ extension SettingsView {
             Section {
                 Toggle(
                     "Dark mode",
-                    isOn: $isDarkModeEnabled
+                    isOn: $viewModel.isDarkModeEnabled
                 )
                 .font(AppConstants.fontBold17)
                 .tint(AppColorSettings.backgroundButtonColor)
                 .padding(.bottom)
+                .onChange(of: viewModel.isDarkModeEnabled) { isEnabled in
+                    viewModel.setDarkMode(isEnabled: isEnabled)
+                }
                 
                 Text("User agreement")
                     .font(AppConstants.fontBold17)
                     .badge(
-                        Text("\(Image(systemName: "chevron.right"))")
+                        Text("\(Image(systemName: AppImages.listBadge))")
                     )
                     .onTapGesture {
-                        path.append(.userAgreement)
+                        viewModel.isUserAgreementPresented = true
                     }
             }
             .listRowBackground(Color.clear)
@@ -80,7 +76,7 @@ extension SettingsView {
         VStack {
             Text("The application uses the Yandex.Schedules API")
                 .font(AppConstants.fontRegular12)
-            Text("Version")
+            Text(viewModel.appVersion)
                 .font(AppConstants.fontRegular12)
                 .padding()
         }
@@ -88,5 +84,9 @@ extension SettingsView {
 }
 
 #Preview {
-    SettingsView()
+    NavigationStack {    
+        SettingsView()
+            .environmentObject(AppSettings())
+            .modifier(.colorScheme)
+    }
 }

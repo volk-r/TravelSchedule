@@ -515,19 +515,19 @@
       }
     },
     "Version" : {
-      "comment" : "Yandex.Schedules API version",
+      "comment" : "App version message",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Version 1.0 (beta)"
+            "value" : "Version"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Версия 1.0 (beta)"
+            "value" : "Версия"
           }
         }
       }

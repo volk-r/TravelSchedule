@@ -10,6 +10,8 @@ import SwiftUI
 struct UserAgreementView: View {
     
     // MARK: - Properties
+    
+    @Binding var isShowRoot: Bool
 
     @State private var isLoading = true
     @State private var loadingProgress: Double = 0.0
@@ -40,6 +42,8 @@ struct UserAgreementView: View {
             }
             .navigationTitle("User agreement")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden()
+            .backButtonToolbarItem(isShowRoot: $isShowRoot)
             .ignoresSafeArea(edges: [.leading, .trailing, .bottom])
             .onAppear {
                 isLoading = true
@@ -50,6 +54,11 @@ struct UserAgreementView: View {
     }
 }
 
+final class UserAgreementViewPreview: ObservableObject {
+    @State var isShowRoot: Bool = false
+}
+
 #Preview {
-    UserAgreementView()
+    let param = UserAgreementViewPreview()
+    UserAgreementView(isShowRoot: param.$isShowRoot)
 }
