@@ -26,7 +26,8 @@ struct CarrierView: View {
                 carrierPropertyList
                 Spacer()
             }
-            .padding()
+            .padding(.horizontal)
+            .padding(.top)
         }
         .navigationTitle("Carrier information")
         .navigationBarTitleDisplayMode(.inline)
@@ -112,5 +113,7 @@ extension CarrierView {
         logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",
         email: "i.lozgkina@yandex.ru"
     )
-    CarrierView(isShowRoot: .constant(true), carrier: carrier)
+    NavigationStack {
+        CarrierView(isShowRoot: .constant(true), carrier: carrier)
+    }
 }

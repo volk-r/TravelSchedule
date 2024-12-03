@@ -16,7 +16,7 @@ struct RouteSelectionView: View {
     
     var body: some View {
             VStack(spacing: Constants.defaultHorizontalSpacing) {
-                VStack(spacing: 4) {
+                VStack(spacing: Constants.defaultVerticalSpacing) {
                     Spacer()
                     HStack(alignment: .center) {
                         carrierLogo
@@ -27,17 +27,16 @@ struct RouteSelectionView: View {
                     
                     schedule
                 }
-                .padding(.all, Constants.routeCardPadding)
-                .frame(idealHeight: Constants.routeCardHeight)
+                .padding(.all, Constants.routeCardInternalPadding)
+                .frame(maxHeight: Constants.routeCardHeight)
                 .background(Constants.routeCardBackgroundColor)
                 .clipShape(RoundedRectangle(cornerRadius: Constants.routeCardCornerRadius)
                 )
-                
-                Spacer()
             }
-            .frame(maxHeight: Constants.routeCardHeight)
+            .frame(idealHeight: Constants.routeCardHeight)
             .foregroundStyle(Constants.routeCardTextColor)
-            .padding()
+            .padding(.horizontal, Constants.routeCardHorizontalPadding)
+            .padding(.vertical, Constants.routeCardVerticalPadding)
             .onAppear {
                 viewModel.setup(data: routeCardData)
             }
@@ -59,13 +58,16 @@ extension RouteSelectionView {
     
     private enum Constants {
         static let defaultHorizontalSpacing: CGFloat = 8
+        static let defaultVerticalSpacing: CGFloat = 4
         
         static let routeCardHeight: CGFloat = 104
         static let routeCardCornerRadius: CGFloat = 24
         static let routeCardBackgroundColor: Color = Color(uiColor: UIColor(hexString: "#EEEEEE"))
         static let routeCardTextColor: Color = Color(uiColor: UIColor(hexString: "#1A1B22"))
         
-        static let routeCardPadding: CGFloat = 14
+        static let routeCardInternalPadding: CGFloat = 14
+        static let routeCardHorizontalPadding: CGFloat = 16
+        static let routeCardVerticalPadding: CGFloat = 4
         
         static let carrierLogoSize: CGFloat = 38
         static let carrierLogoCornerRadius: CGFloat = 12

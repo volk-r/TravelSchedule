@@ -66,7 +66,8 @@ extension RouteSelectionListView {
     private var pageTitle: some View {
         Text(mockDataPageTitle)
             .font(AppConstants.fontBold24)
-            .padding()
+            .padding(.horizontal)
+            .padding(.top)
     }
     
     // MARK: - routeList
@@ -76,12 +77,7 @@ extension RouteSelectionListView {
             RouteSelectionView(routeCardData: routeCard)
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
-                .listRowInsets(EdgeInsets(
-                    top: 2,
-                    leading: 8,
-                    bottom: 2,
-                    trailing: 8
-                ))
+                .listRowInsets(.init(.zero))
         }
         .listStyle(.plain)
     }
