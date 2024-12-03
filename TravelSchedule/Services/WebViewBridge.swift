@@ -11,16 +11,17 @@ import WebKit
 struct WebViewBridge: UIViewRepresentable {
     
     // MARK: - Properties
-
+    
+    let url: String
+    
     private let webView = WKWebView()
-
-    var url: String
+    
     @Binding var isLoading: Bool
     @Binding var isLoadingError: Bool
     @Binding var progress: Double
-
+    
     // MARK: - Methods
-
+    
     func makeUIView(context: Context) -> WKWebView {
         if let url = URL(string: url) {
             let request = URLRequest(url: url)
@@ -28,9 +29,9 @@ struct WebViewBridge: UIViewRepresentable {
         }
         return webView
     }
-
+    
     func updateUIView(_ webView: WKWebView, context: Context) {}
-
+    
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
@@ -42,7 +43,7 @@ extension WebViewBridge {
     class Coordinator: NSObject, WKNavigationDelegate {
         private var parent: WebViewBridge
         private var estimatedProgressObservation: NSKeyValueObservation?
-
+        
         init(_ parent: WebViewBridge) {
             self.parent = parent
             super.init()
@@ -56,25 +57,19 @@ extension WebViewBridge {
                      self.parent.progress = webView.estimatedProgress
                  })
         }
-
+        
         func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-            DispatchQueue.main.async {
-                self.parent.isLoading = true
-            }
+            self.parent.isLoading = true
         }
-
+        
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            DispatchQueue.main.async {
-                self.parent.isLoading = false
-            }
+            self.parent.isLoading = false
         }
-
+        
         func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-            DispatchQueue.main.async {
-                self.parent.isLoading = false
-                self.parent.progress = 0.0
-                self.parent.isLoadingError = true
-            }
+            self.parent.isLoading = false
+            self.parent.progress = 0.0
+            self.parent.isLoadingError = true
         }
     }
 }
