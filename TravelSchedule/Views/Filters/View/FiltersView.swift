@@ -125,11 +125,6 @@ extension FiltersView {
     }
 }
 
-final class FiltersViewPreview: ObservableObject {
-    @State var isShowRoot: Bool = true
-}
-
 #Preview {
-    let params = FiltersViewPreview()
-    FiltersView(isShowRoot: params.$isShowRoot)
+    FiltersView(isShowRoot: .constant(true))
 }

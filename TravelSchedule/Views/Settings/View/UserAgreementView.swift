@@ -54,11 +54,6 @@ struct UserAgreementView: View {
     }
 }
 
-final class UserAgreementViewPreview: ObservableObject {
-    @State var isShowRoot: Bool = false
-}
-
 #Preview {
-    let param = UserAgreementViewPreview()
-    UserAgreementView(isShowRoot: param.$isShowRoot)
+    UserAgreementView(isShowRoot: .constant(false))
 }

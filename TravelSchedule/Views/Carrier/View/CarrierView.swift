@@ -42,6 +42,7 @@ extension CarrierView {
     private enum Constants {
         static let defaultSpacing: CGFloat = 16
         static let carrierLogoHeight: CGFloat = 104
+        static let carrierLogoCornerRadius: CGFloat = 24
         static let rowHeight: CGFloat = 60
         static let propertyTextColor: Color = .blue
     }
@@ -56,6 +57,7 @@ extension CarrierView {
         }
         .frame(idealHeight: Constants.carrierLogoHeight)
         .scaledToFit()
+        .clipShape(RoundedRectangle(cornerRadius: Constants.carrierLogoCornerRadius))
     }
     
     // MARK: - carrierTitle
@@ -103,17 +105,12 @@ extension CarrierView {
     }
 }
 
-final class CarrierViewPreview: ObservableObject {
-    @State var isShowRoot: Bool = true
-}
-
 #Preview {
-    let params = CarrierViewPreview()
     let carrier = CarrierMock(
         title: "ОАО «РЖД»",
         phone: "+7 (904) 329-27-71",
         logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",
         email: "i.lozgkina@yandex.ru"
     )
-    CarrierView(isShowRoot: params.$isShowRoot, carrier: carrier)
+    CarrierView(isShowRoot: .constant(true), carrier: carrier)
 }

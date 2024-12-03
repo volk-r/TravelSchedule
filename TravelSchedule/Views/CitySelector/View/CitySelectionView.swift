@@ -79,17 +79,11 @@ extension CitySelectionView {
     }
 }
 
-final class CitySelectionViewPreview: ObservableObject {
-    @State var stationData = StationData(stationType: .from)
-    @State var isShowRoot: Bool = true
-}
-
 #Preview {
-    let params = CitySelectionViewPreview()
     NavigationStack {
         CitySelectionView(
-            stationData: params.$stationData,
-            isShowRoot: params.$isShowRoot
+            stationData: .constant(StationData(stationType: .from)),
+            isShowRoot: .constant(true)
         )
     }
 }

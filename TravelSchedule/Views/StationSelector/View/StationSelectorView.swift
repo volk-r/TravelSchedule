@@ -80,20 +80,12 @@ extension StationSelectorView {
     }
 }
 
-
-final class StationSelectorViewPreview: ObservableObject {
-    @State var stationData: StationData = StationData(stationType: .from)
-    @State var city: String = ""
-    @State var isShowRoot: Bool = true
-}
-
 #Preview {
-    let param = StationSelectorViewPreview()
     NavigationStack {
         StationSelectorView(
-            stationData: param.$stationData,
-            city: param.$city,
-            isShowRoot: param.$isShowRoot
+            stationData: .constant(StationData(stationType: .from)),
+            city: .constant(""),
+            isShowRoot: .constant(true)
         )
     }
 }

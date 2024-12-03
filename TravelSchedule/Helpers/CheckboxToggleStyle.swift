@@ -30,6 +30,5 @@ struct CheckboxToggleStyle: ToggleStyle {
 }
 
 #Preview {
-    let params = FiltersViewPreview()
-    FiltersView(isShowRoot: params.$isShowRoot)
+    FiltersView(isShowRoot: .constant(true))
 }

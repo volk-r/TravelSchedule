@@ -114,14 +114,9 @@ extension RouteSelectionListView {
     }
 }
 
-final class RouteSelectionListViewPreview: ObservableObject {
-    @State var isShowRoot: Bool = false
-}
-
 #Preview {
-    let params = RouteSelectionListViewPreview()
     NavigationStack {
-        RouteSelectionListView(isShowRoot: params.$isShowRoot)
+        RouteSelectionListView(isShowRoot: .constant(false))
     }
 }
 
