@@ -16,32 +16,8 @@ struct StoryView: View {
     var body: some View {
         ZStack {
             backgroundView
-            
-            ProgressBar(
-                numberOfSections: model.getNumberOfSections(),
-                progress: model.progress
-            )
-            .padding(.top, Constants.progressBarPaddingTop)
-            .padding(.horizontal, Constants.progressBarPaddingHorizontal)
-            
-            VStack(alignment: .leading) {
-                closeButton
-                Spacer()
-                storyDescription
-            }
-            .padding(.horizontal)
-            .padding(.bottom, Constants.textPaddingBottom)
-        }
-        .onAppear{
-            model.startTimer()
-        }
-        .onDisappear{
-            model.stopTimer()
-        }
-        .onReceive(model.timer) { _ in
-            withAnimation {
-                model.timerTick()
-            }
+            storiesProgressBar
+            storiesContent
         }
         .onTapGesture {
             nextStory()
@@ -94,6 +70,38 @@ extension StoryView {
     private var backgroundView: some View {
         Color(UIColor(hexString: model.getCurrentStory().backgroundColor.rawValue))
             .edgesIgnoringSafeArea(.all)
+    }
+    
+    private var storiesProgressBar: some View {
+        ProgressBar(
+            numberOfSections: model.getNumberOfSections(),
+            progress: model.progress
+        )
+        .padding(.top, Constants.progressBarPaddingTop)
+        .padding(.horizontal, Constants.progressBarPaddingHorizontal)
+        .onAppear{
+            model.startTimer()
+        }
+        .onDisappear{
+            model.stopTimer()
+        }
+        .onReceive(model.timer) { _ in
+            withAnimation {
+                model.timerTick()
+            }
+        }
+    }
+    
+    // MARK: - storiesContent
+    
+    private var storiesContent: some View {
+        VStack(alignment: .leading) {
+            closeButton
+            Spacer()
+            storyDescription
+        }
+        .padding(.horizontal)
+        .padding(.bottom, Constants.textPaddingBottom)
     }
     
     // MARK: - closeButton
