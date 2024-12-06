@@ -83,6 +83,13 @@ final class StoryViewModel: ObservableObject {
         progress = CGFloat(nextStoryIndex) / CGFloat(storiesCount)
     }
     
+    func prevStory() {
+        let storiesCount = stories.count
+        let currentStoryIndex = Int(progress * CGFloat(storiesCount))
+        let nextStoryIndex = currentStoryIndex - 1 >= 0 ? currentStoryIndex - 1 : storiesCount - 1
+        progress = CGFloat(nextStoryIndex) / CGFloat(storiesCount)
+    }
+    
     // MARK: - getNumberOfSections
     
     func getNumberOfSections() -> Int {

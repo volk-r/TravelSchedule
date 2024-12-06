@@ -44,9 +44,22 @@ struct StoryView: View {
             }
         }
         .onTapGesture {
-            model.resetTimer()
-            model.nextStory()
+            nextStory()
         }
+        .swipe(
+            left: {
+                nextStory()
+            },
+            right: {
+                model.resetTimer()
+                model.prevStory()
+            }
+        )
+    }
+    
+    private func nextStory() {
+        model.resetTimer()
+        model.nextStory()
     }
 }
 
