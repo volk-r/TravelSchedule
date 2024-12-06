@@ -8,8 +8,8 @@
 import Foundation
 
 enum AppImages {
-    static let mainPageTabbar = "arrow.up.message"
-    static let settingsPageTabbar = "gearshape.fill"
+    static let mainPageTabbar = "TabBar-Main"
+    static let settingsPageTabbar = "TabBar-Settings"
     
     static let changeStation = "arrow.2.squarepath"
     
@@ -23,4 +23,6 @@ enum AppImages {
     static let checkboxUnchecked = "square"
     static let radioButtonChecked = "record.circle"
     static let radioButtonUnchecked = "circle"
+    
+    static let storyCloseButton = "xmark.circle.fill"
 }
