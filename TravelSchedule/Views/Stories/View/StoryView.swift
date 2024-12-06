@@ -79,7 +79,7 @@ extension StoryView {
     // MARK: - backgroundView
     
     private var backgroundView: some View {
-        Color(UIColor(hexString: model.currentStory.backgroundColor.rawValue))
+        Color(UIColor(hexString: model.getCurrentStory().backgroundColor.rawValue))
             .edgesIgnoringSafeArea(.all)
     }
     
@@ -108,10 +108,10 @@ extension StoryView {
     
     private var storyDescription: some View {
         Group {
-            Text(model.currentStory.title)
+            Text(model.getCurrentStory().title)
                 .font(Constants.titleFont)
                 .lineLimit(Constants.titleLineLimit)
-            Text(model.currentStory.description)
+            Text(model.getCurrentStory().description)
                 .font(Constants.descriptionFont)
                 .lineLimit(Constants.descriptionLineLimit)
         }

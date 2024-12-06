@@ -9,15 +9,21 @@ import Foundation
 import Combine
 
 final class StoryViewModel: ObservableObject {
+    
+    // MARK: - Properties
+    
     @Published var timer: Timer.TimerPublisher
-    @Published var currentStory: StoryData
     @Published var progress: CGFloat = 0
     
     private let configuration: Configuration
+    
     private let stories: [StoryData]
+    private var currentStory: StoryData { stories[currentStoryIndex] }
     private var currentStoryIndex: Int { Int(progress * CGFloat(stories.count)) }
     
     private var cancellable: Cancellable? = nil
+    
+    // MARK: - Configuration
     
     struct Configuration {
         let timerTickInternal: TimeInterval
@@ -33,37 +39,57 @@ final class StoryViewModel: ObservableObject {
         }
     }
     
+    // MARK: - init
+    
     init(stories: [StoryData] = [.story1, .story2, .story3]) {
         self.stories = stories
         configuration = Configuration(storiesCount: stories.count)
         
         timer = Self.createTimer(configuration: configuration)
-        currentStory = stories[stories.startIndex]
     }
+    
+    // MARK: - startTimer
     
     func startTimer() {
         timer = Self.createTimer(configuration: configuration)
         cancellable = timer.connect()
     }
     
+    // MARK: - stopTimer
+    
     func stopTimer() {
         cancellable?.cancel()
     }
+    
+    // MARK: - getCurrentStory
+    
+    func getCurrentStory() -> StoryData {
+        currentStory
+    }
+    
+    // MARK: - resetTimer
     
     func resetTimer() {
         stopTimer()
         startTimer()
     }
     
+    // MARK: - nextStory
+    
     func nextStory() {
-        let nextStoryIndex = currentStoryIndex + 1 < stories.count ? currentStoryIndex + 1 : 0
-        progress = CGFloat(nextStoryIndex) / CGFloat(currentStoryIndex)
-        currentStory = stories[nextStoryIndex]
+        let storiesCount = stories.count
+        let currentStoryIndex = Int(progress * CGFloat(storiesCount))
+        let nextStoryIndex = currentStoryIndex + 1 < storiesCount ? currentStoryIndex + 1 : 0
+        progress = CGFloat(nextStoryIndex) / CGFloat(storiesCount)
     }
+    
+    // MARK: - getNumberOfSections
     
     func getNumberOfSections() -> Int {
         stories.count
     }
+    
+    // MARK: - timerTick
     
     func timerTick() {
         var nextProgress = progress + configuration.progressPerTick
@@ -72,6 +98,8 @@ final class StoryViewModel: ObservableObject {
         }
         progress = nextProgress
     }
+    
+    // MARK: - createTimer
     
     private static func createTimer(configuration: Configuration) -> Timer.TimerPublisher {
         Timer.publish(every: configuration.timerTickInternal, on: .main, in: .common)
