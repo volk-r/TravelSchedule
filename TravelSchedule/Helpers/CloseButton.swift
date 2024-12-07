@@ -37,3 +37,7 @@ extension CloseButton {
         static let buttonTintColor: Color = Color(uiColor: UIColor(hexString: "#1A1B22"))
     }
 }
+
+#Preview {
+    CloseButton(action: {})
+}

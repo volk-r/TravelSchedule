@@ -60,11 +60,6 @@ extension SingleStoryView {
     }
 }
 
-#Preview("StoriesTabView") {
-    let stories: [StoryData] = [.story1, .story2, .story3]
-    StoriesTabView(stories: stories, currentStoryIndex: .constant(1))
-}
-
 #Preview {
     SingleStoryView(story: StoryData.story3)
 }
