@@ -97,19 +97,23 @@ extension MaskView {
 // MARK: - Preview
 
 #Preview {
-    Color(UIColor(hexString: StoryColor.firstPage.rawValue))
-        .ignoresSafeArea()
-        .overlay(
-            ProgressBar(numberOfSections: 5, progress: 0.5)
-                .padding()
+    ProgressBar(numberOfSections: 5, progress: 0.5)
+        .padding()
+        .background(
+            Image(.story1)
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
         )
 }
 
 #Preview("MaskView") {
-    Color(UIColor(hexString: StoryColor.secondPage.rawValue))
-        .ignoresSafeArea()
-        .overlay(
-            MaskView(numberOfSections: 5)
-                .padding()
+    MaskView(numberOfSections: 5)
+        .padding()
+        .background(
+            Image(.story1)
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
         )
 }

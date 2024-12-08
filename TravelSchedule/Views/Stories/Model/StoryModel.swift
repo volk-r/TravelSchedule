@@ -9,7 +9,8 @@ import Foundation
 
 struct StoryData: Identifiable {
     let id: Int
-    let backgroundColor: StoryColor
+    let backgroundImage: String
     let title: String
     let description: String
+    var isShowed: Bool
 }

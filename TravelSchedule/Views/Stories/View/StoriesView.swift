@@ -11,7 +11,7 @@ struct StoriesView: View {
     
     // MARK: - Properties
     
-    let stories: [StoryData]
+    @Binding var stories: [StoryData]
     @Binding var showStory: Bool
     @Binding var currentStoryIndex: Int
     
@@ -19,8 +19,8 @@ struct StoriesView: View {
     
     // MARK: - init
     
-    init(stories: [StoryData], showStory: Binding<Bool>, currentStoryIndex: Binding<Int>) {
-        self.stories = stories
+    init(stories: Binding<[StoryData]>, showStory: Binding<Bool>, currentStoryIndex: Binding<Int>) {
+        self._stories = stories
         self._showStory = showStory
         self._currentStoryIndex = currentStoryIndex
         
@@ -66,6 +66,8 @@ struct StoriesView: View {
             .onChange(of: model.currentProgress) { newValue in
                 withAnimation {
                     model.didChangeCurrentProgress(newProgress: newValue, currentStoryIndex: &currentStoryIndex)
+                    
+                    stories[currentStoryIndex].isShowed = true
                 }
             }
         }
@@ -99,7 +101,7 @@ extension StoriesView {
 #Preview {
     let stories = SelectStationViewModel().stories
     StoriesView(
-        stories: stories,
+        stories: .constant(stories),
         showStory: .constant(false),
         currentStoryIndex: .constant(0)
     )

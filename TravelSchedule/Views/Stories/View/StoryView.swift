@@ -11,10 +11,10 @@ struct StoryView: View {
     let story: StoryData
     
     var body: some View {
-        ZStack {
-            backgroundView
-            storiesContent
-        }
+        storiesContent
+            .background(
+                backgroundView
+            )
     }
 }
 
@@ -36,7 +36,9 @@ extension StoryView {
     // MARK: - backgroundView
     
     private var backgroundView: some View {
-        Color(UIColor(hexString: story.backgroundColor.rawValue))
+        Image(story.backgroundImage)
+            .resizable()
+            .scaledToFill()
             .edgesIgnoringSafeArea(.all)
     }
     
@@ -61,7 +63,7 @@ extension StoryView {
 }
 
 #Preview {
-    if let story = SelectStationViewModel().stories.last {        
+    if let story = SelectStationViewModel().stories.last {
         StoryView(story: story)
     }
 }

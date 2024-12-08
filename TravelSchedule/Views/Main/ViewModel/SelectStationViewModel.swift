@@ -20,21 +20,31 @@ final class SelectStationViewModel: ObservableObject {
     @Published var stories: [StoryData] = [
         StoryData(
             id: 0,
-            backgroundColor: .firstPage,
+            backgroundImage: "Story_1",
             title: "🎉 ⭐️ ❤️",
-            description: "Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 "
+            description: "Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 ",
+            isShowed: false
         ),
         StoryData(
             id: 1,
-            backgroundColor: .secondPage,
+            backgroundImage: "Story_2",
             title: "😍 🌸 🥬",
-            description: "Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 "
+            description: "Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 ",
+            isShowed: false
         ),
         StoryData(
             id: 2,
-            backgroundColor: .thirdPage,
+            backgroundImage: "Story_3",
             title: "🧀 🥑 🥚",
-            description: "Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 "
+            description: "Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 ",
+            isShowed: true
+        ),
+        StoryData(
+            id: 3,
+            backgroundImage: "Story_4",
+            title: "🔥🔥🔥",
+            description: "Text Text Text Text Text Text Text Text Text",
+            isShowed: true
         )
     ]
     
@@ -55,6 +65,8 @@ final class SelectStationViewModel: ObservableObject {
     }
     
     func findRoutes() {
+        // TODO: disabled for development
+//        guard let _ = fromStation.station, let _ = toStation.station else { return }
         isFindRoutesPresented = true
     }
 }

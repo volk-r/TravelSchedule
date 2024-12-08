@@ -31,12 +31,15 @@ struct StoriesListView: View {
                                 selectedStory = story.id
                             }
                         }
+                        .opacity(story.isShowed ? 0.5 : 1)
+                        .overlay(
+                            storyBorder
+                                .opacity(story.isShowed ? 0 : 1)
+                        )
                 }
             }
         }
         .frame(maxHeight: Constants.storiesHeight)
-        // TODO: board / opacity
-//                .opacizty(viewInFinalState ? 1 : 0.5)
     }
 }
 
@@ -51,10 +54,26 @@ extension StoriesListView {
         static let storyHeight: CGFloat = 140
         static let storyWidth: CGFloat = 92
         static let storyCornerRadius: CGFloat = 16
+        static let storyBorderColor: Color = AppColorSettings.backgroundButtonColor
+        static let storyBorderWidth: CGFloat = 4
+    }
+    
+    // MARK: - storyBorder
+    
+    private var storyBorder: some View {
+        RoundedRectangle(cornerRadius: Constants.storyCornerRadius)
+            .strokeBorder(
+                Constants.storyBorderColor,
+                lineWidth: Constants.storyBorderWidth
+            )
     }
 }
 
 #Preview {
     let stories = SelectStationViewModel().stories
-    StoriesListView(stories: stories, showStory: .constant(true), selectedStory: .constant(1))
+    StoriesListView(
+        stories: stories,
+        showStory: .constant(true),
+        selectedStory: .constant(1)
+    )
 }
