@@ -15,14 +15,11 @@ struct StoriesTabView: View {
     var body: some View {
         TabView(selection: $currentStoryIndex) {
             ForEach(stories) { story in
-                SingleStoryView(story: story)
+                StoryView(story: story)
             }
         }
         .ignoresSafeArea()
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-        .onAppear() {
-            print("$currentStoryIndex", $currentStoryIndex)
-        }
     }
 }
 

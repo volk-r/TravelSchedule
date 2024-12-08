@@ -48,12 +48,12 @@ struct SelectStationView: View {
         }
         .overlay{
             if showStory {
-                StoryView(
+                StoriesView(
                     stories: viewModel.stories,
                     showStory: $showStory,
                     currentStoryIndex: $storyToShowIndex
                 )
-                .transition(.scale(scale: 0.1, anchor: .topLeading).combined(with: .offset(x: 20, y: 40)))
+                .transition(Constants.openStoryAnimation)
             }
         }
         .navigationDestination(isPresented: $viewModel.isFromStationPresented) {
@@ -202,6 +202,8 @@ extension SelectStationView {
         static let findButtonWidth: CGFloat = 150
         static let findButtonHeight: CGFloat = 60
         static let findButtonFontColor: Color = .white
+        
+        static let openStoryAnimation: AnyTransition = .scale(scale: 0.1, anchor: .topLeading).combined(with: .offset(x: 20, y: 40))
     }
 }
 

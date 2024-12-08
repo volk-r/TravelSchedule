@@ -19,7 +19,7 @@ struct StoriesListView: View {
         ScrollView(.horizontal) {
             LazyHGrid(rows: rows, alignment: .center, spacing: Constants.storiesSpacing) {
                 ForEach(stories) { story in
-                    SingleStoryView(story: story)
+                    StoryView(story: story)
                         .frame(
                             maxWidth: Constants.storyWidth,
                             maxHeight: Constants.storyHeight
