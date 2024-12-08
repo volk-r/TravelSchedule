@@ -11,7 +11,9 @@ struct SelectStationView: View {
     
     // MARK: - Properties
     
-    @StateObject private var viewModel = SelectStationViewModel()
+    @State var storyToShowIndex: Int = 0
+    @State var showStory: Bool = false
+    @StateObject private var viewModel = SelectStationViewModel()    
     
     var body: some View {
         ZStack {
@@ -19,6 +21,13 @@ struct SelectStationView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack(spacing: Constants.findButtonPaddingTop) {
+                StoriesListView(
+                    stories: viewModel.stories,
+                    showStory: $showStory,
+                    selectedStory: $storyToShowIndex
+                )
+                .padding(.horizontal)
+                
                 ZStack {
                     backgroundView
                     selectStationView
@@ -35,6 +44,16 @@ struct SelectStationView: View {
                 NetworkErrorView(errorType: .noInternetConnection)
                     .opacity(viewModel.isLoadingError ? 1 : 0)
                 Divider()
+            }
+        }
+        .overlay{
+            if showStory {
+                StoryView(
+                    stories: viewModel.stories,
+                    showStory: $showStory,
+                    currentStoryIndex: $storyToShowIndex
+                )
+                .transition(.scale(scale: 0.1, anchor: .topLeading).combined(with: .offset(x: 20, y: 40)))
             }
         }
         .navigationDestination(isPresented: $viewModel.isFromStationPresented) {
@@ -109,7 +128,7 @@ extension SelectStationView {
                     ? Constants.stationBoxFontColor
                     : AppColorSettings.secondaryFontColor
                 )
-                .lineLimit(1)
+                .lineLimit(Constants.stationLineLimit)
         }
     }
     
@@ -123,7 +142,7 @@ extension SelectStationView {
                     ? Constants.stationBoxFontColor
                     : AppColorSettings.secondaryFontColor
                 )
-                .lineLimit(1)
+                .lineLimit(Constants.stationLineLimit)
         }
         .padding(.bottom)
     }
@@ -173,6 +192,7 @@ extension SelectStationView {
         static let stationBoxInternalSpacing: CGFloat = 0
         static let cornerRadius: CGFloat = 20
         static let stationBoxFontColor: Color = .black
+        static let stationLineLimit: Int = 1
         
         static let changeStationsButtonSize: CGFloat = 36
         static let changeStationsButtonCornerRadius: CGFloat = 40

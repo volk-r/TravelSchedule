@@ -11,7 +11,7 @@ struct CloseButton: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action ) {
+        Button(action: { withAnimation(.easeInOut(duration: 0.5)) { action() } }) {
             Image(systemName: Constants.buttonImage)
                 .resizable()
         }

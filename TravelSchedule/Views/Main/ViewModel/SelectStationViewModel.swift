@@ -17,6 +17,27 @@ final class SelectStationViewModel: ObservableObject {
     
     @Published var isFindRoutesPresented: Bool = false
     
+    @Published var stories: [StoryData] = [
+        StoryData(
+            id: 0,
+            backgroundColor: .firstPage,
+            title: "🎉 ⭐️ ❤️",
+            description: "Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 "
+        ),
+        StoryData(
+            id: 1,
+            backgroundColor: .secondPage,
+            title: "😍 🌸 🥬",
+            description: "Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 "
+        ),
+        StoryData(
+            id: 2,
+            backgroundColor: .thirdPage,
+            title: "🧀 🥑 🥚",
+            description: "Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 "
+        )
+    ]
+    
     func changeStations() {
         let from = fromStation
         let to = toStation

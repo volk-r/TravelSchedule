@@ -61,5 +61,7 @@ extension SingleStoryView {
 }
 
 #Preview {
-    SingleStoryView(story: StoryData.story3)
+    if let story = SelectStationViewModel().stories.last {        
+        SingleStoryView(story: story)
+    }
 }

@@ -42,7 +42,7 @@ extension TimerConfiguration {
         return (progress + progressPerTick).truncatingRemainder(dividingBy: 1)
     }
     
-    private func index(for progress: CGFloat) -> Int {
+    func index(for progress: CGFloat) -> Int {
         return min(Int(progress * CGFloat(storiesCount)), storiesCount - 1)
     }
 }
