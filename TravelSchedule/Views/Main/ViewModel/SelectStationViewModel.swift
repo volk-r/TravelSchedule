@@ -45,6 +45,20 @@ final class SelectStationViewModel: ObservableObject {
             title: "🔥🔥🔥",
             description: "Text Text Text Text Text Text Text Text Text",
             isShowed: true
+        ),
+        StoryData(
+            id: 4,
+            backgroundImage: "Story_5",
+            title: "😨😱🥲",
+            description: "Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 ",
+            isShowed: true
+        ),
+        StoryData(
+            id: 5,
+            backgroundImage: "Story_6",
+            title: "🚅🤔🤕",
+            description: "Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 ",
+            isShowed: true
         )
     ]
     
