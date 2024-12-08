@@ -10,18 +10,22 @@ import Combine
 
 struct StoriesProgressBarView: View {
     
-    let storiesCount: Int
-    @Binding var currentProgress: CGFloat
-    let timerConfiguration: TimerConfiguration
+    // MARK: - Properties
     
-    @State private var timer: Timer.TimerPublisher
+    let storiesCount: Int
+    let timerConfiguration: TimerConfiguration
+    @Binding var currentProgress: CGFloat
+
     @State private var cancellable: Cancellable?
+    @StateObject private var model: StoriesProgressBarViewModel
+    
+    // MARK: - init
     
     init(storiesCount: Int, timerConfiguration: TimerConfiguration, currentProgress: Binding<CGFloat>) {
         self.storiesCount = storiesCount
         self.timerConfiguration = timerConfiguration
         self._currentProgress = currentProgress
-        self.timer = Self.makeTimer(configuration: timerConfiguration)
+        self._model = StateObject(wrappedValue: StoriesProgressBarViewModel(timerConfiguration: timerConfiguration))
     }
     
     var body: some View {
@@ -32,13 +36,12 @@ struct StoriesProgressBarView: View {
         .padding(.top, Constants.progressBarPaddingTop)
         .padding(.horizontal, Constants.progressBarPaddingHorizontal)
         .onAppear {
-            timer = Self.makeTimer(configuration: timerConfiguration)
-            cancellable = timer.connect()
+            model.startTimer()
         }
         .onDisappear {
-            cancellable?.cancel()
+            model.stopTimer()
         }
-        .onReceive(timer) { _ in
+        .onReceive(model.timer) { _ in
             timerTick()
         }
     }
@@ -59,12 +62,6 @@ extension StoriesProgressBarView {
         withAnimation {
             currentProgress = timerConfiguration.nextProgress(progress: currentProgress)
         }
-    }
-    
-    // MARK: - makeTimer
-    
-    private static func makeTimer(configuration: TimerConfiguration) -> Timer.TimerPublisher {
-        Timer.publish(every: configuration.timerTickInternal, on: .main, in: .common)
     }
 }
 

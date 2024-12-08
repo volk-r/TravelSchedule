@@ -27,16 +27,6 @@ extension TimerConfiguration {
     func progress(for storyIndex: Int) -> CGFloat {
         return min(CGFloat(storyIndex) / CGFloat(storiesCount), 1)
     }
-    
-    func nextIndex(for progress: CGFloat) -> Int {
-        let currentIndex = index(for: progress)
-        return (currentIndex + 1) % storiesCount
-    }
-    
-    func prevIndex(for progress: CGFloat) -> Int {
-        let currentIndex = index(for: progress)
-        return (currentIndex - 1 + storiesCount) % storiesCount
-    }
 
     func nextProgress(progress: CGFloat) -> CGFloat {
         return (progress + progressPerTick).truncatingRemainder(dividingBy: 1)
