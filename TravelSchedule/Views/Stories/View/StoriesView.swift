@@ -36,11 +36,8 @@ struct StoriesView: View {
                         model.saveStoryIndex(currentValue: currentStoryIndex, newValue: newValue)
                     }
                 }
-                .onTapGesture {
-                    model.nextStory(
-                            currentStoryIndex: currentStoryIndex,
-                            storiesCount: stories.count
-                        )
+                .onTapGesture { location in
+                    openNextStory(position: location.x)
                 }
                 .gesture(
                     DragGesture(minimumDistance: 30)
@@ -97,6 +94,22 @@ extension StoriesView {
         
         static let closeButtonTrailingPadding: CGFloat = 12
         static let closeButtonTopPadding: CGFloat = 47
+    }
+    
+    // MARK: - openNextStory
+    
+    private func openNextStory(position: CGFloat) {
+        guard position > UIScreen.main.bounds.width / 2 else { return }
+        
+        if currentStoryIndex == stories.count - 1 {
+            closeStory()
+            return
+        }
+        
+        model.nextStory(
+            currentStoryIndex: currentStoryIndex,
+            storiesCount: stories.count
+        )
     }
     
     // MARK: - closeStory
