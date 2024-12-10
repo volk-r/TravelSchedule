@@ -53,7 +53,7 @@ struct SelectStationView: View {
                     showStory: $viewModel.showStory,
                     currentStoryIndex: $viewModel.storyToShowIndex
                 )
-                .transition(Constants.openStoryAnimation)
+                .transition(openStoryAnimation())
             }
         }
         .navigationDestination(isPresented: $viewModel.isFromStationPresented) {
@@ -207,7 +207,23 @@ extension SelectStationView {
         static let findButtonHeight: CGFloat = 60
         static let findButtonFontColor: Color = .white
         
-        static let openStoryAnimation: AnyTransition = .scale(scale: 0.1, anchor: .topLeading).combined(with: .offset(x: 20, y: 40))
+        static let previewStoryWidth: CGFloat = 92
+        static let previewStoryAnimationOffsetX: CGFloat = 46
+        static let previewStoryAnimationOffsetY: CGFloat = 50
+    }
+    
+    func openStoryAnimation() -> AnyTransition {
+        .scale(
+            scale: 0.1,
+            anchor: .topLeading
+        )
+        .combined(
+            with: .offset(
+                x: Constants.previewStoryWidth * CGFloat(viewModel.storyToShowIndex)
+                    + Constants.previewStoryAnimationOffsetX,
+                y: Constants.previewStoryAnimationOffsetY
+            )
+        )
     }
 }
 

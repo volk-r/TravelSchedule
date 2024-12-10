@@ -22,7 +22,7 @@ struct StoriesListView: View {
                     StoryPreviewView(story: story)
                         .clipShape(RoundedRectangle(cornerRadius: Constants.storyCornerRadius))
                         .onTapGesture {
-                            withAnimation(.easeInOut(duration: 0.5)) {
+                            withAnimation(.easeInOut(duration: AppConstants.animationVelocity)) {
                                 showStory = true
                                 selectedStory = story.id
                             }

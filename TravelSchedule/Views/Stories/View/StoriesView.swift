@@ -120,7 +120,7 @@ extension StoriesView {
     // MARK: - closeStory
     
     private func closeStory() {
-        withAnimation(.easeInOut(duration: 0.5)) {
+        withAnimation(.easeInOut(duration: AppConstants.animationVelocity)) {
             showStory = false
         }
     }
