@@ -77,6 +77,10 @@ struct StoriesView: View {
                 model.saveStoryIndex(currentValue: currentStoryIndex, newValue: currentStoryIndex)
             }
         }
+        .background(
+            Constants.storyBackgroundColor
+                .ignoresSafeArea(.all)
+        )
         .toolbar(.hidden, for: .tabBar)
     }
 }
@@ -89,6 +93,7 @@ extension StoriesView {
         static let storyTopPadding: CGFloat = 7
         static let storyBottomPadding: CGFloat = 17
         static let storyCornerRadius: CGFloat = 40
+        static let storyBackgroundColor: Color = Color(UIColor(hexString: "#1A1B22"))
         
         static let storyProgressBarTopPadding: CGFloat = 7
         
