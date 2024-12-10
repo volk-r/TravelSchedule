@@ -40,6 +40,7 @@ struct StoriesListView: View {
             }
         }
         .frame(maxHeight: Constants.storiesHeight)
+        .scrollIndicators(.never)
     }
 }
 

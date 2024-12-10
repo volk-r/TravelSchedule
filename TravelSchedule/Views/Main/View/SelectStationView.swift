@@ -30,7 +30,7 @@ struct SelectStationView: View {
                         showStory: $viewModel.showStory,
                         selectedStory: $viewModel.storyToShowIndex
                     )
-                    .padding(.horizontal)
+                    .padding(.leading)
                     
                     ZStack {
                         selectStationViewBackgroundView

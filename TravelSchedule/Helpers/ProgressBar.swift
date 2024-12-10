@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension CGFloat {
-    static let progressBarCornerRadius: CGFloat = 6
+    static let progressBarCornerRadius: CGFloat = 3
     static let progressBarHeight: CGFloat = 6
 }
 
@@ -91,6 +91,7 @@ extension MaskView {
             .fixedSize(horizontal: false, vertical: true)
             .foregroundStyle(Constants.color)
             .frame(height: Constants.height)
+            .clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius))
     }
 }
 
