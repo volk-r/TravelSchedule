@@ -29,7 +29,7 @@ extension TimerConfiguration {
     }
 
     func nextProgress(progress: CGFloat) -> CGFloat {
-        return (progress + progressPerTick).truncatingRemainder(dividingBy: 1)
+        return min(progress + progressPerTick, 1)
     }
     
     func index(for progress: CGFloat) -> Int {

@@ -68,7 +68,7 @@ struct StoriesView: View {
                 withAnimation {
                     model.didChangeCurrentProgress(newProgress: newValue, currentStoryIndex: &currentStoryIndex)
                     
-                    stories[currentStoryIndex].isShowed = true
+                    didStoryShowed()
                 }
             }
         }
@@ -105,6 +105,23 @@ extension StoriesView {
         withAnimation(.easeInOut(duration: 0.5)) {
             showStory = false
         }
+    }
+    
+    // MARK: - didStoryShowed
+    
+    private func didStoryShowed() {
+        stories[currentStoryIndex].isShowed = true
+        
+        if isLastStoryShowed() {
+            closeStory()
+        }
+    }
+    
+    // MARK: - isLastStoryShowed
+    
+    private func isLastStoryShowed() -> Bool {
+        currentStoryIndex == stories.count - 1
+        && model.currentProgress == 1.0
     }
 }
 
