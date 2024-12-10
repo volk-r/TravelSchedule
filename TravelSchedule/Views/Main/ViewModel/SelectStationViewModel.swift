@@ -17,47 +17,50 @@ final class SelectStationViewModel: ObservableObject {
     
     @Published var isFindRoutesPresented: Bool = false
     
+    @Published var storyToShowIndex: Int = 0
+    @Published var showStory: Bool = false
+    
     @Published var stories: [StoryData] = [
         StoryData(
             id: 0,
             backgroundImage: "Story_1",
             title: "🎉 ⭐️ ❤️",
-            description: "Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 ",
+            description: Array(repeating: "Text1", count: 20).joined(separator: " "),
             isShowed: false
         ),
         StoryData(
             id: 1,
             backgroundImage: "Story_2",
             title: "😍 🌸 🥬",
-            description: "Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 Text2 ",
+            description: Array(repeating: "Text2", count: 20).joined(separator: " "),
             isShowed: false
         ),
         StoryData(
             id: 2,
             backgroundImage: "Story_3",
             title: "🧀 🥑 🥚",
-            description: "Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 ",
+            description: Array(repeating: "Text3", count: 15).joined(separator: " "),
             isShowed: true
         ),
         StoryData(
             id: 3,
             backgroundImage: "Story_4",
             title: "🔥🔥🔥",
-            description: "Text Text Text Text Text Text Text Text Text",
+            description: Array(repeating: "Text4", count: 10).joined(separator: " "),
             isShowed: true
         ),
         StoryData(
             id: 4,
             backgroundImage: "Story_5",
             title: "😨😱🥲",
-            description: "Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 ",
+            description: Array(repeating: "Text5", count: 20).joined(separator: " "),
             isShowed: true
         ),
         StoryData(
             id: 5,
             backgroundImage: "Story_6",
             title: "🚅🤔🤕",
-            description: "Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 Text3 ",
+            description: Array(repeating: "Text6", count: 16).joined(separator: " "),
             isShowed: true
         )
     ]

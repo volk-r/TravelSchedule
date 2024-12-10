@@ -14,23 +14,23 @@ struct CitySelectionView: View {
     @Binding var stationData: StationData
     @Binding var isShowRoot: Bool
     
-    @StateObject private var viewModel = CitySelectionViewModel()
+    @StateObject private var viewModel: CitySelectionViewModel = CitySelectionViewModel()
     
     var body: some View {
         ZStack {
             AppColorSettings.backgroundColor
                 .edgesIgnoringSafeArea(.all)
             
-            cityList
-                .opacity(viewModel.isLoadingError ? 0 : 1)
-            
-            customPlaceholder(
-                placeholder: Text("City not found"),
-                isVisible: viewModel.searchResult.isEmpty
-            )
-            
-            NetworkErrorView(errorType: .noInternetConnection)
-                .opacity(viewModel.isLoadingError ? 1 : 0)
+            if viewModel.isLoadingError {
+                NetworkErrorView(errorType: .noInternetConnection)
+            } else {
+                cityList
+                
+                customPlaceholder(
+                    placeholder: Text("City not found"),
+                    isVisible: viewModel.searchResult.isEmpty
+                )
+            }
         }
         .navigationDestination(isPresented: $viewModel.isCitySelected) {
             StationSelectorView(

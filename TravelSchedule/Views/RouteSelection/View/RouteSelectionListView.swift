@@ -13,7 +13,7 @@ struct RouteSelectionListView: View {
     
     @Binding var isShowRoot: Bool
     
-    @StateObject private var viewModel = RouteSelectionListViewModel()
+    @StateObject private var viewModel: RouteSelectionListViewModel = RouteSelectionListViewModel()
     
     var body: some View {
         VStack {
@@ -21,22 +21,23 @@ struct RouteSelectionListView: View {
                 AppColorSettings.backgroundColor
                     .edgesIgnoringSafeArea(.all)
                 
-                VStack {
-                    pageTitle
-                    routeList
-                        .safeAreaInset(edge: .bottom) {
-                            filterButton
-                        }
+                if viewModel.isLoadingError {
+                    NetworkErrorView(errorType: .noInternetConnection)
                 }
-                .opacity(viewModel.isLoadingError ? 0 : 1)
-                
-                customPlaceholder(
-                    placeholder: Text("There are no options"),
-                    isVisible: mockData.isEmpty
-                )
-                
-                NetworkErrorView(errorType: .noInternetConnection)
-                    .opacity(viewModel.isLoadingError ? 1 : 0)
+                else {
+                    VStack {
+                        pageTitle
+                        routeList
+                            .safeAreaInset(edge: .bottom) {
+                                filterButton
+                            }
+                    }
+                    
+                    customPlaceholder(
+                        placeholder: Text("There are no options"),
+                        isVisible: mockData.isEmpty
+                    )
+                }
             }
             .navigationDestination(isPresented: $viewModel.isFiltersPagePresented) {
                 FiltersView(isShowRoot: $viewModel.isFiltersPagePresented)

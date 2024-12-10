@@ -12,10 +12,8 @@ struct UserAgreementView: View {
     // MARK: - Properties
     
     @Binding var isShowRoot: Bool
-
-    @State private var isLoading = true
-    @State private var loadingProgress: Double = 0.0
-    @State private var isLoadingError = false
+    
+    @StateObject private var model: UserAgreementViewModel = UserAgreementViewModel()
 
     var body: some View {
         ZStack {
@@ -23,21 +21,24 @@ struct UserAgreementView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack {
-                ProgressView(value: loadingProgress)
+                ProgressView(value: model.loadingProgress)
                     .progressViewStyle(.linear)
-                    .opacity(loadingProgress == 1.0 ? 0 : 1)
+                    .opacity(model.loadingProgress == 1.0 ? 0 : 1)
                 ZStack {
-                    WebViewBridge(
-                        url: AppConstants.userAgreementURL,
-                        isLoading: $isLoading,
-                        isLoadingError: $isLoadingError,
-                        progress: $loadingProgress
-                    )
-                    .opacity(isLoadingError ? 0 : 1)
-                    ProgressView()
-                        .opacity(isLoading ? 1 : 0)
-                    NetworkErrorView(errorType: .noInternetConnection)
-                        .opacity(isLoadingError ? 1 : 0)
+                    if model.isLoadingError {
+                        NetworkErrorView(errorType: .noInternetConnection)
+                    } else {
+                        WebViewBridge(
+                            url: AppConstants.userAgreementURL,
+                            isLoading: $model.isLoading,
+                            isLoadingError: $model.isLoadingError,
+                            progress: $model.loadingProgress
+                        )
+                        
+                        if model.isLoading {
+                            ProgressView()
+                        }
+                    }
                 }
             }
             .navigationTitle("User agreement")
@@ -46,14 +47,16 @@ struct UserAgreementView: View {
             .backButtonToolbarItem(isShowRoot: $isShowRoot)
             .ignoresSafeArea(edges: [.leading, .trailing, .bottom])
             .onAppear {
-                isLoading = true
-                loadingProgress = 0.0
-                isLoadingError = false
+                model.isLoading = true
+                model.loadingProgress = 0.0
+                model.isLoadingError = false
             }
         }
     }
 }
 
 #Preview {
-    UserAgreementView(isShowRoot: .constant(false))
+    NavigationStack {    
+        UserAgreementView(isShowRoot: .constant(false))
+    }
 }

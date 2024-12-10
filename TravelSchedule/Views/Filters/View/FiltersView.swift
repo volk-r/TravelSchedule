@@ -13,7 +13,7 @@ struct FiltersView: View {
     
     @Binding var isShowRoot: Bool
 
-    @State private var isChecked: Bool = false
+    @StateObject private var model: FiltersViewModel = FiltersViewModel()
     
     var body: some View {
         ZStack {
@@ -55,7 +55,7 @@ extension FiltersView {
             
             List(TimeOfDay.allCases) { param in
                 VStack {
-                    Toggle(isOn: $isChecked) {
+                    Toggle(isOn: $model.isChecked) {
                         Text(param.description)
                             .font(AppConstants.fontRegular17)
                     }
@@ -81,7 +81,7 @@ extension FiltersView {
                 .padding()
             List(TransferOption.allCases) { param in
                 VStack {
-                    Toggle(isOn: $isChecked) {
+                    Toggle(isOn: $model.isChecked) {
                         Text(param.description)
                             .font(AppConstants.fontRegular17)
                     }
@@ -116,7 +116,7 @@ extension FiltersView {
         .foregroundStyle(Constants.applyButtonTextColor)
         .clipShape(RoundedRectangle(cornerRadius: AppConstants.defaultCornerRadius))
         .padding(.horizontal)
-        .opacity(isChecked ? 1 : 0)
+        .opacity(model.isChecked ? 1 : 0)
     }
     
     private func applyButtonTap() {

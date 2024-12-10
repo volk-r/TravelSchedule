@@ -8,8 +8,9 @@
 import Foundation
 
 final class RouteSelectionListViewModel: ObservableObject {
-    @Published var isFiltersPagePresented: Bool = false
     @Published var isLoadingError: Bool = false
+    
+    @Published var isFiltersPagePresented: Bool = false
     
     func openFiltersPage() {
         isFiltersPagePresented.toggle()

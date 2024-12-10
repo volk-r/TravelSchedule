@@ -10,48 +10,46 @@ import SwiftUI
 struct SelectStationView: View {
     
     // MARK: - Properties
-    
-    @State var storyToShowIndex: Int = 0
-    @State var showStory: Bool = false
-    @StateObject private var viewModel = SelectStationViewModel()    
+
+    @StateObject private var viewModel: SelectStationViewModel = SelectStationViewModel()    
     
     var body: some View {
         ZStack {
             Constants.backgroundColor
                 .edgesIgnoringSafeArea(.all)
             
-            VStack(spacing: Constants.findButtonPaddingTop) {
-                StoriesListView(
-                    stories: viewModel.stories,
-                    showStory: $showStory,
-                    selectedStory: $storyToShowIndex
-                )
-                .padding(.horizontal)
-                
-                ZStack {
-                    selectStationViewBackgroundView
-                    selectStationView
+            if viewModel.isLoadingError {
+                VStack {
+                    NetworkErrorView(errorType: .noInternetConnection)
+                    Divider()
                 }
-                .padding(.top, Constants.stationBoxPaddingTop)
-                
-                findButton
-                
-                Spacer()
-            }
-            .opacity(viewModel.isLoadingError ? 0 : 1)
-            
-            VStack {
-                NetworkErrorView(errorType: .noInternetConnection)
-                    .opacity(viewModel.isLoadingError ? 1 : 0)
-                Divider()
+            } else {
+                VStack(spacing: Constants.findButtonPaddingTop) {
+                    StoriesListView(
+                        stories: viewModel.stories,
+                        showStory: $viewModel.showStory,
+                        selectedStory: $viewModel.storyToShowIndex
+                    )
+                    .padding(.horizontal)
+                    
+                    ZStack {
+                        selectStationViewBackgroundView
+                        selectStationView
+                    }
+                    .padding(.top, Constants.stationBoxPaddingTop)
+                    
+                    findButton
+                    
+                    Spacer()
+                }
             }
         }
         .overlay{
-            if showStory {
+            if viewModel.showStory {
                 StoriesView(
                     stories: $viewModel.stories,
-                    showStory: $showStory,
-                    currentStoryIndex: $storyToShowIndex
+                    showStory: $viewModel.showStory,
+                    currentStoryIndex: $viewModel.storyToShowIndex
                 )
                 .transition(Constants.openStoryAnimation)
             }
