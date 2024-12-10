@@ -63,6 +63,7 @@ struct StoriesView: View {
                 timerConfiguration: model.timerConfiguration,
                 currentProgress: $model.currentProgress
             )
+            .padding(.top, Constants.storyProgressBarTopPadding)
             .onChange(of: model.currentProgress) { newValue in
                 withAnimation {
                     model.didChangeCurrentProgress(newProgress: newValue, currentStoryIndex: &currentStoryIndex)
@@ -71,6 +72,9 @@ struct StoriesView: View {
                 }
             }
         }
+        .clipShape(RoundedRectangle(cornerRadius: Constants.storyCornerRadius))
+        .padding(.top, Constants.storyTopPadding)
+        .padding(.bottom, Constants.storyBottomPadding)
         .onAppear {
             withAnimation {
                 model.saveStoryIndex(currentValue: currentStoryIndex, newValue: currentStoryIndex)
@@ -85,6 +89,12 @@ extension StoriesView {
     // MARK: - Constants
     
     private enum Constants {
+        static let storyTopPadding: CGFloat = 7
+        static let storyBottomPadding: CGFloat = 17
+        static let storyCornerRadius: CGFloat = 40
+        
+        static let storyProgressBarTopPadding: CGFloat = 7
+        
         static let closeButtonTrailingPadding: CGFloat = 12
         static let closeButtonTopPadding: CGFloat = 47
     }

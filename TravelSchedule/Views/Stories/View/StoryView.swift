@@ -24,6 +24,7 @@ extension StoryView {
     
     private enum Constants {
         static let textPaddingBottom: CGFloat = 40
+        static let titlePaddingBottom: CGFloat = 16
         static let textColor: Color = .white
         
         static let titleLineLimit: Int = 1
@@ -51,6 +52,7 @@ extension StoryView {
                 Text(story.title)
                     .font(Constants.titleFont)
                     .lineLimit(Constants.titleLineLimit)
+                    .padding(.bottom, Constants.titlePaddingBottom)
                 Text(story.description)
                     .font(Constants.descriptionFont)
                     .lineLimit(Constants.descriptionLineLimit)
