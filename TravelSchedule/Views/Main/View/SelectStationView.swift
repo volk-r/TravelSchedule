@@ -38,7 +38,9 @@ struct SelectStationView: View {
                     }
                     .padding(.top, Constants.stationBoxPaddingTop)
                     
-                    findButton
+                    if viewModel.isStationsSelected() {
+                        findButton
+                    }
                     
                     Spacer()
                 }

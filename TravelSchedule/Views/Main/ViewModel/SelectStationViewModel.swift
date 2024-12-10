@@ -81,9 +81,13 @@ final class SelectStationViewModel: ObservableObject {
         isToStationPresented = true
     }
     
+    func isStationsSelected() -> Bool {
+        guard let _ = fromStation.station, let _ = toStation.station else { return false }
+        return true
+    }
+    
     func findRoutes() {
-        // TODO: disabled for development
-//        guard let _ = fromStation.station, let _ = toStation.station else { return }
+        guard isStationsSelected() else { return }
         isFindRoutesPresented = true
     }
 }
