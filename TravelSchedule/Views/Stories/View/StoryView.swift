@@ -11,10 +11,24 @@ struct StoryView: View {
     let story: StoryData
     
     var body: some View {
-        storiesContent
-            .background(
-                backgroundView
-            )
+        VStack(alignment: .leading) {
+            Spacer()
+            Group {
+                Text(story.title)
+                    .font(Constants.titleFont)
+                    .lineLimit(Constants.titleLineLimit)
+                    .padding(.bottom, Constants.titlePaddingBottom)
+                Text(story.description)
+                    .font(Constants.descriptionFont)
+                    .lineLimit(Constants.descriptionLineLimit)
+            }
+            .foregroundColor(Constants.textColor)
+        }
+        .padding(.horizontal)
+        .padding(.bottom, Constants.textPaddingBottom)
+        .background(
+            StoryBackgroundView(image: story.backgroundImage)
+        )
     }
 }
 
@@ -32,35 +46,6 @@ extension StoryView {
         
         static let descriptionLineLimit: Int = 3
         static let descriptionFont: Font = AppConstants.fontRegular20
-    }
-    
-    // MARK: - backgroundView
-    
-    private var backgroundView: some View {
-        Image(story.backgroundImage)
-            .resizable()
-            .scaledToFill()
-            .edgesIgnoringSafeArea(.all)
-    }
-    
-    // MARK: - storiesContent
-    
-    private var storiesContent: some View {
-        VStack(alignment: .leading) {
-            Spacer()
-            Group {
-                Text(story.title)
-                    .font(Constants.titleFont)
-                    .lineLimit(Constants.titleLineLimit)
-                    .padding(.bottom, Constants.titlePaddingBottom)
-                Text(story.description)
-                    .font(Constants.descriptionFont)
-                    .lineLimit(Constants.descriptionLineLimit)
-            }
-            .foregroundColor(Constants.textColor)
-        }
-        .padding(.horizontal)
-        .padding(.bottom, Constants.textPaddingBottom)
     }
 }
 

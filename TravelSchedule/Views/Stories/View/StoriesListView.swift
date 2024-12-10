@@ -19,14 +19,16 @@ struct StoriesListView: View {
         ScrollView(.horizontal) {
             LazyHGrid(rows: rows, alignment: .center, spacing: Constants.storiesSpacing) {
                 ForEach(stories) { story in
-                    StoryView(story: story)
+                    StoryPreviewView(story: story)
                         .frame(
+                            minWidth: Constants.storyWidth,
                             maxWidth: Constants.storyWidth,
+                            minHeight: Constants.storyHeight,
                             maxHeight: Constants.storyHeight
                         )
                         .clipShape(RoundedRectangle(cornerRadius: Constants.storyCornerRadius))
                         .onTapGesture {
-                            withAnimation(.easeInOut(duration: 0.5)) {   
+                            withAnimation(.easeInOut(duration: 0.5)) {
                                 showStory = true
                                 selectedStory = story.id
                             }
