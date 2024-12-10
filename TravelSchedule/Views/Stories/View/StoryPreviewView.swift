@@ -23,6 +23,12 @@ struct StoryPreviewView: View {
         }
         .padding(.horizontal, Constants.titlePaddingHorizontal)
         .padding(.bottom, Constants.titlePaddingBottom)
+        .frame(
+            minWidth: Constants.storyWidth,
+            maxWidth: Constants.storyWidth,
+            minHeight: Constants.storyHeight,
+            maxHeight: Constants.storyHeight
+        )
         .background(
             StoryBackgroundView(image: story.backgroundImage)
         )
@@ -35,6 +41,9 @@ extension StoryPreviewView {
     
     private enum Constants {
         static let textColor: Color = .white
+        
+        static let storyHeight: CGFloat = 140
+        static let storyWidth: CGFloat = 92
         
         static let titleFont: Font = AppConstants.fontRegular12
         static let titlePaddingBottom: CGFloat = 12

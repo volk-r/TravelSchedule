@@ -20,12 +20,6 @@ struct StoriesListView: View {
             LazyHGrid(rows: rows, alignment: .center, spacing: Constants.storiesSpacing) {
                 ForEach(stories) { story in
                     StoryPreviewView(story: story)
-                        .frame(
-                            minWidth: Constants.storyWidth,
-                            maxWidth: Constants.storyWidth,
-                            minHeight: Constants.storyHeight,
-                            maxHeight: Constants.storyHeight
-                        )
                         .clipShape(RoundedRectangle(cornerRadius: Constants.storyCornerRadius))
                         .onTapGesture {
                             withAnimation(.easeInOut(duration: 0.5)) {
@@ -54,8 +48,6 @@ extension StoriesListView {
         static let storiesSpacing: CGFloat = 12
         static let storiesHeight: CGFloat = 188
         
-        static let storyHeight: CGFloat = 140
-        static let storyWidth: CGFloat = 92
         static let storyCornerRadius: CGFloat = 16
         static let storyBorderColor: Color = AppColorSettings.backgroundButtonColor
         static let storyBorderWidth: CGFloat = 4
