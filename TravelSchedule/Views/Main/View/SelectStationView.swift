@@ -230,5 +230,6 @@ extension SelectStationView {
 #Preview {
     NavigationStack {
         SelectStationView()
+            .environmentObject(AppSettings())
     }
 }
