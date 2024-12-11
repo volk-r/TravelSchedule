@@ -10,8 +10,8 @@ import SwiftUI
 struct SelectStationView: View {
     
     // MARK: - Properties
-
-    @StateObject private var viewModel: SelectStationViewModel = SelectStationViewModel()    
+    
+    @StateObject private var viewModel: SelectStationViewModel = SelectStationViewModel()
     
     var body: some View {
         ZStack {
@@ -28,7 +28,8 @@ struct SelectStationView: View {
                     StoriesListView(
                         stories: viewModel.stories,
                         showStory: $viewModel.showStory,
-                        selectedStory: $viewModel.storyToShowIndex
+                        selectedStory: $viewModel.storyToShowIndex,
+                        tapPosition: $viewModel.chosenStoryPosition
                     )
                     .padding(.leading)
                     
@@ -207,8 +208,6 @@ extension SelectStationView {
         static let findButtonHeight: CGFloat = 60
         static let findButtonFontColor: Color = .white
         
-        static let previewStoryWidth: CGFloat = 92
-        static let previewStoryAnimationOffsetX: CGFloat = 46
         static let previewStoryAnimationOffsetY: CGFloat = 50
     }
     
@@ -219,8 +218,7 @@ extension SelectStationView {
         )
         .combined(
             with: .offset(
-                x: Constants.previewStoryWidth * CGFloat(viewModel.storyToShowIndex)
-                    + Constants.previewStoryAnimationOffsetX,
+                x: viewModel.chosenStoryPosition.x,
                 y: Constants.previewStoryAnimationOffsetY
             )
         )

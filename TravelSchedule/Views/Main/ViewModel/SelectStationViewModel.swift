@@ -19,6 +19,7 @@ final class SelectStationViewModel: ObservableObject {
     
     @Published var storyToShowIndex: Int = 0
     @Published var showStory: Bool = false
+    @Published var chosenStoryPosition: CGPoint = .zero
     
     @Published var stories: [StoryData] = [
         StoryData(

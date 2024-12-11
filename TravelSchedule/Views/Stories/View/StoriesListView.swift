@@ -18,6 +18,7 @@ struct StoriesListView: View {
     
     @Binding var showStory: Bool
     @Binding var selectedStory: Int
+    @Binding var tapPosition: CGPoint
     
     var body: some View {
         ScrollView(.horizontal) {
@@ -25,11 +26,8 @@ struct StoriesListView: View {
                 ForEach(stories) { story in
                     StoryPreviewView(story: story)
                         .clipShape(RoundedRectangle(cornerRadius: Constants.storyCornerRadius))
-                        .onTapGesture {
-                            withAnimation(.easeInOut(duration: AppConstants.animationVelocity)) {
-                                showStory = true
-                                selectedStory = story.id
-                            }
+                        .onTapGesture(coordinateSpace: .global) { location in
+                            onTapAction(location: location, story: story)
                         }
                         .opacity(appSettings.isStoryShowed(story: story) ? 0.5 : 1)
                         .overlay(
@@ -66,6 +64,15 @@ extension StoriesListView {
                 lineWidth: Constants.storyBorderWidth
             )
     }
+    
+    private func onTapAction(location: CGPoint, story: StoryData) {
+        tapPosition = location
+        
+        withAnimation(.easeInOut(duration: AppConstants.animationVelocity)) {
+            showStory = true
+            selectedStory = story.id
+        }
+    }
 }
 
 #Preview {
@@ -73,7 +80,8 @@ extension StoriesListView {
     StoriesListView(
         stories: stories,
         showStory: .constant(true),
-        selectedStory: .constant(1)
+        selectedStory: .constant(1),
+        tapPosition: .constant(.zero)
     )
     .environmentObject(AppSettings())
 }
