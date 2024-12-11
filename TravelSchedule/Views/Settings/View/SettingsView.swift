@@ -13,7 +13,7 @@ struct SettingsView: View {
     
     @EnvironmentObject private var appSettings: AppSettings
     
-    @StateObject private var viewModel = SettingsViewModel()
+    @StateObject private var viewModel: SettingsViewModel = SettingsViewModel()
     
     var body: some View {
         ZStack {

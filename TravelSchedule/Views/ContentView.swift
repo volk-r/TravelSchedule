@@ -18,17 +18,19 @@ struct ContentView: View {
             TabView(selection: $selectedTab) {
                 SelectStationView()
                     .tabItem {
-                        Image(systemName: AppImages.mainPageTabbar)
+                        Image(AppImages.mainPageTabbar)
+                            .renderingMode(.template)
                     }
                     .tag(TabTags.mainPage)
                 
                 SettingsView()
                     .tabItem {
-                        Image(systemName: AppImages.settingsPageTabbar)
+                        Image(AppImages.settingsPageTabbar)
+                            .renderingMode(.template)
                     }
                     .tag(TabTags.settingsPage)
             }
-            .accentColor(AppColorSettings.fontColor)
+            .tint(AppColorSettings.fontColor)
         }
     }
 }

@@ -15,23 +15,24 @@ struct StationSelectorView: View {
     @Binding var city: String
     @Binding var isShowRoot: Bool
     
-    @StateObject private var viewModel = StationSelectorViewModel()
+    @StateObject private var viewModel: StationSelectorViewModel = StationSelectorViewModel()
     
     var body: some View {
         ZStack {
             AppColorSettings.backgroundColor
                 .edgesIgnoringSafeArea(.all)
             
-            stationList
-                .opacity(viewModel.isLoadingError ? 0 : 1)
-            
-            customPlaceholder(
-                placeholder: Text("Station not found"),
-                isVisible: viewModel.searchResult.isEmpty
-            )
-            
-            NetworkErrorView(errorType: .noInternetConnection)
-                .opacity(viewModel.isLoadingError ? 1 : 0)
+            if viewModel.isLoadingError {
+                NetworkErrorView(errorType: .noInternetConnection)
+            }
+            else {
+                stationList
+                
+                customPlaceholder(
+                    placeholder: Text("Station not found"),
+                    isVisible: viewModel.searchResult.isEmpty
+                )
+            }
         }
         .navigationTitle("Station selection")
         .navigationBarTitleDisplayMode(.inline)

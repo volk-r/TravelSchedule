@@ -11,30 +11,50 @@ struct SelectStationView: View {
     
     // MARK: - Properties
     
-    @StateObject private var viewModel = SelectStationViewModel()
+    @StateObject private var viewModel: SelectStationViewModel = SelectStationViewModel()
     
     var body: some View {
         ZStack {
-            AppColorSettings.backgroundColor
+            Constants.backgroundColor
                 .edgesIgnoringSafeArea(.all)
             
-            VStack(spacing: Constants.findButtonPaddingTop) {
-                ZStack {
-                    backgroundView
-                    selectStationView
+            if viewModel.isLoadingError {
+                VStack {
+                    NetworkErrorView(errorType: .noInternetConnection)
+                    Divider()
                 }
-                .padding(.top, Constants.stationBoxPaddingTop)
-                
-                findButton
-                
-                Spacer()
+            } else {
+                VStack(spacing: Constants.findButtonPaddingTop) {
+                    StoriesListView(
+                        stories: viewModel.stories,
+                        showStory: $viewModel.showStory,
+                        selectedStory: $viewModel.storyToShowIndex,
+                        tapPosition: $viewModel.chosenStoryPosition
+                    )
+                    .padding(.leading)
+                    
+                    ZStack {
+                        selectStationViewBackgroundView
+                        selectStationView
+                    }
+                    .padding(.top, Constants.stationBoxPaddingTop)
+                    
+                    if viewModel.isStationsSelected() {
+                        findButton
+                    }
+                    
+                    Spacer()
+                }
             }
-            .opacity(viewModel.isLoadingError ? 0 : 1)
-            
-            VStack {
-                NetworkErrorView(errorType: .noInternetConnection)
-                    .opacity(viewModel.isLoadingError ? 1 : 0)
-                Divider()
+        }
+        .overlay{
+            if viewModel.showStory {
+                StoriesView(
+                    stories: $viewModel.stories,
+                    showStory: $viewModel.showStory,
+                    currentStoryIndex: $viewModel.storyToShowIndex
+                )
+                .transition(openStoryAnimation())
             }
         }
         .navigationDestination(isPresented: $viewModel.isFromStationPresented) {
@@ -59,9 +79,9 @@ extension SelectStationView {
     
     // MARK: - backgroundView
     
-    private var backgroundView: some View {
+    private var selectStationViewBackgroundView: some View {
         RoundedRectangle(cornerRadius: Constants.cornerRadius)
-            .fill(AppColorSettings.backgroundButtonColor)
+            .fill(Constants.viewBackgroundColor)
             .frame(
                 idealWidth: Constants.stationBoxWidth,
                 maxHeight: Constants.stationBoxHeight
@@ -107,9 +127,9 @@ extension SelectStationView {
                 .foregroundColor(
                     (viewModel.fromStation.station?.isEmpty != nil)
                     ? Constants.stationBoxFontColor
-                    : AppColorSettings.secondaryFontColor
+                    : Constants.stationBoxSecondaryFontColor
                 )
-                .lineLimit(1)
+                .lineLimit(Constants.stationLineLimit)
         }
     }
     
@@ -121,9 +141,9 @@ extension SelectStationView {
                 .foregroundColor(
                     (viewModel.toStation.station?.isEmpty != nil)
                     ? Constants.stationBoxFontColor
-                    : AppColorSettings.secondaryFontColor
+                    : Constants.stationBoxSecondaryFontColor
                 )
-                .lineLimit(1)
+                .lineLimit(Constants.stationLineLimit)
         }
         .padding(.bottom)
     }
@@ -139,7 +159,7 @@ extension SelectStationView {
             height: Constants.changeStationsButtonSize
         )
         .background(Constants.changeStationsButtonColor)
-        .accentColor(AppColorSettings.backgroundButtonColor)
+        .tint(Constants.viewBackgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: Constants.changeStationsButtonCornerRadius))
         .padding(.horizontal)
     }
@@ -155,7 +175,7 @@ extension SelectStationView {
                 )
                 .font(AppConstants.fontBold17)
         }
-        .background(AppColorSettings.backgroundButtonColor)
+        .background(Constants.viewBackgroundColor)
         .foregroundStyle(Constants.findButtonFontColor)
         .clipShape(RoundedRectangle(cornerRadius: AppConstants.defaultCornerRadius))
         .opacity(viewModel.fromStation.description.isEmpty || viewModel.toStation.description.isEmpty ? 0 : 1)
@@ -167,12 +187,17 @@ extension SelectStationView {
     // MARK: - Constants
     
     private enum Constants {
+        static let backgroundColor: Color = AppColorSettings.backgroundColor
+        static let viewBackgroundColor: Color = AppColorSettings.backgroundButtonColor
+        
         static let stationBoxPaddingTop: CGFloat = 20
         static let stationBoxHeight: CGFloat = 128
         static let stationBoxWidth: CGFloat = 343
         static let stationBoxInternalSpacing: CGFloat = 0
         static let cornerRadius: CGFloat = 20
         static let stationBoxFontColor: Color = .black
+        static let stationBoxSecondaryFontColor: Color = AppColorSettings.secondaryFontColor
+        static let stationLineLimit: Int = 1
         
         static let changeStationsButtonSize: CGFloat = 36
         static let changeStationsButtonCornerRadius: CGFloat = 40
@@ -182,11 +207,27 @@ extension SelectStationView {
         static let findButtonWidth: CGFloat = 150
         static let findButtonHeight: CGFloat = 60
         static let findButtonFontColor: Color = .white
+        
+        static let previewStoryAnimationOffsetY: CGFloat = 50
+    }
+    
+    func openStoryAnimation() -> AnyTransition {
+        .scale(
+            scale: 0.1,
+            anchor: .topLeading
+        )
+        .combined(
+            with: .offset(
+                x: viewModel.chosenStoryPosition.x,
+                y: Constants.previewStoryAnimationOffsetY
+            )
+        )
     }
 }
 
 #Preview {
     NavigationStack {
         SelectStationView()
+            .environmentObject(AppSettings())
     }
 }
