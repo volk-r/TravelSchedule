@@ -11,6 +11,8 @@ struct StoriesView: View {
     
     // MARK: - Properties
     
+    @EnvironmentObject private var appSettings: AppSettings
+    
     @Binding var stories: [StoryData]
     @Binding var showStory: Bool
     @Binding var currentStoryIndex: Int
@@ -128,7 +130,7 @@ extension StoriesView {
     // MARK: - didStoryShowed
     
     private func didStoryShowed() {
-        stories[currentStoryIndex].isShowed = true
+        appSettings.markAsShowed(story: stories[currentStoryIndex])
         
         if isLastStoryShowed() {
             closeStory()
@@ -150,4 +152,5 @@ extension StoriesView {
         showStory: .constant(false),
         currentStoryIndex: .constant(0)
     )
+    .environmentObject(AppSettings())
 }

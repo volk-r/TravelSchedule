@@ -25,43 +25,37 @@ final class SelectStationViewModel: ObservableObject {
             id: 0,
             backgroundImage: "Story_1",
             title: "🎉 ⭐️ ❤️",
-            description: Array(repeating: "Text1", count: 20).joined(separator: " "),
-            isShowed: false
+            description: Array(repeating: "Text1", count: 20).joined(separator: " ")
         ),
         StoryData(
             id: 1,
             backgroundImage: "Story_2",
             title: "😍 🌸 🥬",
-            description: Array(repeating: "Text2", count: 20).joined(separator: " "),
-            isShowed: false
+            description: Array(repeating: "Text2", count: 20).joined(separator: " ")
         ),
         StoryData(
             id: 2,
             backgroundImage: "Story_3",
             title: "🧀 🥑 🥚",
-            description: Array(repeating: "Text3", count: 15).joined(separator: " "),
-            isShowed: true
+            description: Array(repeating: "Text3", count: 15).joined(separator: " ")
         ),
         StoryData(
             id: 3,
             backgroundImage: "Story_4",
             title: "🔥🔥🔥",
-            description: Array(repeating: "Text4", count: 10).joined(separator: " "),
-            isShowed: true
+            description: Array(repeating: "Text4", count: 10).joined(separator: " ")
         ),
         StoryData(
             id: 4,
             backgroundImage: "Story_5",
             title: "😨😱🥲",
-            description: Array(repeating: "Text5", count: 20).joined(separator: " "),
-            isShowed: true
+            description: Array(repeating: "Text5", count: 20).joined(separator: " ")
         ),
         StoryData(
             id: 5,
             backgroundImage: "Story_6",
             title: "🚅🤔🤕",
-            description: Array(repeating: "Text6", count: 16).joined(separator: " "),
-            isShowed: true
+            description: Array(repeating: "Text6", count: 16).joined(separator: " ")
         )
     ]
     

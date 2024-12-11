@@ -12,5 +12,4 @@ struct StoryData: Identifiable {
     let backgroundImage: String
     let title: String
     let description: String
-    var isShowed: Bool
 }

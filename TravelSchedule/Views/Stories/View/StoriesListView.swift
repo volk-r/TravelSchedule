@@ -9,6 +9,10 @@ import SwiftUI
 
 struct StoriesListView: View {
     
+    // MARK: - Properties
+    
+    @EnvironmentObject private var appSettings: AppSettings
+    
     let stories: [StoryData]
     let rows = [GridItem(.flexible())]
     
@@ -27,10 +31,10 @@ struct StoriesListView: View {
                                 selectedStory = story.id
                             }
                         }
-                        .opacity(story.isShowed ? 0.5 : 1)
+                        .opacity(appSettings.isStoryShowed(story: story) ? 0.5 : 1)
                         .overlay(
                             storyBorder
-                                .opacity(story.isShowed ? 0 : 1)
+                                .opacity(appSettings.isStoryShowed(story: story) ? 0 : 1)
                         )
                 }
             }
@@ -71,4 +75,5 @@ extension StoriesListView {
         showStory: .constant(true),
         selectedStory: .constant(1)
     )
+    .environmentObject(AppSettings())
 }
