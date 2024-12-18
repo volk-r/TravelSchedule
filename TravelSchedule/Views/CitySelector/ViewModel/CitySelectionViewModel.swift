@@ -20,7 +20,7 @@ final class CitySelectionViewModel: ObservableObject {
     
     @Published var searchText: String = ""
     
-    private var networkService: NetworkServiceProtocol = NetworkService()
+    private let networkService: NetworkServiceProtocol = NetworkService()
     
     var searchResult: [CityData] {
         guard !searchText.isEmpty else { return cities }
@@ -48,7 +48,6 @@ final class CitySelectionViewModel: ObservableObject {
         var stationsFullList: StationsList
         
         do {
-            // TODO: Sending 'self.networkService' risks causing data races; this is an error in the Swift 6 language mode
             stationsFullList = try await networkService.getStationsList()
         }
         catch {
