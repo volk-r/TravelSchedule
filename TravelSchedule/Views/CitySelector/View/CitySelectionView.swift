@@ -21,16 +21,25 @@ struct CitySelectionView: View {
             AppColorSettings.backgroundColor
                 .edgesIgnoringSafeArea(.all)
             
-            if viewModel.isLoadingError {
-                NetworkErrorView(errorType: .noInternetConnection)
+            if let error = viewModel.isError {
+                NetworkErrorView(errorType: error)
             } else {
                 cityList
                 
-                customPlaceholder(
-                    placeholder: Text("City not found"),
-                    isVisible: viewModel.searchResult.isEmpty
-                )
+                if viewModel.isLoading {
+                    ProgressView()
+                }
+                
+                if !viewModel.isLoading {
+                    customPlaceholder(
+                        placeholder: Text("City not found"),
+                        isVisible: viewModel.searchResult.isEmpty
+                    )
+                }
             }
+        }
+        .task {
+            await viewModel.fetchCities()
         }
         .navigationDestination(isPresented: $viewModel.isCitySelected) {
             StationSelectorView(
@@ -60,7 +69,7 @@ extension CitySelectionView {
         List(viewModel.searchResult, id: \.self) { city in
             HStack {
                 Button(action: { viewModel.selectCity(city) } ) {
-                    Text(city)
+                    Text(city.name)
                         .font(AppConstants.fontRegular17)
                 }
                 Spacer()

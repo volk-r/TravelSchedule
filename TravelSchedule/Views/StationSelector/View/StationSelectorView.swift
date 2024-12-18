@@ -12,7 +12,7 @@ struct StationSelectorView: View {
     // MARK: - Properties
     
     @Binding var stationData: StationData
-    @Binding var city: String
+    @Binding var city: CityData
     @Binding var isShowRoot: Bool
     
     @StateObject private var viewModel: StationSelectorViewModel = StationSelectorViewModel()
@@ -75,7 +75,7 @@ extension StationSelectorView {
     
     // MARK: - selectStation
     
-    func selectStation(_ station: String, from: String) {
+    func selectStation(_ station: String, from: CityData) {
         viewModel.selectStation(station: station, from: city, withStationData: &stationData)
         isShowRoot = false
     }
@@ -85,7 +85,7 @@ extension StationSelectorView {
     NavigationStack {
         StationSelectorView(
             stationData: .constant(StationData(stationType: .from)),
-            city: .constant(""),
+            city: .constant(CityData(id: "1", name: "Moscow", stations: [])),
             isShowRoot: .constant(true)
         )
     }

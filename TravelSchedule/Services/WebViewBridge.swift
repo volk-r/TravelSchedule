@@ -54,7 +54,9 @@ extension WebViewBridge {
                  options: [],
                  changeHandler: { [weak self] webView, _ in
                      guard let self = self else { return }
-                     self.parent.progress = webView.estimatedProgress
+                     Task { @MainActor in
+                         self.parent.progress = webView.estimatedProgress
+                     }
                  })
         }
         
