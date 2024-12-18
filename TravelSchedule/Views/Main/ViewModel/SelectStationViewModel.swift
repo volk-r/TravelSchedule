@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 final class SelectStationViewModel: ObservableObject {
     @Published var isLoadingError: Bool = false
     

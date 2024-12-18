@@ -10,7 +10,7 @@ import Foundation
 import OpenAPIRuntime
 import OpenAPIURLSession
 
-final class SearchRoutesService: SearchRoutesServiceProtocol {
+actor SearchRoutesService: SearchRoutesServiceProtocol {
     private let client: Client
     
     init(client: Client) {

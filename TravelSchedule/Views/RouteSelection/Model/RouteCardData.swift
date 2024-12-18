@@ -14,7 +14,7 @@ struct CarrierMock: Hashable {
     let email: String
 }
 
-struct RouteCardData: Identifiable, Hashable {
+struct RouteCardData: Identifiable, Hashable, Sendable {
 
     // MARK: - Properties
 

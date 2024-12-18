@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 
+@MainActor
 final class StoriesProgressBarViewModel: ObservableObject {
     
     // MARK: - Properties

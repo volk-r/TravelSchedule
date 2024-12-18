@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 final class RouteSelectionListViewModel: ObservableObject {
     @Published var isLoadingError: Bool = false
     

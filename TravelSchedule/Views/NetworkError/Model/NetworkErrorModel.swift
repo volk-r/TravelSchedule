@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NetworkErrorModel {
+struct NetworkErrorModel: Sendable {
     let imageName: String
     let description: String
 }

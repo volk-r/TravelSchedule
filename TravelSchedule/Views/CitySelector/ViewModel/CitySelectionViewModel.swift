@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 final class CitySelectionViewModel: ObservableObject {
     @Published var isLoadingError: Bool = false
     

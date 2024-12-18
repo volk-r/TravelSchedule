@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 final class StationSelectorViewModel: ObservableObject {
     @Published var isLoadingError: Bool = false
     @Published var searchText: String = ""

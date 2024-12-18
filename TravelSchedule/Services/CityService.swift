@@ -10,7 +10,7 @@ import Foundation
 import OpenAPIRuntime
 import OpenAPIURLSession
 
-final class CityService: CityServiceProtocol {
+actor CityService: CityServiceProtocol {
     private let client: Client
     
     init(client: Client) {

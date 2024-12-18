@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 final class StoriesViewModel: ObservableObject {
     
     // MARK: - Properties
