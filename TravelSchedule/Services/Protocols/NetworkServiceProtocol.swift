@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol NetworkServiceProtocol: Sendable {
+protocol NetworkServiceProtocol {
     func searchRoutes(from origin: String, to destination: String) async throws -> SearchResponse
     func getNearestStations(lat: Double, lng: Double, distance: Int) async throws -> NearestStations
     func getSchedule(station: String) async throws -> ScheduleResponse

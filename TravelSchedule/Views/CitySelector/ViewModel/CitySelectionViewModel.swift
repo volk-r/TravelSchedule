@@ -20,7 +20,7 @@ final class CitySelectionViewModel: ObservableObject {
     
     @Published var searchText: String = ""
     
-    private let networkService: NetworkServiceProtocol = NetworkService()
+    private let networkService: some NetworkServiceProtocol = NetworkService()
     
     var searchResult: [CityData] {
         guard !searchText.isEmpty else { return cities }
