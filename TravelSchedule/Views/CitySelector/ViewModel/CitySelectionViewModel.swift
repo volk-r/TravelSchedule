@@ -28,7 +28,6 @@ final class CitySelectionViewModel: ObservableObject {
     }
     
     private var cities: [CityData] = []
-    private let allowedStationTypes: [String] = ["train_station", "airport", "bus_station", "river_port", "marine_station", "station"]
     
     // MARK: - selectCity
     
@@ -98,7 +97,7 @@ final class CitySelectionViewModel: ObservableObject {
                     if
                         let stationId = station.codes?.yandex_code,
                         let stationName = station.title,
-                        allowedStationTypes.contains(where: { element in
+                        AppConstants.allowedStationTypes.contains(where: { element in
                             return element.lowercased() == station.station_type?.lowercased() ?? ""
                         }) {
                         stations.append(Station(id: stationId, name: stationName))
