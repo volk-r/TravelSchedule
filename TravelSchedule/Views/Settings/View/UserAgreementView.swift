@@ -46,11 +46,6 @@ struct UserAgreementView: View {
             .navigationBarBackButtonHidden()
             .backButtonToolbarItem(isShowRoot: $isShowRoot)
             .ignoresSafeArea(edges: [.leading, .trailing, .bottom])
-            .onAppear {
-                model.isLoading = true
-                model.loadingProgress = 0.0
-                model.isLoadingError = false
-            }
         }
     }
 }

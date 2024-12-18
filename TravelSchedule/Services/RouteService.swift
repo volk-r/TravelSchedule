@@ -10,7 +10,7 @@ import Foundation
 import OpenAPIRuntime
 import OpenAPIURLSession
 
-final class RouteService: RouteServiceProtocol {
+actor RouteService: RouteServiceProtocol {
     private let client: Client
     
     init(client: Client) {

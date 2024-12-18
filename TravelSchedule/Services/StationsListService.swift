@@ -17,7 +17,7 @@ struct ResponseOtherError: Error {
     let response: String
 }
 
-final class StationsListService: StationsListServiceProtocol {
+actor StationsListService: StationsListServiceProtocol {
     private let client: Client
     
     init(client: Client) {

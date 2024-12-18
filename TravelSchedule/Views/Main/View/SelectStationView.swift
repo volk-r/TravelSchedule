@@ -44,6 +44,7 @@ struct SelectStationView: View {
                     }
                     
                     Spacer()
+                    Divider()
                 }
             }
         }
