@@ -711,6 +711,8 @@ components:
             type: string
           address:
             type: string
+          phone:
+            type: string
           email:
             type: string
           logo:

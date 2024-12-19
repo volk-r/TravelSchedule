@@ -71,7 +71,13 @@ struct SelectStationView: View {
             )
         }
         .navigationDestination(isPresented: $viewModel.isFindRoutesPresented) {
-            RouteSelectionListView(isShowRoot: $viewModel.isFindRoutesPresented)
+            RouteSelectionListView(
+                isShowRoot: $viewModel.isFindRoutesPresented,
+                routeData: RouteData(
+                    fromStation: viewModel.fromStation,
+                    toStation: viewModel.toStation
+                )
+            )
         }
     }
 }

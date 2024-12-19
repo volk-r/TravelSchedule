@@ -12,6 +12,7 @@ struct RouteSelectionListView: View {
     // MARK: - Properties
     
     @Binding var isShowRoot: Bool
+    var routeData: RouteData
     
     @StateObject private var viewModel: RouteSelectionListViewModel = RouteSelectionListViewModel()
     
@@ -21,10 +22,9 @@ struct RouteSelectionListView: View {
                 AppColorSettings.backgroundColor
                     .edgesIgnoringSafeArea(.all)
                 
-                if viewModel.isLoadingError {
-                    NetworkErrorView(errorType: .noInternetConnection)
-                }
-                else {
+                if let error = viewModel.isError {
+                    NetworkErrorView(errorType: error)
+                } else {
                     VStack {
                         pageTitle
                         routeList
@@ -33,15 +33,24 @@ struct RouteSelectionListView: View {
                             }
                     }
                     
-                    customPlaceholder(
-                        placeholder: Text("There are no options"),
-                        isVisible: mockData.isEmpty
-                    )
+                    if viewModel.isLoading {
+                        ProgressView()
+                    }
+                    
+                    if !viewModel.isLoading {
+                        customPlaceholder(
+                            placeholder: Text("There are no options"),
+                            isVisible: viewModel.allRoutes.isEmpty
+                        )
+                    }
                 }
             }
             .navigationDestination(isPresented: $viewModel.isFiltersPagePresented) {
                 FiltersView(isShowRoot: $viewModel.isFiltersPagePresented)
             }
+        }
+        .task {
+            await viewModel.fetchRoutesAlong(way: routeData)
         }
         .navigationBarBackButtonHidden()
         .backButtonToolbarItem(isShowRoot: $isShowRoot)
@@ -65,7 +74,7 @@ extension RouteSelectionListView {
     // MARK: - pageTitle
     
     private var pageTitle: some View {
-        Text(mockDataPageTitle)
+        Text(verbatim: viewModel.getPageTitleFor(routes: routeData))
             .font(AppConstants.fontBold24)
             .padding(.horizontal)
             .padding(.top)
@@ -74,7 +83,7 @@ extension RouteSelectionListView {
     // MARK: - routeList
     
     private var routeList: some View {
-        List(mockData, id: \.self) { routeCard in
+        List(viewModel.allRoutes) { routeCard in
             RouteSelectionView(routeCardData: routeCard)
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
@@ -96,7 +105,7 @@ extension RouteSelectionListView {
                         idealWidth: Constants.filterButtonCircleSize,
                         maxHeight: Constants.filterButtonCircleSize
                     )
-                    .opacity(mockData.isEmpty ? 1 : 0)
+                    .opacity(viewModel.allRoutes.isEmpty ? 1 : 0)
             }
             .frame(
                 maxWidth: .infinity,
@@ -113,9 +122,25 @@ extension RouteSelectionListView {
 
 #Preview {
     NavigationStack {
-        RouteSelectionListView(isShowRoot: .constant(false))
+        RouteSelectionListView(
+            isShowRoot: .constant(false),
+            routeData: RouteData(
+                fromStation: StationData(
+                    stationType: .from,
+                    city: "Москва",
+                    station: nil
+                ),
+                toStation: StationData(
+                    stationType: .to,
+                    city: "Питер",
+                    station: nil
+                )
+            )
+        )
     }
 }
+
+// TODO: remove it in the future
 
 let mockDataPageTitle: String = "Москва (Ярославский вокзал) → Санкт Петербург (Балтийский вокзал)"
 let mockData: [RouteCardData] =

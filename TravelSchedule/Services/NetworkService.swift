@@ -22,9 +22,14 @@ actor NetworkService: NetworkServiceProtocol {
     
     // MARK: - searchRoutes
     
-    func searchRoutes(from origin: String, to destination: String) async throws -> SearchResponse {
+    func searchRoutes(
+        from origin: String,
+        to destination: String,
+        date: String?,
+        hasTransfers: Bool?
+    ) async throws -> SearchResponse {
         let service = SearchRoutesService(client: try getClient())
-        return try await service.searchRoutes(from: origin, to: destination)
+        return try await service.searchRoutes(from: origin, to: destination, date: date, hasTransfers: hasTransfers)
     }
     
     // MARK: - getNearestStations

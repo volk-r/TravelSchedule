@@ -47,6 +47,7 @@ struct StationSelectorView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
         .backButtonToolbarItem(isShowRoot: $isShowRoot)
+        .modifier(.iOS_18_plus_bug_fix)
     }
 }
 

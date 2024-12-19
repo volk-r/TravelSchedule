@@ -10,5 +10,5 @@ import Foundation
 typealias SearchResponse = Components.Schemas.SearchResponse
 
 protocol SearchRoutesServiceProtocol {
-    func searchRoutes(from origin: String, to destination: String) async throws -> SearchResponse
+    func searchRoutes(from origin: String, to destination: String, date: String?, hasTransfers: Bool?) async throws -> SearchResponse
 }
