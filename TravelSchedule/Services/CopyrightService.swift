@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class CopyrightService: CopyrightServiceProtocol {
+actor CopyrightService: CopyrightServiceProtocol {
     private let client: Client
     
     init(client: Client) {
