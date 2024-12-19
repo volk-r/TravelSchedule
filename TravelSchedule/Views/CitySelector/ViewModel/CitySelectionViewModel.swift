@@ -69,7 +69,7 @@ final class CitySelectionViewModel: ObservableObject {
             return
         }
         
-        var cityList: [CityData] = getCityList(regionStationsList: regionStationsList)
+        let cityList: [CityData] = getCityList(regionStationsList: regionStationsList)
         
         await MainActor.run { [cityList] in
             cities = cityList
@@ -97,10 +97,15 @@ final class CitySelectionViewModel: ObservableObject {
                     if
                         let stationId = station.codes?.yandex_code,
                         let stationName = station.title,
-                        AppConstants.allowedStationTypes.contains(where: { element in
-                            return element.lowercased() == station.station_type?.lowercased() ?? ""
-                        }) {
-                        stations.append(Station(id: stationId, name: stationName))
+                        StationDescription.allCases.contains(where: { element in
+                            return element.rawValue.lowercased() == station.station_type?.lowercased() ?? ""
+                        })
+                    {
+                        var description: StationDescription? = nil
+                        if let stationType = station.station_type {
+                            description = StationDescription.init(rawValue: stationType)
+                        }
+                        stations.append(Station(id: stationId, name: stationName, description: description))
                     }
                 }
                 if !stations.isEmpty {

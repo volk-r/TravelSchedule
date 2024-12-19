@@ -9,18 +9,35 @@ import Foundation
 
 @MainActor
 final class StationSelectorViewModel: ObservableObject {
-    @Published var isLoadingError: Bool = false
+    
+    // MARK: - Properties
+    
+    @Published var isLoading: Bool = true
+    @Published var isError: NetworkErrorType? = nil
+    
     @Published var searchText: String = ""
     
-    var searchResult: [String] {
+    var searchResult: [Station] {
         guard !searchText.isEmpty else { return stations }
-        return stations.filter { $0.localizedCaseInsensitiveContains(searchText) }
+        return stations.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
     }
     
-    private let stations = ["Киевский вокзал", "Курский вокзал", "Ярославский вокзал", "Белорусский вокзал", "Савеловский вокзал", "Ленинградский вокзал"]
+    private var stations: [Station] = []
     
-    func selectStation(station: String, from city: CityData, withStationData stationData: inout StationData) {
-        stationData.city = city.name
-        stationData.station = station
+    // MARK: - selectStation
+    
+    func selectStation(station: Station, from city: CityData, withStationData stationData: inout StationData) {
+        stationData = StationData.init(
+            stationType: stationData.stationType,
+            city: city.name,
+            station: station
+        )
+    }
+    
+    // MARK: - setStations
+    
+    func setStations(stationsList: [Station]) {
+        self.stations = stationsList
+        self.isLoading = false
     }
 }

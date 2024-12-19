@@ -26,13 +26,4 @@ enum AppConstants {
     static let fontBold34: Font = .system(size: 34, weight: .bold, design: .default)
     
     static let animationVelocity: TimeInterval = 0.4
-    
-    static let allowedStationTypes: [String] = [
-        "train_station",
-        "airport",
-        "bus_station",
-        "river_port",
-        "marine_station",
-        "station"
-    ]
 }

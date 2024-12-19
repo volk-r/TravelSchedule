@@ -126,7 +126,7 @@ extension SelectStationView {
         Button(action: viewModel.selectFromStation) {
             Text(viewModel.fromStation.description)
                 .foregroundColor(
-                    (viewModel.fromStation.station?.isEmpty != nil)
+                    (viewModel.fromStation.station != nil)
                     ? Constants.stationBoxFontColor
                     : Constants.stationBoxSecondaryFontColor
                 )
@@ -140,7 +140,7 @@ extension SelectStationView {
         Button(action: viewModel.selectToStation) {
             Text(viewModel.toStation.description)
                 .foregroundColor(
-                    (viewModel.toStation.station?.isEmpty != nil)
+                    (viewModel.toStation.station != nil)
                     ? Constants.stationBoxFontColor
                     : Constants.stationBoxSecondaryFontColor
                 )

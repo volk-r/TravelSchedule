@@ -22,17 +22,26 @@ struct StationSelectorView: View {
             AppColorSettings.backgroundColor
                 .edgesIgnoringSafeArea(.all)
             
-            if viewModel.isLoadingError {
-                NetworkErrorView(errorType: .noInternetConnection)
+            if let error = viewModel.isError {
+                NetworkErrorView(errorType: error)
             }
             else {
                 stationList
                 
-                customPlaceholder(
-                    placeholder: Text("Station not found"),
-                    isVisible: viewModel.searchResult.isEmpty
-                )
+                if viewModel.isLoading {
+                    ProgressView()
+                }
+                
+                if !viewModel.isLoading {
+                    customPlaceholder(
+                        placeholder: Text("Station not found"),
+                        isVisible: viewModel.searchResult.isEmpty
+                    )
+                }
             }
+        }
+        .onAppear {
+            viewModel.setStations(stationsList: city.stations)
         }
         .navigationTitle("Station selection")
         .navigationBarTitleDisplayMode(.inline)
@@ -55,7 +64,7 @@ extension StationSelectorView {
         List(viewModel.searchResult, id: \.self) { station in
             HStack {
                 Button(action: { selectStation(station, from: city) } ) {
-                    Text(station)
+                    Text("\(station.description?.description ?? "") \(station.name)".trim())
                         .font(AppConstants.fontRegular17)
                 }
                 Spacer()
@@ -75,7 +84,7 @@ extension StationSelectorView {
     
     // MARK: - selectStation
     
-    func selectStation(_ station: String, from: CityData) {
+    func selectStation(_ station: Station, from: CityData) {
         viewModel.selectStation(station: station, from: city, withStationData: &stationData)
         isShowRoot = false
     }
