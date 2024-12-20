@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 
 struct StoriesProgressBarView: View {
     
@@ -16,7 +15,6 @@ struct StoriesProgressBarView: View {
     let timerConfiguration: TimerConfiguration
     @Binding var currentProgress: CGFloat
 
-    @State private var cancellable: Cancellable?
     @StateObject private var model: StoriesProgressBarViewModel
     
     // MARK: - init

@@ -158,7 +158,8 @@ extension RouteSelectionView {
         arrivalDate: Date().addingTimeInterval(5 * 60 * 16),
         hasTransfers: true,
         transferTitle: "Кострома",
-        carrier: CarrierMock(
+        carrier: CarrierData(
+            code: 1,
             title: "РЖД",
             phone: "+7 (904) 329-27-71",
             logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",

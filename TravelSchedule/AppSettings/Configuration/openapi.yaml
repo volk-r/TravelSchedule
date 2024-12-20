@@ -606,8 +606,18 @@ components:
                 type: string
               to:
                 $ref: '#/components/schemas/StationInfo'
+              transfers:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransferInfo'
               has_transfers:
                 type: boolean
+              details:
+                type: array
+                items:
+                  anyOf:
+                    - $ref: '#/components/schemas/SearchResponseSegmentDetailsInfo'
+                    - $ref: '#/components/schemas/SearchResponseSegmentDetailsTransferInfo'
               tickets_info:
                 $ref: '#/components/schemas/TicketsInfo'
               duration:
@@ -711,6 +721,8 @@ components:
             type: string
           address:
             type: string
+          phone:
+            type: string
           email:
             type: string
           logo:
@@ -735,6 +747,25 @@ components:
           type: boolean
         places:
           $ref: '#/components/schemas/Places'
+    TransferInfo:
+      type: object
+      description: Данные о пересадках
+      properties:
+        type:
+          type: string
+          description: Тип станции пересадки
+        title:
+          type: string
+          description: Наименование станции пересадки
+        short_title:
+          type: string
+          description: Краткое наименование станции пересадки
+        popular_title:
+          type: string
+          description: Популярное наименование станции пересадки
+        code:
+          type: string
+          description: Код станции пересадки
     Places:
       type: array
       items:
@@ -1096,3 +1127,65 @@ components:
         request:
           type: string
           description: Оригинальный запрос, вызвавший ошибку
+    SearchResponseSegmentDetailsInfo:
+      type: object
+      description: Детальная информация о нитке сегмента
+      properties:
+        thread:
+          $ref: '#/components/schemas/Route'
+        stops:
+          type: string
+          description: Список остановок
+        from:
+          $ref: '#/components/schemas/StationInfo'
+        to:
+          $ref: '#/components/schemas/StationInfo'
+        departure_platform:
+          type: string
+          description: Платформа отправления
+        arrival_platform:
+          type: string
+          description: Платформа прибытия
+        departure_terminal:
+          type: string
+          description: Название терминала станции отправления
+        arrival_terminal:
+          type: string
+          description: Название терминала станции прибытия
+        duration:
+          type: number
+          description: Продолжительность рейса (в секундах)
+        departure:
+          type: string
+          description: Время отправления, в формате ISO 8601 (YYYY-MM-DDThh:mm:ss±hh:mm).
+        arrival:
+          type: string
+          description: Время прибытия, в формате ISO 8601 (YYYY-MM-DDThh:mm:ss±hh:mm).
+        start_date:
+          type: string
+          description: Дата отправления рейса
+    SearchResponseSegmentDetailsTransferInfo:
+      type: object
+      description: Детальная информация о станции пересадки
+      properties:
+        is_transfer:
+          type: boolean
+        duration:
+          type: number
+        transfer_point:
+          type: object
+          properties:
+            type:
+              type: string
+            title:
+              type: string
+            short_title:
+              type: string
+            popular_title:
+              type: string
+            code:
+              type: string
+        transfer_from:
+          $ref: '#/components/schemas/StationInfo'
+        transfer_to:
+          $ref: '#/components/schemas/StationInfo'

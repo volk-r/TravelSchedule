@@ -44,6 +44,7 @@ struct SelectStationView: View {
                     }
                     
                     Spacer()
+                    Divider()
                 }
             }
         }
@@ -70,7 +71,13 @@ struct SelectStationView: View {
             )
         }
         .navigationDestination(isPresented: $viewModel.isFindRoutesPresented) {
-            RouteSelectionListView(isShowRoot: $viewModel.isFindRoutesPresented)
+            RouteSelectionListView(
+                isShowRoot: $viewModel.isFindRoutesPresented,
+                routeData: RouteData(
+                    fromStation: viewModel.fromStation,
+                    toStation: viewModel.toStation
+                )
+            )
         }
     }
 }
@@ -125,7 +132,7 @@ extension SelectStationView {
         Button(action: viewModel.selectFromStation) {
             Text(viewModel.fromStation.description)
                 .foregroundColor(
-                    (viewModel.fromStation.station?.isEmpty != nil)
+                    (viewModel.fromStation.station != nil)
                     ? Constants.stationBoxFontColor
                     : Constants.stationBoxSecondaryFontColor
                 )
@@ -139,7 +146,7 @@ extension SelectStationView {
         Button(action: viewModel.selectToStation) {
             Text(viewModel.toStation.description)
                 .foregroundColor(
-                    (viewModel.toStation.station?.isEmpty != nil)
+                    (viewModel.toStation.station != nil)
                     ? Constants.stationBoxFontColor
                     : Constants.stationBoxSecondaryFontColor
                 )

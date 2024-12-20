@@ -18,7 +18,7 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "%lld hour"
                 }
               },
@@ -80,6 +80,23 @@
         }
       }
     },
+    "airport" : {
+      "comment" : "Station type description",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "airport"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "аэропорт"
+          }
+        }
+      }
+    },
     "Apply" : {
       "comment" : "Apply - button",
       "localizations" : {
@@ -93,6 +110,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Применить"
+          }
+        }
+      }
+    },
+    "bus station" : {
+      "comment" : "Station type description",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bus station"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "автовокзал"
           }
         }
       }
@@ -358,6 +392,40 @@
         }
       }
     },
+    "river port" : {
+      "comment" : "Station type description",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "river port"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "речной вокзал"
+          }
+        }
+      }
+    },
+    "sea port" : {
+      "comment" : "Station type description",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "sea port"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "морской вокзал"
+          }
+        }
+      }
+    },
     "Server error" : {
       "comment" : "Server error message",
       "extractionState" : "manual",
@@ -406,6 +474,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Уточнить время"
+          }
+        }
+      }
+    },
+    "station" : {
+      "comment" : "Station type description",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "station"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "станция"
           }
         }
       }
@@ -493,6 +578,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Куда"
+          }
+        }
+      }
+    },
+    "train station" : {
+      "comment" : "Station type description",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "train station"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "вокзал"
           }
         }
       }

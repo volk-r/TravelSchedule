@@ -10,18 +10,20 @@ import Foundation
 import OpenAPIRuntime
 import OpenAPIURLSession
 
-final class SearchRoutesService: SearchRoutesServiceProtocol {
+actor SearchRoutesService: SearchRoutesServiceProtocol {
     private let client: Client
     
     init(client: Client) {
         self.client = client
     }
     
-    func searchRoutes(from origin: String, to destination: String) async throws -> SearchResponse {
+    func searchRoutes(from origin: String, to destination: String, date: String?, hasTransfers: Bool?) async throws -> SearchResponse {
         let response = try await client.getRouteList(
             query: .init(
                 from: origin,
-                to: destination
+                to: destination,
+                date: date,
+                transfers: hasTransfers
             )
         )
         return try response.ok.body.json

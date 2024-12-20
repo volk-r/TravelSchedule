@@ -10,7 +10,7 @@ import Foundation
 import OpenAPIRuntime
 import OpenAPIURLSession
 
-final class ScheduleService: ScheduleServiceProtocol {
+actor ScheduleService: ScheduleServiceProtocol {
     private let client: Client
     
     init(client: Client) {
