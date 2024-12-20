@@ -7,13 +7,6 @@
 
 import Foundation
 
-struct CarrierMock: Hashable {
-    let title: String
-    let phone: String
-    let logo: String
-    let email: String
-}
-
 struct RouteCardData: Identifiable, Hashable, Sendable {
 
     // MARK: - Properties
@@ -23,13 +16,13 @@ struct RouteCardData: Identifiable, Hashable, Sendable {
     let arrivalDate: Date
     let hasTransfers: Bool
     let transferTitle: String?
-    let carrier: CarrierMock
+    let carrier: CarrierData
 
     private var dateFormatter = DateFormatter()
 
     // MARK: - Init
 
-    init(departureDate: Date, arrivalDate: Date, hasTransfers: Bool, transferTitle: String? = nil, carrier: CarrierMock) {
+    init(departureDate: Date, arrivalDate: Date, hasTransfers: Bool, transferTitle: String? = nil, carrier: CarrierData) {
         self.departureDate = departureDate
         self.arrivalDate = arrivalDate
         self.hasTransfers = hasTransfers

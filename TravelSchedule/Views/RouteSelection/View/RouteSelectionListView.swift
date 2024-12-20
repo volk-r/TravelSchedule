@@ -150,7 +150,8 @@ let mockData: [RouteCardData] =
         arrivalDate: Date().addingTimeInterval(5 * 60 * 16),
         hasTransfers: true,
         transferTitle: "Кострома",
-        carrier: CarrierMock(
+        carrier: CarrierData(
+            code: 1,
             title: "РЖД",
             phone: "+7 (904) 329-27-71",
             logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",
@@ -162,7 +163,8 @@ let mockData: [RouteCardData] =
         arrivalDate: Date().addingTimeInterval(5 * 60 * 60),
         hasTransfers: false,
         transferTitle: nil,
-        carrier: CarrierMock(
+        carrier: CarrierData(
+            code: 2,
             title: "Урал Логистика",
             phone: "+7 (904) 329-27-71",
             logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",
@@ -174,7 +176,8 @@ let mockData: [RouteCardData] =
         arrivalDate: Date().addingTimeInterval(6 * 60 * 60),
         hasTransfers: false,
         transferTitle: nil,
-        carrier: CarrierMock(
+        carrier: CarrierData(
+            code: 3,
             title: "ФГК",
             phone: "+7 (904) 329-27-71",
             logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",

@@ -13,7 +13,7 @@ struct CarrierView: View {
     
     @Binding var isShowRoot: Bool
     
-    var carrier: CarrierMock?
+    var carrier: CarrierData?
     
     var body: some View {
         ZStack {
@@ -56,7 +56,7 @@ extension CarrierView {
         } placeholder: {
             ProgressView()
         }
-        .frame(idealHeight: Constants.carrierLogoHeight)
+        .frame(height: Constants.carrierLogoHeight)
         .scaledToFit()
         .clipShape(RoundedRectangle(cornerRadius: Constants.carrierLogoCornerRadius))
     }
@@ -107,7 +107,8 @@ extension CarrierView {
 }
 
 #Preview {
-    let carrier = CarrierMock(
+    let carrier = CarrierData(
+        code: 0,
         title: "ОАО «РЖД»",
         phone: "+7 (904) 329-27-71",
         logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",

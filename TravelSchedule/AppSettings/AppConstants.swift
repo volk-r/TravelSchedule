@@ -26,4 +26,6 @@ enum AppConstants {
     static let fontBold34: Font = .system(size: 34, weight: .bold, design: .default)
     
     static let animationVelocity: TimeInterval = 0.4
+    
+    static let routeSearchDepthInDays: Int = 3 // TODO: up to 7 before review
 }
