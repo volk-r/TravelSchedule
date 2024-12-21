@@ -20,20 +20,8 @@ final class RouteSelectionListViewModel: ObservableObject {
     @Published var isFiltersPagePresented: Bool = false
     
     private let networkService = NetworkService()
-    private let isoDateFormatter = ISO8601DateFormatter()// TODO: need singletone ! ! !
-    
+    private let dateFormatter = DateFormatterService.shared
     private let carrierInfoDownloader = CarrierInfoDownloader()
-    
-    // MARK: - init
-    
-    init () {
-        isoDateFormatter.formatOptions = [
-            .withFullDate,
-            .withTime,
-            .withDashSeparatorInDate,
-            .withColonSeparatorInTime
-        ]
-    }
     
     // MARK: - isFiltersSet
     
@@ -138,8 +126,8 @@ final class RouteSelectionListViewModel: ObservableObject {
         
         for segment in routeSegments {
             guard
-                let departureDate: Date = isoDateFormatter.date(from: segment.departure ?? ""),
-                let arrivalDate: Date = isoDateFormatter.date(from: segment.arrival ?? "")
+                let departureDate: Date = dateFormatter.formatISOStringToDate(segment.departure),
+                let arrivalDate: Date = dateFormatter.formatISOStringToDate(segment.arrival)
             else {
                 setError(errorType: .serverError)
                 return routes
@@ -248,15 +236,13 @@ final class RouteSelectionListViewModel: ObservableObject {
     
     private func generateRouteDates() -> [String] {
         var dates: [String] = []
-        let dateFormatter = DateFormatter()// TODO: need singletone ! ! !
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        
+        let dateFormat = "yyyy-MM-dd"
         let currentDate = Date()
         let calendar = Calendar.current
         
         for dayOffset in 0..<AppConstants.routeSearchDepthInDays {
             if let date = calendar.date(byAdding: .day, value: dayOffset, to: currentDate) {
-                let dateString = dateFormatter.string(from: date)
+                let dateString = dateFormatter.stringFromDate(date, inFormat: dateFormat)
                 dates.append(dateString)
             }
         }
