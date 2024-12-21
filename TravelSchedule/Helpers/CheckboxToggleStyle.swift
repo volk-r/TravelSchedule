@@ -30,5 +30,8 @@ struct CheckboxToggleStyle: ToggleStyle {
 }
 
 #Preview {
-    FiltersView(isShowRoot: .constant(true))
+    FiltersView(
+        isShowRoot: .constant(true),
+        filters: .constant(Filters())
+    )
 }

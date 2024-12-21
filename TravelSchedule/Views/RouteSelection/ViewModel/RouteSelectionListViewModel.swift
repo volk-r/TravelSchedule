@@ -16,6 +16,7 @@ final class RouteSelectionListViewModel: ObservableObject {
     @Published var isError: NetworkErrorType? = nil
     @Published var allRoutes: [RouteCardData] = []
     
+    @Published var filters: Filters = Filters()
     @Published var isFiltersPagePresented: Bool = false
     
     private let networkService = NetworkService()
@@ -32,6 +33,12 @@ final class RouteSelectionListViewModel: ObservableObject {
             .withDashSeparatorInDate,
             .withColonSeparatorInTime
         ]
+    }
+    
+    // MARK: - isFiltersSet
+    
+    func isFiltersSet() -> Bool {
+        filters.isSelected
     }
     
     // MARK: - openFiltersPage
@@ -62,8 +69,6 @@ final class RouteSelectionListViewModel: ObservableObject {
             return
         }
         
-        // TODO: need to setup filters from Filters screen
-        
         let routeSegments: RouteSegments
         do {
             routeSegments = try await getRouteSegments(
@@ -85,9 +90,45 @@ final class RouteSelectionListViewModel: ObservableObject {
         await MainActor.run { [routes] in
             allRoutes = routes
             allRoutes.sort{ $0.departureDate < $1.departureDate }
+            allRoutes = applyFilters(routes: allRoutes)
+            
             isLoading = false
             isError = nil
         }
+    }
+    
+    // MARK: - applyFilters
+    
+    private func applyFilters(routes: [RouteCardData]) -> [RouteCardData] {
+        let filteredSegments = routes.filter { route in
+            if route.hasTransfers && !(filters.withTransfers ?? true) {
+                return false
+            }
+            
+            var isTimeSelected = false
+            for time in filters.departureTime where time.isSelected {
+                isTimeSelected = true
+                break
+            }
+            if isTimeSelected == false {
+                return true
+            }
+            
+            let departureHours = route.getDepartureHours()
+            switch departureHours {
+            case 6...11 where filters.departureTime.first(where: { $0.time == .morning })?.isSelected == true:
+                return true
+            case 12...17 where filters.departureTime.first(where: { $0.time == .afternoon })?.isSelected == true:
+                return true
+            case 18..<24 where filters.departureTime.first(where: { $0.time == .evening })?.isSelected == true:
+                return true
+            case 0...5 where filters.departureTime.first(where: { $0.time == .night })?.isSelected == true:
+                return true
+            default:
+                return false
+            }
+        }
+        return filteredSegments
     }
     
     // MARK: - populateRoutesData

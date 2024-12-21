@@ -27,5 +27,5 @@ enum AppConstants {
     
     static let animationVelocity: TimeInterval = 0.4
     
-    static let routeSearchDepthInDays: Int = 3 // TODO: up to 7 before review
+    static let routeSearchDepthInDays: Int = 1 // TODO: up to 7 before review
 }

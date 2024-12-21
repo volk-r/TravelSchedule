@@ -50,7 +50,7 @@ struct RouteCardData: Identifiable, Hashable, Sendable {
         return dateFormatter.string(from: departureDate)
     }
 
-    func getDepartureHour() -> Int {
+    func getDepartureHours() -> Int {
         return Calendar.current.component(.hour, from: departureDate)
     }
 

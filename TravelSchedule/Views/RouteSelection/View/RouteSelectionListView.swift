@@ -46,7 +46,10 @@ struct RouteSelectionListView: View {
                 }
             }
             .navigationDestination(isPresented: $viewModel.isFiltersPagePresented) {
-                FiltersView(isShowRoot: $viewModel.isFiltersPagePresented)
+                FiltersView(
+                    isShowRoot: $viewModel.isFiltersPagePresented,
+                    filters: $viewModel.filters
+                )
             }
         }
         .task {
@@ -105,7 +108,7 @@ extension RouteSelectionListView {
                         idealWidth: Constants.filterButtonCircleSize,
                         maxHeight: Constants.filterButtonCircleSize
                     )
-                    .opacity(viewModel.allRoutes.isEmpty ? 1 : 0)
+                    .opacity(viewModel.isFiltersSet() ? 1 : 0)
             }
             .frame(
                 maxWidth: .infinity,
