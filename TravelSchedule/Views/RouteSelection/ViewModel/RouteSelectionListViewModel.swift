@@ -19,6 +19,9 @@ final class RouteSelectionListViewModel: ObservableObject {
     @Published var filters: Filters = Filters()
     @Published var isFiltersPagePresented: Bool = false
     
+    @Published var isCarrierPagePresented = false
+    @Published var carrierForPresentation: CarrierData? = nil
+    
     private let networkService = NetworkService()
     private let dateFormatter = DateFormatterService.shared
     private let carrierInfoDownloader = CarrierInfoDownloader()
@@ -27,6 +30,13 @@ final class RouteSelectionListViewModel: ObservableObject {
     
     init() {
         AnalyticService.trackOpenScreen(screen: .routeSelection)
+    }
+    
+    // MARK: - presentCarrier
+    
+    func presentCarrier(with carrier: CarrierData) {
+        isCarrierPagePresented = true
+        carrierForPresentation = carrier
     }
     
     // MARK: - isFiltersSet

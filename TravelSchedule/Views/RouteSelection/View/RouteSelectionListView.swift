@@ -52,6 +52,10 @@ struct RouteSelectionListView: View {
         .task {
             await viewModel.fetchRoutesAlong(way: stationModel.getRouteCardData())
         }
+        .navigationDestination(isPresented: $viewModel.isCarrierPagePresented) {
+            CarrierView()
+                .environmentObject(viewModel)
+        }
         .navigationBarBackButtonHidden()
         .backButtonToolbarItem(isShowRoot: $stationModel.isFindRoutesPresented)
     }
@@ -88,9 +92,11 @@ extension RouteSelectionListView {
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
                 .listRowInsets(.init(.zero))
+                .onTapGesture {
+                    viewModel.presentCarrier(with: routeCard.carrier)
+                }
         }
         .listStyle(.plain)
-        // TODO
     }
     
     // MARK: - filterButton
@@ -123,21 +129,6 @@ extension RouteSelectionListView {
 
 // TODO: not working
 #Preview {
-        RouteSelectionListView()
-            .environmentObject(SelectStationViewModel())
-//        RouteSelectionListView(
-//            isShowRoot: .constant(false),
-//            routeData: RouteData(
-//                fromStation: StationData(
-//                    stationType: .from,
-//                    city: "Москва",
-//                    station: nil
-//                ),
-//                toStation: StationData(
-//                    stationType: .to,
-//                    city: "Питер",
-//                    station: nil
-//                )
-//            )
-//        )
+    RouteSelectionListView()
+        .environmentObject(SelectStationViewModel())
 }

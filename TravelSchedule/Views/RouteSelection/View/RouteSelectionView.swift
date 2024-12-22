@@ -41,13 +41,6 @@ struct RouteSelectionView: View {
             AnalyticService.trackClick(screen: .routeSelection, item: .openCarrier)
             viewModel.setup(data: routeCardData)
         }
-        .onTapGesture {
-            viewModel.isCarrierPagePresented = true
-        }
-        .navigationDestination(isPresented: $viewModel.isCarrierPagePresented) {
-            CarrierView(carrier: routeCardData.carrier)
-                .environmentObject(viewModel)
-        }
     }
 }
 
