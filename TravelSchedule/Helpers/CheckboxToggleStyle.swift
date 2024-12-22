@@ -30,8 +30,6 @@ struct CheckboxToggleStyle: ToggleStyle {
 }
 
 #Preview {
-    FiltersView(
-        isShowRoot: .constant(true),
-        filters: .constant(Filters())
-    )
+    FiltersView()
+        .environmentObject(RouteSelectionListViewModel())
 }

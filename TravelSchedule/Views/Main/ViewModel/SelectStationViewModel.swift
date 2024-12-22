@@ -110,4 +110,13 @@ final class SelectStationViewModel: ObservableObject {
         AnalyticService.trackClick(screen: .main, item: .tapFindRoutesButton)
         isFindRoutesPresented = true
     }
+    
+    // MARK: - getRouteCardData
+    
+    func getRouteCardData() -> RouteData {
+        RouteData(
+            fromStation: fromStation,
+            toStation: toStation
+        )
+    }
 }

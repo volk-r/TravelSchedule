@@ -10,10 +10,10 @@ import SwiftUI
 struct CarrierView: View {
     
     // MARK: - Properties
-    
-    @Binding var isShowRoot: Bool
-    
+
     var carrier: CarrierData?
+    
+    @EnvironmentObject var routeSelectionViewModel: RouteSelectionViewModel
     
     var body: some View {
         ZStack {
@@ -32,7 +32,7 @@ struct CarrierView: View {
         .navigationTitle("Carrier information")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
-        .backButtonToolbarItem(isShowRoot: $isShowRoot)
+        .backButtonToolbarItem(isShowRoot: $routeSelectionViewModel.isCarrierPagePresented)
         .onAppear {
             AnalyticService.trackOpenScreen(screen: .carrier)
         }
@@ -118,6 +118,7 @@ extension CarrierView {
         email: "i.lozgkina@yandex.ru"
     )
     NavigationStack {
-        CarrierView(isShowRoot: .constant(true), carrier: carrier)
+        CarrierView(carrier: carrier)
+            .environmentObject(RouteSelectionViewModel())
     }
 }

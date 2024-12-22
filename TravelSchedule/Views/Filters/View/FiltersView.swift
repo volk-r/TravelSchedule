@@ -11,8 +11,7 @@ struct FiltersView: View {
     
     // MARK: - Properties
     
-    @Binding var isShowRoot: Bool
-    @Binding var filters: Filters
+    @EnvironmentObject private var routeSelectionListViewModel: RouteSelectionListViewModel
 
     @StateObject private var model: FiltersViewModel = FiltersViewModel()
     
@@ -30,9 +29,9 @@ struct FiltersView: View {
             }
         }
         .navigationBarBackButtonHidden()
-        .backButtonToolbarItem(isShowRoot: $isShowRoot)
+        .backButtonToolbarItem(isShowRoot: $routeSelectionListViewModel.isFiltersPagePresented)
         .onAppear {
-            model.setup(filters: filters)
+            model.setup(filters: routeSelectionListViewModel.filters)
         }
     }
 }
@@ -57,10 +56,10 @@ extension FiltersView {
                 .font(AppConstants.fontBold24)
                 .padding()
             
-            List(filters.departureTime.indices) { index in
+            List(routeSelectionListViewModel.filters.departureTime.indices) { index in
                 VStack {
-                    Toggle(isOn: $filters.departureTime[index].isSelected) {
-                        Text(filters.departureTime[index].time.description)
+                    Toggle(isOn: $routeSelectionListViewModel.filters.departureTime[index].isSelected) {
+                        Text(routeSelectionListViewModel.filters.departureTime[index].time.description)
                             .font(AppConstants.fontRegular17)
                     }
                     .toggleStyle(.checkmark)
@@ -126,9 +125,9 @@ extension FiltersView {
     // MARK: - applyButtonTap
     
     private func applyButtonTap() {
-        model.applyFilters(&filters)
+        model.applyFilters(&routeSelectionListViewModel.filters)
         AnalyticService.trackCloseScreen(screen: .filters)
-        isShowRoot.toggle()
+        routeSelectionListViewModel.isFiltersPagePresented.toggle()
     }
     
     // MARK: - transferOptionToggle
@@ -146,8 +145,6 @@ extension FiltersView {
 }
 
 #Preview {
-    FiltersView(
-        isShowRoot: .constant(true),
-        filters: .constant(Filters())
-    )
+    FiltersView()
+        .environmentObject(RouteSelectionListViewModel())
 }

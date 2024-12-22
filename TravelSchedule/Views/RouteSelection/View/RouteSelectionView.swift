@@ -44,12 +44,9 @@ struct RouteSelectionView: View {
         .onTapGesture {
             viewModel.isCarrierPagePresented = true
         }
-        // TODO
         .navigationDestination(isPresented: $viewModel.isCarrierPagePresented) {
-            CarrierView(
-                isShowRoot: $viewModel.isCarrierPagePresented,
-                carrier: routeCardData.carrier
-            )
+            CarrierView(carrier: routeCardData.carrier)
+                .environmentObject(viewModel)
         }
     }
 }
