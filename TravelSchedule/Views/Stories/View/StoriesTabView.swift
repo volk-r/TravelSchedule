@@ -9,12 +9,11 @@ import SwiftUI
 
 struct StoriesTabView: View {
     
-    let stories: [StoryData]
-    @Binding var currentStoryIndex: Int
+    @EnvironmentObject private var selectStationViewModel: SelectStationViewModel
     
     var body: some View {
-        TabView(selection: $currentStoryIndex) {
-            ForEach(stories) { story in
+        TabView(selection: $selectStationViewModel.storyToShowIndex) {
+            ForEach(selectStationViewModel.stories) { story in
                 StoryView(story: story)
             }
         }
@@ -24,6 +23,6 @@ struct StoriesTabView: View {
 }
 
 #Preview {
-    let stories = SelectStationViewModel().stories
-    StoriesTabView(stories: stories, currentStoryIndex: .constant(0))
+    StoriesTabView()
+        .environmentObject(SelectStationViewModel())
 }

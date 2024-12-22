@@ -11,25 +11,26 @@ struct StoriesProgressBarView: View {
     
     // MARK: - Properties
     
+    @EnvironmentObject private var storiesViewModel: StoriesViewModel
+    
+    // TODO: how I can replace it to selectStationViewModel.stories.count, problem in StoriesProgressBarViewModel.init -> timerConfiguration
     let storiesCount: Int
     let timerConfiguration: TimerConfiguration
-    @Binding var currentProgress: CGFloat
 
     @StateObject private var model: StoriesProgressBarViewModel
     
     // MARK: - init
     
-    init(storiesCount: Int, timerConfiguration: TimerConfiguration, currentProgress: Binding<CGFloat>) {
+    init(storiesCount: Int, timerConfiguration: TimerConfiguration) {
         self.storiesCount = storiesCount
         self.timerConfiguration = timerConfiguration
-        self._currentProgress = currentProgress
         self._model = StateObject(wrappedValue: StoriesProgressBarViewModel(timerConfiguration: timerConfiguration))
     }
     
     var body: some View {
         ProgressBar(
             numberOfSections: storiesCount,
-            progress: currentProgress
+            progress: storiesViewModel.currentProgress
         )
         .padding(.top, Constants.progressBarPaddingTop)
         .padding(.horizontal, Constants.progressBarPaddingHorizontal)
@@ -58,7 +59,7 @@ extension StoriesProgressBarView {
     
     private func timerTick() {
         withAnimation {
-            currentProgress = timerConfiguration.nextProgress(progress: currentProgress)
+            storiesViewModel.currentProgress = timerConfiguration.nextProgress(progress: storiesViewModel.currentProgress)
         }
     }
 }
@@ -71,8 +72,8 @@ extension StoriesProgressBarView {
             .ignoresSafeArea()
         StoriesProgressBarView(
             storiesCount: storiesCount,
-            timerConfiguration: TimerConfiguration(storiesCount: storiesCount),
-            currentProgress: .constant(0.5)
+            timerConfiguration: TimerConfiguration(storiesCount: storiesCount)
         )
+        .environmentObject(StoriesViewModel(timerConfiguration: TimerConfiguration(storiesCount: storiesCount)))
     }
 }

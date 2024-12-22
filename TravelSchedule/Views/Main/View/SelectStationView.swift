@@ -25,13 +25,9 @@ struct SelectStationView: View {
                 }
             } else {
                 VStack(spacing: Constants.findButtonPaddingTop) {
-                    StoriesListView(
-                        stories: viewModel.stories,
-                        showStory: $viewModel.showStory,
-                        selectedStory: $viewModel.storyToShowIndex,
-                        tapPosition: $viewModel.chosenStoryPosition
-                    )
-                    .padding(.leading)
+                    StoriesListView()
+                        .environmentObject(viewModel)
+                        .padding(.leading)
                     
                     ZStack {
                         selectStationViewBackgroundView
@@ -50,12 +46,9 @@ struct SelectStationView: View {
         }
         .overlay{
             if viewModel.showStory {
-                StoriesView(
-                    stories: $viewModel.stories,
-                    showStory: $viewModel.showStory,
-                    currentStoryIndex: $viewModel.storyToShowIndex
-                )
-                .transition(openStoryAnimation())
+                StoriesView(storiesCount: viewModel.stories.count)
+                    .environmentObject(viewModel)
+                    .transition(openStoryAnimation())
             }
         }
         .navigationDestination(isPresented: $viewModel.isFromStationPresented) {

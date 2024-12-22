@@ -12,18 +12,14 @@ struct StoriesListView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appSettings: AppSettings
+    @EnvironmentObject private var selectStationViewModel: SelectStationViewModel
     
-    let stories: [StoryData]
-    let rows = [GridItem(.flexible())]
-    
-    @Binding var showStory: Bool
-    @Binding var selectedStory: Int
-    @Binding var tapPosition: CGPoint
+    private let rows = [GridItem(.flexible())]
     
     var body: some View {
         ScrollView(.horizontal) {
             LazyHGrid(rows: rows, alignment: .center, spacing: Constants.storiesSpacing) {
-                ForEach(stories) { story in
+                ForEach(selectStationViewModel.stories) { story in
                     StoryPreviewView(story: story)
                         .clipShape(RoundedRectangle(cornerRadius: Constants.storyCornerRadius))
                         .onTapGesture(coordinateSpace: .global) { location in
@@ -66,23 +62,18 @@ extension StoriesListView {
     }
     
     private func onTapAction(location: CGPoint, story: StoryData) {
-        tapPosition = location
+        selectStationViewModel.chosenStoryPosition = location
         AnalyticService.trackClick(screen: .main, item: .openStories)
         
         withAnimation(.easeInOut(duration: AppConstants.animationVelocity)) {
-            showStory = true
-            selectedStory = story.id
+            selectStationViewModel.showStory = true
+            selectStationViewModel.storyToShowIndex = story.id
         }
     }
 }
 
 #Preview {
-    let stories = SelectStationViewModel().stories
-    StoriesListView(
-        stories: stories,
-        showStory: .constant(true),
-        selectedStory: .constant(1),
-        tapPosition: .constant(.zero)
-    )
-    .environmentObject(AppSettings())
+    StoriesListView()
+        .environmentObject(AppSettings())
+        .environmentObject(SelectStationViewModel())
 }
