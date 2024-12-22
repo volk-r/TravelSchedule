@@ -28,7 +28,8 @@ struct SettingsView: View {
             }
         }
         .navigationDestination(isPresented: $viewModel.isUserAgreementPresented) {
-            UserAgreementView(isShowRoot: $viewModel.isUserAgreementPresented)
+            UserAgreementView()
+                .environmentObject(viewModel)
         }
         .onAppear {
             self.viewModel.loadAppSetting(self.appSettings)

@@ -11,7 +11,7 @@ struct UserAgreementView: View {
     
     // MARK: - Properties
     
-    @Binding var isShowRoot: Bool
+    @EnvironmentObject var settingsViewModel: SettingsViewModel
     
     @StateObject private var model: UserAgreementViewModel = UserAgreementViewModel()
 
@@ -44,7 +44,7 @@ struct UserAgreementView: View {
             .navigationTitle("User agreement")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden()
-            .backButtonToolbarItem(isShowRoot: $isShowRoot)
+            .backButtonToolbarItem(isShowRoot: $settingsViewModel.isUserAgreementPresented)
             .ignoresSafeArea(edges: [.leading, .trailing, .bottom])
         }
     }
@@ -52,6 +52,7 @@ struct UserAgreementView: View {
 
 #Preview {
     NavigationStack {    
-        UserAgreementView(isShowRoot: .constant(false))
+        UserAgreementView()
+            .environmentObject(SettingsViewModel())
     }
 }
