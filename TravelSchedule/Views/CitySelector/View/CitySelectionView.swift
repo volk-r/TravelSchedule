@@ -11,8 +11,7 @@ struct CitySelectionView: View {
     
     // MARK: - Properties
     
-    @Binding var stationData: StationData
-    @Binding var isShowRoot: Bool
+    @EnvironmentObject private var selectStationViewModel: SelectStationViewModel
     
     @StateObject private var viewModel: CitySelectionViewModel = CitySelectionViewModel()
     
@@ -42,16 +41,14 @@ struct CitySelectionView: View {
             await viewModel.fetchCities()
         }
         .navigationDestination(isPresented: $viewModel.isCitySelected) {
-            StationSelectorView(
-                stationData: $stationData,
-                city: $viewModel.citySelected,
-                isShowRoot: $isShowRoot
-            )
+            StationSelectorView()
+                .environmentObject(viewModel)
+                .environmentObject(selectStationViewModel)
         }
         .navigationTitle("City selection")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
-        .backButtonToolbarItem(isShowRoot: $isShowRoot)
+        .backButtonToolbarItem(isShowRoot: $selectStationViewModel.isStationPresented)
         .modifier(.iOS_18_plus_bug_fix)
     }
 }
@@ -91,9 +88,7 @@ extension CitySelectionView {
 
 #Preview {
     NavigationStack {
-        CitySelectionView(
-            stationData: .constant(StationData(stationType: .from)),
-            isShowRoot: .constant(true)
-        )
+        CitySelectionView()
+            .environmentObject(SelectStationViewModel())
     }
 }

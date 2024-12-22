@@ -85,10 +85,22 @@ extension RouteSelectionView {
     // MARK: - carrierLogo
     
     private var carrierLogo: some View {
-        AsyncImage(url: URL(string: viewModel.cardData?.carrier.logo ?? "")) { image in
-            image.resizable()
-        } placeholder: {
-            ProgressView()
+        AsyncImage(
+            url: URL(string: viewModel.cardData?.carrier.logo ?? ""),
+            transaction: Transaction(animation: .easeInOut)
+        ) { phase in
+            switch phase {
+            case .empty:
+                ProgressView()
+            case .success(let image):
+                image
+                    .resizable()
+                    .transition(.scale(scale: 0.1, anchor: .center))
+            case .failure:
+                Image(systemName: AppImages.carrierDefaultLogo)
+            @unknown default:
+                EmptyView()
+            }
         }
         .clipShape(RoundedRectangle(cornerRadius: Constants.carrierLogoCornerRadius))
         .frame(width: Constants.carrierLogoSize, height: Constants.carrierLogoSize)

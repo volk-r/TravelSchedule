@@ -16,9 +16,19 @@ final class SelectStationViewModel: ObservableObject {
     
     @Published var fromStation: StationData = StationData(stationType: .from)
     @Published var toStation: StationData = StationData(stationType: .to)
-    @Published var isFromStationPresented: Bool = false
-    @Published var isToStationPresented: Bool = false
+    @Published var selectedStation: StationData? = nil {
+        didSet {
+            guard let selectedStation, let _ = selectedStation.station?.name else { return }
+            if
+                selectedStation.stationType == .from {
+                fromStation = selectedStation
+            } else {
+                toStation = selectedStation
+            }
+        }
+    }
     
+    @Published var isStationPresented: Bool = false
     @Published var isFindRoutesPresented: Bool = false
     
     @Published var storyToShowIndex: Int = 0
@@ -75,8 +85,8 @@ final class SelectStationViewModel: ObservableObject {
     func changeStations() {
         AnalyticService.trackClick(screen: .main, item: .tapChangeStationButton)
         
-        let from = fromStation
-        let to = toStation
+        let from: StationData = fromStation
+        let to: StationData = toStation
         
         fromStation = to
         toStation = from
@@ -86,14 +96,16 @@ final class SelectStationViewModel: ObservableObject {
     
     func selectFromStation() {
         AnalyticService.trackClick(screen: .main, item: .selectFromStation)
-        isFromStationPresented = true
+        isStationPresented = true
+        selectedStation = fromStation
     }
     
     // MARK: - selectToStation
     
     func selectToStation() {
         AnalyticService.trackClick(screen: .main, item: .selectToStation)
-        isToStationPresented = true
+        isStationPresented = true
+        selectedStation = toStation
     }
     
     // MARK: - isStationsSelected

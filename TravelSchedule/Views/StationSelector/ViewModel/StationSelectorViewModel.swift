@@ -35,13 +35,14 @@ final class StationSelectorViewModel: ObservableObject {
     func selectStation(
         station: Station,
         from city: CityData,
-        withStationData stationData: inout StationData
+        withStationData stationData: inout StationData?
     ) {
         let extraData: AnalyticsEventParams = ["stationId": station.id, "stationName": station.name]
         AnalyticService.trackClick(screen: .stationSelection, item: .selectStation, extraData: extraData)
         
+        guard let stationLocalData = stationData else { return }
         stationData = StationData.init(
-            stationType: stationData.stationType,
+            stationType: stationLocalData.stationType,
             city: city.name,
             station: station
         )

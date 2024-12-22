@@ -51,17 +51,9 @@ struct SelectStationView: View {
                     .transition(openStoryAnimation())
             }
         }
-        .navigationDestination(isPresented: $viewModel.isFromStationPresented) {
-            CitySelectionView(
-                stationData: $viewModel.fromStation,
-                isShowRoot: $viewModel.isFromStationPresented
-            )
-        }
-        .navigationDestination(isPresented: $viewModel.isToStationPresented) {
-            CitySelectionView(
-                stationData: $viewModel.toStation,
-                isShowRoot: $viewModel.isToStationPresented
-            )
+        .navigationDestination(isPresented: $viewModel.isStationPresented) {
+            CitySelectionView()
+                .environmentObject(viewModel)
         }
         .navigationDestination(isPresented: $viewModel.isFindRoutesPresented) {
             RouteSelectionListView()

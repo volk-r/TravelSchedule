@@ -54,10 +54,29 @@ extension CarrierView {
     // MARK: - carrierLogo
     
     var carrierLogo: some View {
-        AsyncImage(url: URL(string: carrier?.logo ?? "")) { image in
-            image.resizable()
-        } placeholder: {
-            ProgressView()
+        AsyncImage(
+            url: URL(string: carrier?.logo ?? ""),
+            transaction: Transaction(animation: .easeInOut)
+        ) { phase in
+            switch phase {
+            case .empty:
+                ZStack {
+                    Image(systemName: AppImages.carrierDefaultLogo)
+                        .resizable()
+                        .scaledToFit()
+                    ProgressView()
+                }
+            case .success(let image):
+                image
+                    .resizable()
+                    .transition(.scale(scale: 0.1, anchor: .center))
+            case .failure:
+                Image(systemName: AppImages.carrierDefaultLogo)
+                    .resizable()
+                    .scaledToFit()
+            @unknown default:
+                EmptyView()
+            }
         }
         .frame(height: Constants.carrierLogoHeight)
         .scaledToFit()

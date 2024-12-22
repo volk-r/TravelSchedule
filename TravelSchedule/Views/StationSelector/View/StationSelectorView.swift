@@ -11,9 +11,8 @@ struct StationSelectorView: View {
     
     // MARK: - Properties
     
-    @Binding var stationData: StationData
-    @Binding var city: CityData
-    @Binding var isShowRoot: Bool
+    @EnvironmentObject private var selectStationViewModel: SelectStationViewModel
+    @EnvironmentObject private var citySelectionViewModel: CitySelectionViewModel
     
     @StateObject private var viewModel: StationSelectorViewModel = StationSelectorViewModel()
     
@@ -41,12 +40,12 @@ struct StationSelectorView: View {
             }
         }
         .onAppear {
-            viewModel.setStations(stationsList: city.stations)
+            viewModel.setStations(stationsList: citySelectionViewModel.citySelected.stations)
         }
         .navigationTitle("Station selection")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
-        .backButtonToolbarItem(isShowRoot: $isShowRoot)
+        .backButtonToolbarItem(isShowRoot: $selectStationViewModel.isStationPresented)
         .modifier(.iOS_18_plus_bug_fix)
     }
 }
@@ -64,7 +63,7 @@ extension StationSelectorView {
     private var stationList: some View {
         List(viewModel.searchResult, id: \.self) { station in
             HStack {
-                Button(action: { selectStation(station, from: city) } ) {
+                Button(action: { selectStation(station, from: citySelectionViewModel.citySelected) } ) {
                     Text("\(station.description?.description ?? "") \(station.name)".trim())
                         .font(AppConstants.fontRegular17)
                 }
@@ -88,17 +87,20 @@ extension StationSelectorView {
     func selectStation(_ station: Station, from: CityData) {
         AnalyticService.trackCloseScreen(screen: .stationSelection)
         
-        viewModel.selectStation(station: station, from: city, withStationData: &stationData)
-        isShowRoot = false
+        viewModel
+            .selectStation(
+                station: station,
+                from: citySelectionViewModel.citySelected,
+                withStationData: &selectStationViewModel.selectedStation
+            )
+        selectStationViewModel.isStationPresented = false
     }
 }
 
 #Preview {
     NavigationStack {
-        StationSelectorView(
-            stationData: .constant(StationData(stationType: .from)),
-            city: .constant(CityData(id: "1", name: "Moscow", stations: [])),
-            isShowRoot: .constant(true)
-        )
+        StationSelectorView()
+            .environmentObject(SelectStationViewModel())
+            .environmentObject(CitySelectionViewModel())
     }
 }
