@@ -86,6 +86,8 @@ extension StationSelectorView {
     // MARK: - selectStation
     
     func selectStation(_ station: Station, from: CityData) {
+        AnalyticService.trackCloseScreen(screen: .stationSelection)
+        
         viewModel.selectStation(station: station, from: city, withStationData: &stationData)
         isShowRoot = false
     }

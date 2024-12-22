@@ -20,6 +20,7 @@ final class StoriesViewModel: ObservableObject {
     // MARK: - init
     
     init(timerConfiguration configuration: TimerConfiguration) {
+        AnalyticService.trackOpenScreen(screen: .stories)
         timerConfiguration = configuration
     }
     

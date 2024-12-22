@@ -9,6 +9,9 @@ import Foundation
 
 @MainActor
 final class SelectStationViewModel: ObservableObject {
+    
+    // MARK: - Properties
+    
     @Published var isLoadingError: Bool = false
     
     @Published var fromStation: StationData = StationData(stationType: .from)
@@ -61,7 +64,17 @@ final class SelectStationViewModel: ObservableObject {
         )
     ]
     
+    // MARK: - init
+    
+    init() {
+        AnalyticService.trackOpenScreen(screen: .main)
+    }
+    
+    // MARK: - changeStations
+    
     func changeStations() {
+        AnalyticService.trackClick(screen: .main, item: .tapChangeStationButton)
+        
         let from = fromStation
         let to = toStation
         
@@ -69,21 +82,32 @@ final class SelectStationViewModel: ObservableObject {
         toStation = from
     }
     
+    // MARK: - selectFromStation
+    
     func selectFromStation() {
+        AnalyticService.trackClick(screen: .main, item: .selectFromStation)
         isFromStationPresented = true
     }
     
+    // MARK: - selectToStation
+    
     func selectToStation() {
+        AnalyticService.trackClick(screen: .main, item: .selectToStation)
         isToStationPresented = true
     }
+    
+    // MARK: - isStationsSelected
     
     func isStationsSelected() -> Bool {
         guard let _ = fromStation.station, let _ = toStation.station else { return false }
         return true
     }
     
+    // MARK: - findRoutes
+    
     func findRoutes() {
         guard isStationsSelected() else { return }
+        AnalyticService.trackClick(screen: .main, item: .tapFindRoutesButton)
         isFindRoutesPresented = true
     }
 }

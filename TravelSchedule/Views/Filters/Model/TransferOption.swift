@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TransferOption: FilterOptionProtocol {
+enum TransferOption: String, FilterOptionProtocol {
     static let title: LocalizedStringResource = "Show options with transfers"
     
     var id : String { UUID().uuidString }

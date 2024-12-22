@@ -12,6 +12,10 @@ struct TravelScheduleApp: App {
     
     @StateObject private var appSettings = AppSettings()
     
+    init() {
+        AnalyticService.activate()
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

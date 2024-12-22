@@ -23,6 +23,12 @@ final class RouteSelectionListViewModel: ObservableObject {
     private let dateFormatter = DateFormatterService.shared
     private let carrierInfoDownloader = CarrierInfoDownloader()
     
+    // MARK: - init
+    
+    init() {
+        AnalyticService.trackOpenScreen(screen: .routeSelection)
+    }
+    
     // MARK: - isFiltersSet
     
     func isFiltersSet() -> Bool {
@@ -32,6 +38,7 @@ final class RouteSelectionListViewModel: ObservableObject {
     // MARK: - openFiltersPage
     
     func openFiltersPage() {
+        AnalyticService.trackClick(screen: .routeSelection, item: .tapFiltersButton)
         isFiltersPagePresented.toggle()
     }
     

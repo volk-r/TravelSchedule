@@ -15,40 +15,42 @@ struct RouteSelectionView: View {
     var routeCardData: RouteCardData
     
     var body: some View {
-            VStack(spacing: Constants.defaultHorizontalSpacing) {
-                VStack(spacing: Constants.defaultVerticalSpacing) {
+        VStack(spacing: Constants.defaultHorizontalSpacing) {
+            VStack(spacing: Constants.defaultVerticalSpacing) {
+                Spacer()
+                HStack(alignment: .center) {
+                    carrierLogo
+                    carrierAndTransferInfo
                     Spacer()
-                    HStack(alignment: .center) {
-                        carrierLogo
-                        carrierAndTransferInfo
-                        Spacer()
-                        departureDay
-                    }
-                    
-                    schedule
+                    departureDay
                 }
-                .padding(.all, Constants.routeCardInternalPadding)
-                .frame(maxHeight: Constants.routeCardHeight)
-                .background(Constants.routeCardBackgroundColor)
-                .clipShape(RoundedRectangle(cornerRadius: Constants.routeCardCornerRadius)
-                )
+                
+                schedule
             }
-            .frame(idealHeight: Constants.routeCardHeight)
-            .foregroundStyle(Constants.routeCardTextColor)
-            .padding(.horizontal, Constants.routeCardHorizontalPadding)
-            .padding(.vertical, Constants.routeCardVerticalPadding)
-            .onAppear {
-                viewModel.setup(data: routeCardData)
-            }
-            .onTapGesture {
-                viewModel.isCarrierPagePresented = true
-            }
-            .navigationDestination(isPresented: $viewModel.isCarrierPagePresented) {
-                CarrierView(
-                    isShowRoot: $viewModel.isCarrierPagePresented,
-                    carrier: routeCardData.carrier
-                )
-            }
+            .padding(.all, Constants.routeCardInternalPadding)
+            .frame(maxHeight: Constants.routeCardHeight)
+            .background(Constants.routeCardBackgroundColor)
+            .clipShape(RoundedRectangle(cornerRadius: Constants.routeCardCornerRadius)
+            )
+        }
+        .frame(idealHeight: Constants.routeCardHeight)
+        .foregroundStyle(Constants.routeCardTextColor)
+        .padding(.horizontal, Constants.routeCardHorizontalPadding)
+        .padding(.vertical, Constants.routeCardVerticalPadding)
+        .onAppear {
+            AnalyticService.trackClick(screen: .routeSelection, item: .openCarrier)
+            viewModel.setup(data: routeCardData)
+        }
+        .onTapGesture {
+            viewModel.isCarrierPagePresented = true
+        }
+        // TODO
+        .navigationDestination(isPresented: $viewModel.isCarrierPagePresented) {
+            CarrierView(
+                isShowRoot: $viewModel.isCarrierPagePresented,
+                carrier: routeCardData.carrier
+            )
+        }
     }
 }
 

@@ -9,6 +9,9 @@ import Foundation
 
 @MainActor
 final class SettingsViewModel: ObservableObject {
+    
+    // MARK: - Properties
+    
     @Published var isDarkModeEnabled = false
     @Published var isUserAgreementPresented: Bool = false
     
@@ -16,9 +19,22 @@ final class SettingsViewModel: ObservableObject {
     
     private var appSettings: AppSettings?
     
+    // MARK: - init
+    
+    init () {
+        AnalyticService.trackOpenScreen(screen: .settings)
+    }
+    
+    // MARK: - setDarkMode
+    
     func setDarkMode(isEnabled: Bool) {
+        let darkModeAnalyticItem: AnalyticItems = isEnabled ? .darkModeEnabled : .darkModeDisabled
+        AnalyticService.trackClick(screen: .settings, item: darkModeAnalyticItem)
+        
         appSettings?.isDarkModeEnabled = isEnabled
     }
+    
+    // MARK: - loadAppSetting
     
     func loadAppSetting(_ appSettings: AppSettings) {
         self.appSettings = appSettings

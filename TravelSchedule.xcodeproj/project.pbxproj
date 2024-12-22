@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		3CDADB0C2CD8C30800B2611E /* OpenAPIRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 3CDADB0B2CD8C30800B2611E /* OpenAPIRuntime */; };
 		3CDADB0F2CD8C34000B2611E /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = 3CDADB0E2CD8C34000B2611E /* OpenAPIURLSession */; };
+		3CDB4BCB2D180A0D00E329D9 /* AppMetricaAdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 3CDB4BCA2D180A0D00E329D9 /* AppMetricaAdSupport */; };
+		3CDB4BCD2D180A0D00E329D9 /* AppMetricaCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3CDB4BCC2D180A0D00E329D9 /* AppMetricaCore */; };
+		3CDB4BCF2D180A0D00E329D9 /* AppMetricaCrashes in Frameworks */ = {isa = PBXBuildFile; productRef = 3CDB4BCE2D180A0D00E329D9 /* AppMetricaCrashes */; };
+		3CDB4BD12D180A0D00E329D9 /* AppMetricaLibraryAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 3CDB4BD02D180A0D00E329D9 /* AppMetricaLibraryAdapter */; };
+		3CDB4BD32D180A0D00E329D9 /* AppMetricaWebKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3CDB4BD22D180A0D00E329D9 /* AppMetricaWebKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +76,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CDADB0F2CD8C34000B2611E /* OpenAPIURLSession in Frameworks */,
+				3CDB4BCF2D180A0D00E329D9 /* AppMetricaCrashes in Frameworks */,
+				3CDB4BCD2D180A0D00E329D9 /* AppMetricaCore in Frameworks */,
+				3CDB4BD32D180A0D00E329D9 /* AppMetricaWebKit in Frameworks */,
+				3CDB4BCB2D180A0D00E329D9 /* AppMetricaAdSupport in Frameworks */,
+				3CDB4BD12D180A0D00E329D9 /* AppMetricaLibraryAdapter in Frameworks */,
 				3CDADB0C2CD8C30800B2611E /* OpenAPIRuntime in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -139,6 +149,11 @@
 			packageProductDependencies = (
 				3CDADB0B2CD8C30800B2611E /* OpenAPIRuntime */,
 				3CDADB0E2CD8C34000B2611E /* OpenAPIURLSession */,
+				3CDB4BCA2D180A0D00E329D9 /* AppMetricaAdSupport */,
+				3CDB4BCC2D180A0D00E329D9 /* AppMetricaCore */,
+				3CDB4BCE2D180A0D00E329D9 /* AppMetricaCrashes */,
+				3CDB4BD02D180A0D00E329D9 /* AppMetricaLibraryAdapter */,
+				3CDB4BD22D180A0D00E329D9 /* AppMetricaWebKit */,
 			);
 			productName = TravelSchedule;
 			productReference = 3CDADAB32CD360D800B2611E /* TravelSchedule.app */;
@@ -227,6 +242,7 @@
 				3CDADB052CD8C2C000B2611E /* XCRemoteSwiftPackageReference "swift-openapi-generator" */,
 				3CDADB0A2CD8C30800B2611E /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */,
 				3CDADB0D2CD8C34000B2611E /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */,
+				3CDB4BC92D180A0D00E329D9 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3CDADAB42CD360D800B2611E /* Products */;
@@ -661,6 +677,14 @@
 				minimumVersion = 1.0.2;
 			};
 		};
+		3CDB4BC92D180A0D00E329D9 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/appmetrica/appmetrica-sdk-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.9.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -678,6 +702,31 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3CDADB052CD8C2C000B2611E /* XCRemoteSwiftPackageReference "swift-openapi-generator" */;
 			productName = "plugin:OpenAPIGenerator";
+		};
+		3CDB4BCA2D180A0D00E329D9 /* AppMetricaAdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3CDB4BC92D180A0D00E329D9 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */;
+			productName = AppMetricaAdSupport;
+		};
+		3CDB4BCC2D180A0D00E329D9 /* AppMetricaCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3CDB4BC92D180A0D00E329D9 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */;
+			productName = AppMetricaCore;
+		};
+		3CDB4BCE2D180A0D00E329D9 /* AppMetricaCrashes */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3CDB4BC92D180A0D00E329D9 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */;
+			productName = AppMetricaCrashes;
+		};
+		3CDB4BD02D180A0D00E329D9 /* AppMetricaLibraryAdapter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3CDB4BC92D180A0D00E329D9 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */;
+			productName = AppMetricaLibraryAdapter;
+		};
+		3CDB4BD22D180A0D00E329D9 /* AppMetricaWebKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3CDB4BC92D180A0D00E329D9 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */;
+			productName = AppMetricaWebKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

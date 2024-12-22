@@ -33,6 +33,9 @@ struct CarrierView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
         .backButtonToolbarItem(isShowRoot: $isShowRoot)
+        .onAppear {
+            AnalyticService.trackOpenScreen(screen: .carrier)
+        }
     }
 }
 

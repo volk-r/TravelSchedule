@@ -122,6 +122,7 @@ extension StoriesView {
     // MARK: - closeStory
     
     private func closeStory() {
+        AnalyticService.trackClick(screen: .stories, item: .closeStories)
         withAnimation(.easeInOut(duration: AppConstants.animationVelocity)) {
             showStory = false
         }
@@ -131,6 +132,9 @@ extension StoriesView {
     
     private func didStoryShowed() {
         appSettings.markAsShowed(story: stories[currentStoryIndex])
+        
+        let extraData: AnalyticsEventParams = ["storyId": currentStoryIndex]
+        AnalyticService.trackClick(screen: .stories, item: .showStory, extraData: extraData)
         
         if isLastStoryShowed() {
             closeStory()

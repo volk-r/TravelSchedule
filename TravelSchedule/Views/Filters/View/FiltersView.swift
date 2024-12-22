@@ -127,6 +127,7 @@ extension FiltersView {
     
     private func applyButtonTap() {
         model.applyFilters(&filters)
+        AnalyticService.trackCloseScreen(screen: .filters)
         isShowRoot.toggle()
     }
     

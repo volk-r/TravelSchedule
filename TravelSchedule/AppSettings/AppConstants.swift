@@ -11,6 +11,8 @@ enum AppConstants {
     static let apiScheduleKey = "481665d9-4609-4b54-ac58-e304d876c93b"
     static let apiScheduleCountryRussiaId = "l225"
     
+    static let appMetricaKey = "d4678275-9fda-4d39-aba0-b2b2cd6abc52"
+    
     static let userAgreementURL: String = "https://yandex.ru/legal/practicum_offer/"
     
     static let defaultDistance: Int = 50

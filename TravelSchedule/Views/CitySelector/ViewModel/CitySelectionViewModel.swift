@@ -29,9 +29,18 @@ final class CitySelectionViewModel: ObservableObject {
     
     private var cities: [CityData] = []
     
+    // MARK: - init
+    
+    init() {
+        AnalyticService.trackOpenScreen(screen: .citySelection)
+    }
+    
     // MARK: - selectCity
     
     func selectCity(_ city: CityData) {
+        let extraData: AnalyticsEventParams = ["cityId": city.id, "cityName": city.name]
+        AnalyticService.trackClick(screen: .citySelection, item: .selectCity, extraData: extraData)
+        
         citySelected = city
         isCitySelected = true
     }

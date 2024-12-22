@@ -24,9 +24,22 @@ final class StationSelectorViewModel: ObservableObject {
     
     private var stations: [Station] = []
     
+    // MARK: - init
+    
+    init() {
+        AnalyticService.trackOpenScreen(screen: .stationSelection)
+    }
+    
     // MARK: - selectStation
     
-    func selectStation(station: Station, from city: CityData, withStationData stationData: inout StationData) {
+    func selectStation(
+        station: Station,
+        from city: CityData,
+        withStationData stationData: inout StationData
+    ) {
+        let extraData: AnalyticsEventParams = ["stationId": station.id, "stationName": station.name]
+        AnalyticService.trackClick(screen: .stationSelection, item: .selectStation, extraData: extraData)
+        
         stationData = StationData.init(
             stationType: stationData.stationType,
             city: city.name,

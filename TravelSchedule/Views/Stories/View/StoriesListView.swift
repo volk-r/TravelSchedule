@@ -67,6 +67,7 @@ extension StoriesListView {
     
     private func onTapAction(location: CGPoint, story: StoryData) {
         tapPosition = location
+        AnalyticService.trackClick(screen: .main, item: .openStories)
         
         withAnimation(.easeInOut(duration: AppConstants.animationVelocity)) {
             showStory = true
