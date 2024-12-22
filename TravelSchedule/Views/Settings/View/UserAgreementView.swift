@@ -28,12 +28,8 @@ struct UserAgreementView: View {
                     if model.isLoadingError {
                         NetworkErrorView(errorType: .noInternetConnection)
                     } else {
-                        WebViewBridge(
-                            url: AppConstants.userAgreementURL,
-                            isLoading: $model.isLoading,
-                            isLoadingError: $model.isLoadingError,
-                            progress: $model.loadingProgress
-                        )
+                        WebViewBridge(url: AppConstants.userAgreementURL)
+                            .environmentObject(model)
                         
                         if model.isLoading {
                             ProgressView()
@@ -54,5 +50,6 @@ struct UserAgreementView: View {
     NavigationStack {    
         UserAgreementView()
             .environmentObject(SettingsViewModel())
+            .environmentObject(UserAgreementViewModel())
     }
 }
