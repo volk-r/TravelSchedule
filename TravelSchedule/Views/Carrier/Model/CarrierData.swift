@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CarrierData: Hashable {
+struct CarrierData: Hashable, Sendable {
     let code: Int
     let title: String
     let phone: String

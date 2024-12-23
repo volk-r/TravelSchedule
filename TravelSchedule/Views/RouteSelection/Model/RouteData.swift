@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RouteData {
+struct RouteData: Sendable {
     let fromStation: StationData
     let toStation: StationData
 }
