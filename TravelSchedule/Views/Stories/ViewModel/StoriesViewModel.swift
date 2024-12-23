@@ -13,19 +13,24 @@ final class StoriesViewModel: ObservableObject {
     // MARK: - Properties
         
     @Published var currentProgress: CGFloat = 0
-    @Published var timerConfiguration: TimerConfiguration
+    @Published var timerConfiguration: TimerConfiguration? = nil
     
     private var indexKeeper: Int = 0
     
     // MARK: - init
     
-    init(timerConfiguration configuration: TimerConfiguration) {
+    init() {
         AnalyticService.trackOpenScreen(screen: .stories)
-        timerConfiguration = configuration
+    }
+    
+    // MARK: - setupTimerConfiguration
+    
+    func setupTimerConfiguration(storiesCount: Int) {
+        timerConfiguration = TimerConfiguration(storiesCount: storiesCount)
     }
     
     // MARK: - saveStoryIndex
-    
+
     func saveStoryIndex(currentValue: Int, newValue: Int) {
         didChangeCurrentIndex(oldIndex: indexKeeper, newIndex: newValue)
         
@@ -36,6 +41,7 @@ final class StoriesViewModel: ObservableObject {
     // MARK: - didChangeCurrentProgress
     
     func didChangeCurrentProgress(newProgress: CGFloat, currentStoryIndex: inout Int) {
+        guard let timerConfiguration else { return }
         let index = timerConfiguration.index(for: newProgress)
         guard index != currentStoryIndex else { return }
         currentStoryIndex = index
@@ -51,7 +57,7 @@ final class StoriesViewModel: ObservableObject {
     // MARK: - didChangeCurrentIndex
     
     private func didChangeCurrentIndex(oldIndex: Int, newIndex: Int) {
-        guard oldIndex != newIndex else { return }
+        guard let timerConfiguration, oldIndex != newIndex else { return }
         let progress = timerConfiguration.progress(for: newIndex)
         guard abs(progress - currentProgress) >= 0.01 else { return }
         currentProgress = progress

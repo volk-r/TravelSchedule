@@ -14,17 +14,7 @@ struct StoriesView: View {
     @EnvironmentObject private var appSettings: AppSettings
     @EnvironmentObject private var selectStationViewModel: SelectStationViewModel
     
-    var storiesCount: Int // TODO: how I can replace it to selectStationViewModel.stories.count, problem in StoriesViewModel.init -> timerConfiguration
-    
-    @StateObject private var model: StoriesViewModel
-    
-    // MARK: - init
-
-    init(storiesCount: Int) {
-        self.storiesCount = storiesCount
-        let timerConfiguration: TimerConfiguration = TimerConfiguration(storiesCount: storiesCount)
-        self._model = StateObject(wrappedValue: StoriesViewModel(timerConfiguration: timerConfiguration))
-    }
+    @StateObject private var model: StoriesViewModel = StoriesViewModel()
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -50,24 +40,24 @@ struct StoriesView: View {
                 .padding(.trailing, Constants.closeButtonTrailingPadding)
                 .padding(.top, Constants.closeButtonTopPadding)
             
-            StoriesProgressBarView(
-                storiesCount: selectStationViewModel.stories.count,
-                timerConfiguration: model.timerConfiguration
-            )
-            .environmentObject(model)
-            .padding(.top, Constants.storyProgressBarTopPadding)
-            .onChange(of: model.currentProgress) { newValue in
-                withAnimation {
-                    model.didChangeCurrentProgress(newProgress: newValue, currentStoryIndex: &selectStationViewModel.storyToShowIndex)
-                    
-                    didStoryShowed()
+            StoriesProgressBarView()
+                .environmentObject(model)
+                .environmentObject(selectStationViewModel)
+                .padding(.top, Constants.storyProgressBarTopPadding)
+                .onChange(of: model.currentProgress) { newValue in
+                    withAnimation {
+                        model.didChangeCurrentProgress(newProgress: newValue, currentStoryIndex: &selectStationViewModel.storyToShowIndex)
+                        
+                        didStoryShowed()
+                    }
                 }
-            }
         }
         .clipShape(RoundedRectangle(cornerRadius: Constants.storyCornerRadius))
         .padding(.top, Constants.storyTopPadding)
         .padding(.bottom, Constants.storyBottomPadding)
         .onAppear {
+            model.setupTimerConfiguration(storiesCount: selectStationViewModel.stories.count)
+            
             withAnimation {
                 model.saveStoryIndex(currentValue: selectStationViewModel.storyToShowIndex, newValue: selectStationViewModel.storyToShowIndex)
             }
@@ -144,7 +134,7 @@ extension StoriesView {
 
 #Preview {
     let stories = SelectStationViewModel().stories
-    StoriesView(storiesCount: stories.count)
+    StoriesView()
         .environmentObject(SelectStationViewModel())
         .environmentObject(AppSettings())
 }

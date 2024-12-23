@@ -12,29 +12,19 @@ struct StoriesProgressBarView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var storiesViewModel: StoriesViewModel
+    @EnvironmentObject private var selectStationViewModel: SelectStationViewModel
     
-    // TODO: how I can replace it to selectStationViewModel.stories.count, problem in StoriesProgressBarViewModel.init -> timerConfiguration
-    let storiesCount: Int
-    let timerConfiguration: TimerConfiguration
-
-    @StateObject private var model: StoriesProgressBarViewModel
-    
-    // MARK: - init
-    
-    init(storiesCount: Int, timerConfiguration: TimerConfiguration) {
-        self.storiesCount = storiesCount
-        self.timerConfiguration = timerConfiguration
-        self._model = StateObject(wrappedValue: StoriesProgressBarViewModel(timerConfiguration: timerConfiguration))
-    }
+    @StateObject private var model: StoriesProgressBarViewModel = StoriesProgressBarViewModel()
     
     var body: some View {
         ProgressBar(
-            numberOfSections: storiesCount,
+            numberOfSections: selectStationViewModel.stories.count,
             progress: storiesViewModel.currentProgress
         )
         .padding(.top, Constants.progressBarPaddingTop)
         .padding(.horizontal, Constants.progressBarPaddingHorizontal)
         .onAppear {
+            model.setupTimer(timerConfiguration: storiesViewModel.timerConfiguration)
             model.startTimer()
         }
         .onDisappear {
@@ -59,6 +49,7 @@ extension StoriesProgressBarView {
     
     private func timerTick() {
         withAnimation {
+            guard let timerConfiguration = storiesViewModel.timerConfiguration else { return }
             storiesViewModel.currentProgress = timerConfiguration.nextProgress(progress: storiesViewModel.currentProgress)
         }
     }
@@ -66,14 +57,12 @@ extension StoriesProgressBarView {
 
 #Preview {
     let storiesCount = 3
-
+    
     ZStack {
         Color(.lightGray)
             .ignoresSafeArea()
-        StoriesProgressBarView(
-            storiesCount: storiesCount,
-            timerConfiguration: TimerConfiguration(storiesCount: storiesCount)
-        )
-        .environmentObject(StoriesViewModel(timerConfiguration: TimerConfiguration(storiesCount: storiesCount)))
+        StoriesProgressBarView()
+            .environmentObject(StoriesViewModel())
+            .environmentObject(SelectStationViewModel())
     }
 }

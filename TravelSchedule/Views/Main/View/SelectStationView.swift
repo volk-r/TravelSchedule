@@ -46,7 +46,7 @@ struct SelectStationView: View {
         }
         .overlay{
             if viewModel.showStory {
-                StoriesView(storiesCount: viewModel.stories.count)
+                StoriesView()
                     .environmentObject(viewModel)
                     .transition(openStoryAnimation())
             }
