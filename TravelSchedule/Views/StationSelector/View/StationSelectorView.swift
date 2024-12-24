@@ -98,9 +98,26 @@ extension StationSelectorView {
 }
 
 #Preview {
+    let citySelectionViewModel = CitySelectionViewModel()
     NavigationStack {
-        StationSelectorView()
+        citySelectionViewModel.citySelected = CityData(
+            id: "s9623131",
+            name: "Тула",
+            stations: [
+                Station(
+                    id: "s9600839",
+                    name: "Тула (Ряжский вокзал)",
+                    description: .train
+                ),
+                Station(
+                    id: "s9623131",
+                    name: "Тула (Московский вокзал)",
+                    description: .train
+                )
+            ]
+        )
+        return StationSelectorView()
             .environmentObject(SelectStationViewModel())
-            .environmentObject(CitySelectionViewModel())
+            .environmentObject(citySelectionViewModel)
     }
 }
