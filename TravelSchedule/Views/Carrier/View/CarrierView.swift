@@ -127,8 +127,16 @@ extension CarrierView {
 }
 
 #Preview {
+    var model = RouteSelectionListViewModel()
     NavigationStack {
-        CarrierView()
-            .environmentObject(RouteSelectionViewModel())
+        model.carrierForPresentation = CarrierData(
+            code: 1,
+            title: "ОАО «РЖД»",
+            phone: "+7 (904) 329-27-71",
+            logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",
+            email: "i.lozgkina@yandex.ru"
+        )
+        return CarrierView()
+            .environmentObject(model)
     }
 }
