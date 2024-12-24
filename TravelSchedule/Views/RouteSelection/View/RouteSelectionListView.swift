@@ -112,7 +112,7 @@ extension RouteSelectionListView {
                         idealWidth: Constants.filterButtonCircleSize,
                         maxHeight: Constants.filterButtonCircleSize
                     )
-                    .opacity(viewModel.isFiltersSet() ? 1 : 0)
+                    .opacity(viewModel.filters.isSelected ? 1 : 0)
             }
             .frame(
                 maxWidth: .infinity,
@@ -127,8 +127,27 @@ extension RouteSelectionListView {
     }
 }
 
-// TODO: not working
 #Preview {
-    RouteSelectionListView()
-        .environmentObject(SelectStationViewModel())
+    let selectStationViewModel = SelectStationViewModel()
+    selectStationViewModel.fromStation = StationData(
+        stationType: .from,
+        city: "Москва",
+        station: Station(
+            id: "s2000005",
+            name: "Москва (Павелецкий вокзал)",
+            description: .train
+        )
+    )
+    selectStationViewModel.toStation = StationData(
+        stationType: .to,
+        city: "Тула",
+        station: Station(
+            id: "s9623131",
+            name: "Тула (Московский вокзал)",
+            description: .train
+        )
+    )
+    return RouteSelectionListView()
+        .environmentObject(RouteSelectionListViewModel())
+        .environmentObject(selectStationViewModel)
 }

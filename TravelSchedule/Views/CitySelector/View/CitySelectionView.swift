@@ -88,6 +88,10 @@ extension CitySelectionView {
 
 #Preview {
     NavigationStack {
+//        cities = [
+//            CityData(id: "1", name: "Москва", stations: []),
+//            CityData(id: "2", name: "Санкт-Петербург", stations: [])
+//        ]
         CitySelectionView()
             .environmentObject(SelectStationViewModel())
     }

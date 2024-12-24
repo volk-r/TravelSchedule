@@ -39,12 +39,6 @@ final class RouteSelectionListViewModel: ObservableObject {
         carrierForPresentation = carrier
     }
     
-    // MARK: - isFiltersSet
-    
-    func isFiltersSet() -> Bool {
-        filters.isSelected
-    }
-    
     // MARK: - openFiltersPage
     
     func openFiltersPage() {
