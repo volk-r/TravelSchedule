@@ -11,7 +11,7 @@ struct FiltersView: View {
     
     // MARK: - Properties
     
-    @Binding var isShowRoot: Bool
+    @EnvironmentObject private var routeSelectionListViewModel: RouteSelectionListViewModel
 
     @StateObject private var model: FiltersViewModel = FiltersViewModel()
     
@@ -29,7 +29,10 @@ struct FiltersView: View {
             }
         }
         .navigationBarBackButtonHidden()
-        .backButtonToolbarItem(isShowRoot: $isShowRoot)
+        .backButtonToolbarItem(isShowRoot: $routeSelectionListViewModel.isFiltersPagePresented)
+        .onAppear {
+            model.setup(filters: routeSelectionListViewModel.filters)
+        }
     }
 }
 
@@ -53,10 +56,10 @@ extension FiltersView {
                 .font(AppConstants.fontBold24)
                 .padding()
             
-            List(TimeOfDay.allCases) { param in
+            List(routeSelectionListViewModel.filters.departureTime.indices) { index in
                 VStack {
-                    Toggle(isOn: $model.isChecked) {
-                        Text(param.description)
+                    Toggle(isOn: $routeSelectionListViewModel.filters.departureTime[index].isSelected) {
+                        Text(routeSelectionListViewModel.filters.departureTime[index].time.description)
                             .font(AppConstants.fontRegular17)
                     }
                     .toggleStyle(.checkmark)
@@ -79,10 +82,10 @@ extension FiltersView {
             Text(TransferOption.title)
                 .font(AppConstants.fontBold24)
                 .padding()
-            List(TransferOption.allCases) { param in
+            List(TransferOption.allCases) { option in
                 VStack {
-                    Toggle(isOn: $model.isChecked) {
-                        Text(param.description)
+                    Toggle(isOn: transfersToggle(option: option)) {
+                        Text(option.description)
                             .font(AppConstants.fontRegular17)
                     }
                     .toggleStyle(.radioButton)
@@ -116,15 +119,32 @@ extension FiltersView {
         .foregroundStyle(Constants.applyButtonTextColor)
         .clipShape(RoundedRectangle(cornerRadius: AppConstants.defaultCornerRadius))
         .padding(.horizontal)
-        .opacity(model.isChecked ? 1 : 0)
+        .opacity(model.isFilterSelected ? 1 : 0)
     }
     
+    // MARK: - applyButtonTap
+    
     private func applyButtonTap() {
-        // TODO: save parameters in the future
-        isShowRoot.toggle()
+        model.applyFilters(&routeSelectionListViewModel.filters)
+        AnalyticService.trackCloseScreen(screen: .filters)
+        routeSelectionListViewModel.isFiltersPagePresented.toggle()
+    }
+    
+    // MARK: - transferOptionToggle
+    
+    private func transfersToggle(
+        option: TransferOption
+    ) -> Binding<Bool> {
+        Binding(
+            get: { model.withTransfers == option },
+            set: { newValue in
+                model.withTransfers = newValue ? option : nil
+            }
+        )
     }
 }
 
 #Preview {
-    FiltersView(isShowRoot: .constant(true))
+    FiltersView()
+        .environmentObject(RouteSelectionListViewModel())
 }

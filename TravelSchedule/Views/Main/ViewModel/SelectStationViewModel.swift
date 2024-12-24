@@ -7,14 +7,28 @@
 
 import Foundation
 
+@MainActor
 final class SelectStationViewModel: ObservableObject {
+    
+    // MARK: - Properties
+    
     @Published var isLoadingError: Bool = false
     
     @Published var fromStation: StationData = StationData(stationType: .from)
     @Published var toStation: StationData = StationData(stationType: .to)
-    @Published var isFromStationPresented: Bool = false
-    @Published var isToStationPresented: Bool = false
+    @Published var selectedStation: StationData? = nil {
+        didSet {
+            guard let selectedStation, let _ = selectedStation.station?.name else { return }
+            if
+                selectedStation.stationType == .from {
+                fromStation = selectedStation
+            } else {
+                toStation = selectedStation
+            }
+        }
+    }
     
+    @Published var isStationPresented: Bool = false
     @Published var isFindRoutesPresented: Bool = false
     
     @Published var storyToShowIndex: Int = 0
@@ -60,29 +74,61 @@ final class SelectStationViewModel: ObservableObject {
         )
     ]
     
+    // MARK: - init
+    
+    init() {
+        AnalyticService.trackOpenScreen(screen: .main)
+    }
+    
+    // MARK: - changeStations
+    
     func changeStations() {
-        let from = fromStation
-        let to = toStation
+        AnalyticService.trackClick(screen: .main, item: .tapChangeStationButton)
+        
+        let from: StationData = fromStation
+        let to: StationData = toStation
         
         fromStation = to
         toStation = from
     }
     
+    // MARK: - selectFromStation
+    
     func selectFromStation() {
-        isFromStationPresented = true
+        AnalyticService.trackClick(screen: .main, item: .selectFromStation)
+        isStationPresented = true
+        selectedStation = fromStation
     }
     
+    // MARK: - selectToStation
+    
     func selectToStation() {
-        isToStationPresented = true
+        AnalyticService.trackClick(screen: .main, item: .selectToStation)
+        isStationPresented = true
+        selectedStation = toStation
     }
+    
+    // MARK: - isStationsSelected
     
     func isStationsSelected() -> Bool {
         guard let _ = fromStation.station, let _ = toStation.station else { return false }
         return true
     }
     
+    // MARK: - findRoutes
+    
     func findRoutes() {
         guard isStationsSelected() else { return }
+        AnalyticService.trackClick(screen: .main, item: .tapFindRoutesButton)
         isFindRoutesPresented = true
+    }
+    
+    // MARK: - getRouteCardData
+    
+    func getRouteCardData() -> RouteData {
+        RouteData(
+            fromStation: fromStation,
+            toStation: toStation
+        )
     }
 }

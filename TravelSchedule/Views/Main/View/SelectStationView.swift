@@ -25,13 +25,9 @@ struct SelectStationView: View {
                 }
             } else {
                 VStack(spacing: Constants.findButtonPaddingTop) {
-                    StoriesListView(
-                        stories: viewModel.stories,
-                        showStory: $viewModel.showStory,
-                        selectedStory: $viewModel.storyToShowIndex,
-                        tapPosition: $viewModel.chosenStoryPosition
-                    )
-                    .padding(.leading)
+                    StoriesListView()
+                        .environmentObject(viewModel)
+                        .padding(.leading)
                     
                     ZStack {
                         selectStationViewBackgroundView
@@ -44,33 +40,24 @@ struct SelectStationView: View {
                     }
                     
                     Spacer()
+                    Divider()
                 }
             }
         }
         .overlay{
             if viewModel.showStory {
-                StoriesView(
-                    stories: $viewModel.stories,
-                    showStory: $viewModel.showStory,
-                    currentStoryIndex: $viewModel.storyToShowIndex
-                )
-                .transition(openStoryAnimation())
+                StoriesView()
+                    .environmentObject(viewModel)
+                    .transition(openStoryAnimation())
             }
         }
-        .navigationDestination(isPresented: $viewModel.isFromStationPresented) {
-            CitySelectionView(
-                stationData: $viewModel.fromStation,
-                isShowRoot: $viewModel.isFromStationPresented
-            )
-        }
-        .navigationDestination(isPresented: $viewModel.isToStationPresented) {
-            CitySelectionView(
-                stationData: $viewModel.toStation,
-                isShowRoot: $viewModel.isToStationPresented
-            )
+        .navigationDestination(isPresented: $viewModel.isStationPresented) {
+            CitySelectionView()
+                .environmentObject(viewModel)
         }
         .navigationDestination(isPresented: $viewModel.isFindRoutesPresented) {
-            RouteSelectionListView(isShowRoot: $viewModel.isFindRoutesPresented)
+            RouteSelectionListView()
+                .environmentObject(viewModel)
         }
     }
 }
@@ -125,7 +112,7 @@ extension SelectStationView {
         Button(action: viewModel.selectFromStation) {
             Text(viewModel.fromStation.description)
                 .foregroundColor(
-                    (viewModel.fromStation.station?.isEmpty != nil)
+                    (viewModel.fromStation.station != nil)
                     ? Constants.stationBoxFontColor
                     : Constants.stationBoxSecondaryFontColor
                 )
@@ -139,7 +126,7 @@ extension SelectStationView {
         Button(action: viewModel.selectToStation) {
             Text(viewModel.toStation.description)
                 .foregroundColor(
-                    (viewModel.toStation.station?.isEmpty != nil)
+                    (viewModel.toStation.station != nil)
                     ? Constants.stationBoxFontColor
                     : Constants.stationBoxSecondaryFontColor
                 )

@@ -15,40 +15,32 @@ struct RouteSelectionView: View {
     var routeCardData: RouteCardData
     
     var body: some View {
-            VStack(spacing: Constants.defaultHorizontalSpacing) {
-                VStack(spacing: Constants.defaultVerticalSpacing) {
+        VStack(spacing: Constants.defaultHorizontalSpacing) {
+            VStack(spacing: Constants.defaultVerticalSpacing) {
+                Spacer()
+                HStack(alignment: .center) {
+                    carrierLogo
+                    carrierAndTransferInfo
                     Spacer()
-                    HStack(alignment: .center) {
-                        carrierLogo
-                        carrierAndTransferInfo
-                        Spacer()
-                        departureDay
-                    }
-                    
-                    schedule
+                    departureDay
                 }
-                .padding(.all, Constants.routeCardInternalPadding)
-                .frame(maxHeight: Constants.routeCardHeight)
-                .background(Constants.routeCardBackgroundColor)
-                .clipShape(RoundedRectangle(cornerRadius: Constants.routeCardCornerRadius)
-                )
+                
+                schedule
             }
-            .frame(idealHeight: Constants.routeCardHeight)
-            .foregroundStyle(Constants.routeCardTextColor)
-            .padding(.horizontal, Constants.routeCardHorizontalPadding)
-            .padding(.vertical, Constants.routeCardVerticalPadding)
-            .onAppear {
-                viewModel.setup(data: routeCardData)
-            }
-            .onTapGesture {
-                viewModel.isCarrierPagePresented = true
-            }
-            .navigationDestination(isPresented: $viewModel.isCarrierPagePresented) {
-                CarrierView(
-                    isShowRoot: $viewModel.isCarrierPagePresented,
-                    carrier: routeCardData.carrier
-                )
-            }
+            .padding(.all, Constants.routeCardInternalPadding)
+            .frame(maxHeight: Constants.routeCardHeight)
+            .background(Constants.routeCardBackgroundColor)
+            .clipShape(RoundedRectangle(cornerRadius: Constants.routeCardCornerRadius)
+            )
+        }
+        .frame(idealHeight: Constants.routeCardHeight)
+        .foregroundStyle(Constants.routeCardTextColor)
+        .padding(.horizontal, Constants.routeCardHorizontalPadding)
+        .padding(.vertical, Constants.routeCardVerticalPadding)
+        .onAppear {
+            AnalyticService.trackClick(screen: .routeSelection, item: .openCarrier)
+            viewModel.setup(data: routeCardData)
+        }
     }
 }
 
@@ -86,10 +78,22 @@ extension RouteSelectionView {
     // MARK: - carrierLogo
     
     private var carrierLogo: some View {
-        AsyncImage(url: URL(string: viewModel.cardData?.carrier.logo ?? "")) { image in
-            image.resizable()
-        } placeholder: {
-            ProgressView()
+        AsyncImage(
+            url: URL(string: viewModel.cardData?.carrier.logo ?? ""),
+            transaction: Transaction(animation: .easeInOut)
+        ) { phase in
+            switch phase {
+            case .empty:
+                ProgressView()
+            case .success(let image):
+                image
+                    .resizable()
+                    .transition(.scale(scale: 0.1, anchor: .center))
+            case .failure:
+                Image(systemName: AppImages.carrierDefaultLogo)
+            @unknown default:
+                EmptyView()
+            }
         }
         .clipShape(RoundedRectangle(cornerRadius: Constants.carrierLogoCornerRadius))
         .frame(width: Constants.carrierLogoSize, height: Constants.carrierLogoSize)
@@ -158,7 +162,8 @@ extension RouteSelectionView {
         arrivalDate: Date().addingTimeInterval(5 * 60 * 16),
         hasTransfers: true,
         transferTitle: "Кострома",
-        carrier: CarrierMock(
+        carrier: CarrierData(
+            code: 1,
             title: "РЖД",
             phone: "+7 (904) 329-27-71",
             logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",

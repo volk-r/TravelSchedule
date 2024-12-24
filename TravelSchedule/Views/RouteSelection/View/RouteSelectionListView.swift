@@ -11,9 +11,9 @@ struct RouteSelectionListView: View {
     
     // MARK: - Properties
     
-    @Binding var isShowRoot: Bool
-    
     @StateObject private var viewModel: RouteSelectionListViewModel = RouteSelectionListViewModel()
+    
+    @EnvironmentObject var stationModel: SelectStationViewModel
     
     var body: some View {
         VStack {
@@ -21,10 +21,9 @@ struct RouteSelectionListView: View {
                 AppColorSettings.backgroundColor
                     .edgesIgnoringSafeArea(.all)
                 
-                if viewModel.isLoadingError {
-                    NetworkErrorView(errorType: .noInternetConnection)
-                }
-                else {
+                if let error = viewModel.isError {
+                    NetworkErrorView(errorType: error)
+                } else {
                     VStack {
                         pageTitle
                         routeList
@@ -33,18 +32,32 @@ struct RouteSelectionListView: View {
                             }
                     }
                     
-                    customPlaceholder(
-                        placeholder: Text("There are no options"),
-                        isVisible: mockData.isEmpty
-                    )
+                    if viewModel.isLoading {
+                        ProgressView()
+                    }
+                    
+                    if !viewModel.isLoading {
+                        customPlaceholder(
+                            placeholder: Text("There are no options"),
+                            isVisible: viewModel.allRoutes.isEmpty
+                        )
+                    }
                 }
             }
             .navigationDestination(isPresented: $viewModel.isFiltersPagePresented) {
-                FiltersView(isShowRoot: $viewModel.isFiltersPagePresented)
+                FiltersView()
+                    .environmentObject(viewModel)
             }
         }
+        .task {
+            await viewModel.fetchRoutesAlong(way: stationModel.getRouteCardData())
+        }
+        .navigationDestination(isPresented: $viewModel.isCarrierPagePresented) {
+            CarrierView()
+                .environmentObject(viewModel)
+        }
         .navigationBarBackButtonHidden()
-        .backButtonToolbarItem(isShowRoot: $isShowRoot)
+        .backButtonToolbarItem(isShowRoot: $stationModel.isFindRoutesPresented)
     }
 }
 
@@ -65,7 +78,7 @@ extension RouteSelectionListView {
     // MARK: - pageTitle
     
     private var pageTitle: some View {
-        Text(mockDataPageTitle)
+        Text(verbatim: viewModel.getPageTitleFor(routes: stationModel.getRouteCardData()))
             .font(AppConstants.fontBold24)
             .padding(.horizontal)
             .padding(.top)
@@ -74,11 +87,14 @@ extension RouteSelectionListView {
     // MARK: - routeList
     
     private var routeList: some View {
-        List(mockData, id: \.self) { routeCard in
+        List(viewModel.allRoutes) { routeCard in
             RouteSelectionView(routeCardData: routeCard)
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
                 .listRowInsets(.init(.zero))
+                .onTapGesture {
+                    viewModel.presentCarrier(with: routeCard.carrier)
+                }
         }
         .listStyle(.plain)
     }
@@ -96,7 +112,7 @@ extension RouteSelectionListView {
                         idealWidth: Constants.filterButtonCircleSize,
                         maxHeight: Constants.filterButtonCircleSize
                     )
-                    .opacity(mockData.isEmpty ? 1 : 0)
+                    .opacity(viewModel.filters.isSelected ? 1 : 0)
             }
             .frame(
                 maxWidth: .infinity,
@@ -112,48 +128,26 @@ extension RouteSelectionListView {
 }
 
 #Preview {
-    NavigationStack {
-        RouteSelectionListView(isShowRoot: .constant(false))
-    }
-}
-
-let mockDataPageTitle: String = "Москва (Ярославский вокзал) → Санкт Петербург (Балтийский вокзал)"
-let mockData: [RouteCardData] =
-[
-    RouteCardData(
-        departureDate: Date(),
-        arrivalDate: Date().addingTimeInterval(5 * 60 * 16),
-        hasTransfers: true,
-        transferTitle: "Кострома",
-        carrier: CarrierMock(
-            title: "РЖД",
-            phone: "+7 (904) 329-27-71",
-            logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",
-            email: "i.lozgkina@yandex.ru"
-        )
-    ),
-    RouteCardData(
-        departureDate: Date().addingTimeInterval(3 * 60 * 3 + 15),
-        arrivalDate: Date().addingTimeInterval(5 * 60 * 60),
-        hasTransfers: false,
-        transferTitle: nil,
-        carrier: CarrierMock(
-            title: "Урал Логистика",
-            phone: "+7 (904) 329-27-71",
-            logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",
-            email: "i.lozgkina@ural.ru"
-        )
-    ),
-    RouteCardData(
-        departureDate: Date().addingTimeInterval(3 * 60 * 3 + 15),
-        arrivalDate: Date().addingTimeInterval(6 * 60 * 60),
-        hasTransfers: false,
-        transferTitle: nil,
-        carrier: CarrierMock(
-            title: "ФГК",
-            phone: "+7 (904) 329-27-71",
-            logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",
-            email: "i.lozgkina@fgk.ru"
+    let selectStationViewModel = SelectStationViewModel()
+    selectStationViewModel.fromStation = StationData(
+        stationType: .from,
+        city: "Москва",
+        station: Station(
+            id: "s2000005",
+            name: "Москва (Павелецкий вокзал)",
+            description: .train
         )
     )
-]
+    selectStationViewModel.toStation = StationData(
+        stationType: .to,
+        city: "Тула",
+        station: Station(
+            id: "s9623131",
+            name: "Тула (Московский вокзал)",
+            description: .train
+        )
+    )
+    return RouteSelectionListView()
+        .environmentObject(RouteSelectionListViewModel())
+        .environmentObject(selectStationViewModel)
+}

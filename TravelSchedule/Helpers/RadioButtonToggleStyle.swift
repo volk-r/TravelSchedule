@@ -30,5 +30,6 @@ struct RadioButtonToggleStyle: ToggleStyle {
 }
 
 #Preview {
-    FiltersView(isShowRoot: .constant(true))
+    FiltersView()
+        .environmentObject(RouteSelectionListViewModel())
 }

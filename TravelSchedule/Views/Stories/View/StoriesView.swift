@@ -12,30 +12,16 @@ struct StoriesView: View {
     // MARK: - Properties
     
     @EnvironmentObject private var appSettings: AppSettings
+    @EnvironmentObject private var selectStationViewModel: SelectStationViewModel
     
-    @Binding var stories: [StoryData]
-    @Binding var showStory: Bool
-    @Binding var currentStoryIndex: Int
-    
-    @StateObject private var model: StoriesViewModel
-    
-    // MARK: - init
-    
-    init(stories: Binding<[StoryData]>, showStory: Binding<Bool>, currentStoryIndex: Binding<Int>) {
-        self._stories = stories
-        self._showStory = showStory
-        self._currentStoryIndex = currentStoryIndex
-        
-        let timerConfiguration: TimerConfiguration = TimerConfiguration(storiesCount: stories.count)
-        self._model = StateObject(wrappedValue: StoriesViewModel(timerConfiguration: timerConfiguration))
-    }
+    @StateObject private var model: StoriesViewModel = StoriesViewModel()
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            StoriesTabView(stories: stories, currentStoryIndex: $currentStoryIndex)
-                .onChange(of: currentStoryIndex) { newValue in
+            StoriesTabView()
+                .onChange(of: selectStationViewModel.storyToShowIndex) { newValue in
                     withAnimation {
-                        model.saveStoryIndex(currentValue: currentStoryIndex, newValue: newValue)
+                        model.saveStoryIndex(currentValue: selectStationViewModel.storyToShowIndex, newValue: newValue)
                     }
                 }
                 .onTapGesture { location in
@@ -44,10 +30,7 @@ struct StoriesView: View {
                 .gesture(
                     DragGesture(minimumDistance: 30)
                         .onEnded { value in
-                            if
-                                value.translation.height < 30
-                                || value.translation.height > 30
-                            {
+                            if value.translation.height != 30 {
                                 closeStory()
                             }
                         }
@@ -57,26 +40,26 @@ struct StoriesView: View {
                 .padding(.trailing, Constants.closeButtonTrailingPadding)
                 .padding(.top, Constants.closeButtonTopPadding)
             
-            StoriesProgressBarView(
-                storiesCount: stories.count,
-                timerConfiguration: model.timerConfiguration,
-                currentProgress: $model.currentProgress
-            )
-            .padding(.top, Constants.storyProgressBarTopPadding)
-            .onChange(of: model.currentProgress) { newValue in
-                withAnimation {
-                    model.didChangeCurrentProgress(newProgress: newValue, currentStoryIndex: &currentStoryIndex)
-                    
-                    didStoryShowed()
+            StoriesProgressBarView()
+                .environmentObject(model)
+                .environmentObject(selectStationViewModel)
+                .padding(.top, Constants.storyProgressBarTopPadding)
+                .onChange(of: model.currentProgress) { newValue in
+                    withAnimation {
+                        model.didChangeCurrentProgress(newProgress: newValue, currentStoryIndex: &selectStationViewModel.storyToShowIndex)
+                        
+                        didStoryShowed()
+                    }
                 }
-            }
         }
         .clipShape(RoundedRectangle(cornerRadius: Constants.storyCornerRadius))
         .padding(.top, Constants.storyTopPadding)
         .padding(.bottom, Constants.storyBottomPadding)
         .onAppear {
+            model.setupTimerConfiguration(storiesCount: selectStationViewModel.stories.count)
+            
             withAnimation {
-                model.saveStoryIndex(currentValue: currentStoryIndex, newValue: currentStoryIndex)
+                model.saveStoryIndex(currentValue: selectStationViewModel.storyToShowIndex, newValue: selectStationViewModel.storyToShowIndex)
             }
         }
         .background(
@@ -108,29 +91,33 @@ extension StoriesView {
     private func openNextStory(position: CGFloat) {
         guard position > UIScreen.main.bounds.width / 2 else { return }
         
-        if currentStoryIndex == stories.count - 1 {
+        if selectStationViewModel.storyToShowIndex == selectStationViewModel.stories.count - 1 {
             closeStory()
             return
         }
         
         model.nextStory(
-            currentStoryIndex: currentStoryIndex,
-            storiesCount: stories.count
+            currentStoryIndex: selectStationViewModel.storyToShowIndex,
+            storiesCount: selectStationViewModel.stories.count
         )
     }
     
     // MARK: - closeStory
     
     private func closeStory() {
+        AnalyticService.trackClick(screen: .stories, item: .closeStories)
         withAnimation(.easeInOut(duration: AppConstants.animationVelocity)) {
-            showStory = false
+            selectStationViewModel.showStory = false
         }
     }
     
     // MARK: - didStoryShowed
     
     private func didStoryShowed() {
-        appSettings.markAsShowed(story: stories[currentStoryIndex])
+        appSettings.markAsShowed(story: selectStationViewModel.stories[selectStationViewModel.storyToShowIndex])
+        
+        let extraData: AnalyticsEventParams = ["storyId": selectStationViewModel.storyToShowIndex]
+        AnalyticService.trackClick(screen: .stories, item: .showStory, extraData: extraData)
         
         if isLastStoryShowed() {
             closeStory()
@@ -140,17 +127,14 @@ extension StoriesView {
     // MARK: - isLastStoryShowed
     
     private func isLastStoryShowed() -> Bool {
-        currentStoryIndex == stories.count - 1
+        selectStationViewModel.storyToShowIndex == selectStationViewModel.stories.count - 1
         && model.currentProgress == 1.0
     }
 }
 
 #Preview {
     let stories = SelectStationViewModel().stories
-    StoriesView(
-        stories: .constant(stories),
-        showStory: .constant(false),
-        currentStoryIndex: .constant(0)
-    )
-    .environmentObject(AppSettings())
+    StoriesView()
+        .environmentObject(SelectStationViewModel())
+        .environmentObject(AppSettings())
 }

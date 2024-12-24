@@ -25,4 +25,6 @@ enum AppImages {
     static let radioButtonUnchecked = "circle"
     
     static let storyCloseButton = "xmark.circle.fill"
+    
+    static let carrierDefaultLogo = "train.side.front.car"
 }

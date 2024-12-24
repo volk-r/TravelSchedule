@@ -10,7 +10,7 @@ import Foundation
 import OpenAPIRuntime
 import OpenAPIURLSession
 
-final class CarrierService: CarrierServiceProtocol {
+actor CarrierService: CarrierServiceProtocol {
     private let client: Client
     
     init(client: Client) {

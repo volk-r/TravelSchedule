@@ -7,9 +7,14 @@
 
 import Foundation
 
+@MainActor
 final class RouteSelectionViewModel: ObservableObject {
+    
+    // MARK: - Properties
+    
     @Published var cardData: RouteCardData?
-    @Published var isCarrierPagePresented: Bool = false
+    
+    // MARK: - setup
 
     func setup(data: RouteCardData) {
         self.cardData = data

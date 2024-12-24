@@ -11,9 +11,8 @@ struct StationSelectorView: View {
     
     // MARK: - Properties
     
-    @Binding var stationData: StationData
-    @Binding var city: String
-    @Binding var isShowRoot: Bool
+    @EnvironmentObject private var selectStationViewModel: SelectStationViewModel
+    @EnvironmentObject private var citySelectionViewModel: CitySelectionViewModel
     
     @StateObject private var viewModel: StationSelectorViewModel = StationSelectorViewModel()
     
@@ -22,22 +21,32 @@ struct StationSelectorView: View {
             AppColorSettings.backgroundColor
                 .edgesIgnoringSafeArea(.all)
             
-            if viewModel.isLoadingError {
-                NetworkErrorView(errorType: .noInternetConnection)
+            if let error = viewModel.isError {
+                NetworkErrorView(errorType: error)
             }
             else {
                 stationList
                 
-                customPlaceholder(
-                    placeholder: Text("Station not found"),
-                    isVisible: viewModel.searchResult.isEmpty
-                )
+                if viewModel.isLoading {
+                    ProgressView()
+                }
+                
+                if !viewModel.isLoading {
+                    customPlaceholder(
+                        placeholder: Text("Station not found"),
+                        isVisible: viewModel.searchResult.isEmpty
+                    )
+                }
             }
+        }
+        .onAppear {
+            viewModel.setStations(stationsList: citySelectionViewModel.citySelected.stations)
         }
         .navigationTitle("Station selection")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
-        .backButtonToolbarItem(isShowRoot: $isShowRoot)
+        .backButtonToolbarItem(isShowRoot: $selectStationViewModel.isStationPresented)
+        .modifier(.iOS18PlusBugFix)
     }
 }
 
@@ -54,8 +63,8 @@ extension StationSelectorView {
     private var stationList: some View {
         List(viewModel.searchResult, id: \.self) { station in
             HStack {
-                Button(action: { selectStation(station, from: city) } ) {
-                    Text(station)
+                Button(action: { selectStation(station, from: citySelectionViewModel.citySelected) } ) {
+                    Text("\(station.description?.description ?? "") \(station.name)".trim())
                         .font(AppConstants.fontRegular17)
                 }
                 Spacer()
@@ -75,18 +84,40 @@ extension StationSelectorView {
     
     // MARK: - selectStation
     
-    func selectStation(_ station: String, from: String) {
-        viewModel.selectStation(station: station, from: city, withStationData: &stationData)
-        isShowRoot = false
+    func selectStation(_ station: Station, from: CityData) {
+        AnalyticService.trackCloseScreen(screen: .stationSelection)
+        
+        viewModel
+            .selectStation(
+                station: station,
+                from: citySelectionViewModel.citySelected,
+                withStationData: &selectStationViewModel.selectedStation
+            )
+        selectStationViewModel.isStationPresented = false
     }
 }
 
 #Preview {
+    let citySelectionViewModel = CitySelectionViewModel()
     NavigationStack {
-        StationSelectorView(
-            stationData: .constant(StationData(stationType: .from)),
-            city: .constant(""),
-            isShowRoot: .constant(true)
+        citySelectionViewModel.citySelected = CityData(
+            id: "s9623131",
+            name: "Тула",
+            stations: [
+                Station(
+                    id: "s9600839",
+                    name: "Тула (Ряжский вокзал)",
+                    description: .train
+                ),
+                Station(
+                    id: "s9623131",
+                    name: "Тула (Московский вокзал)",
+                    description: .train
+                )
+            ]
         )
+        return StationSelectorView()
+            .environmentObject(SelectStationViewModel())
+            .environmentObject(citySelectionViewModel)
     }
 }

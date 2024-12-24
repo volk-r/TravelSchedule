@@ -7,6 +7,43 @@
 
 import Foundation
 
+@MainActor
 final class FiltersViewModel: ObservableObject {
-    @Published var isChecked: Bool = false
+    
+    // MARK: - Properties
+    
+    @Published var withTransfers: TransferOption? = nil
+    @Published var filters: Filters?
+    
+    var isFilterSelected: Bool {
+        withTransfers != nil
+    }
+    
+    init() {
+        AnalyticService.trackOpenScreen(screen: .filters)
+    }
+    
+    // MARK: - setup
+
+    func setup(filters: Filters) {
+        self.filters = filters
+        
+        if let withTransfers = filters.withTransfers {
+            self.withTransfers = withTransfers == true ? .yes : .no
+        }
+    }
+    
+    // MARK: - applyFilters
+    
+    func applyFilters(_ filters: inout Filters) {
+        filters.withTransfers = withTransfers == .yes
+        
+        var extraData: AnalyticsEventParams = [
+            "withTransfers": withTransfers == .yes ? TransferOption.yes.rawValue : TransferOption.no.rawValue
+        ]
+        for time in filters.departureTime where time.isSelected {
+            extraData = extraData.merging([time.time.rawValue: time.isSelected], uniquingKeysWith: { $1 })
+        }
+        AnalyticService.trackClick(screen: .filters, item: .applyFilters, extraData: extraData)
+    }
 }

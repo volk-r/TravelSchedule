@@ -8,25 +8,28 @@
 import Foundation
 import Combine
 
+@MainActor
 final class StoriesProgressBarViewModel: ObservableObject {
     
     // MARK: - Properties
     
-    @Published var timer: Timer.TimerPublisher
+    @Published var timer: Timer.TimerPublisher = Timer.publish(every: 0, on: .main, in: .common)
     
-    private var timerConfiguration: TimerConfiguration
+    private var timerConfiguration: TimerConfiguration? = nil
     private var cancellable: Cancellable? = nil
     
-    // MARK: - init
+    // MARK: - setupTimer
     
-    init(timerConfiguration configuration: TimerConfiguration) {
+    func setupTimer(timerConfiguration configuration: TimerConfiguration?) {
+        guard let configuration else { return }
         timerConfiguration = configuration
-        timer = Self.createTimer(configuration: timerConfiguration)
+        timer = Self.createTimer(configuration: configuration)
     }
     
     // MARK: - startTimer
 
     func startTimer() {
+        guard let timerConfiguration else { return }
         timer = Self.createTimer(configuration: timerConfiguration)
         cancellable = timer.connect()
     }
@@ -47,7 +50,7 @@ final class StoriesProgressBarViewModel: ObservableObject {
     // MARK: - timerTick
 
     func timerTick(progress: CGFloat) -> CGFloat {
-        timerConfiguration.nextProgress(progress: progress)
+        timerConfiguration?.nextProgress(progress: progress) ?? 0
     }
     
     // MARK: - createTimer

@@ -11,9 +11,7 @@ struct CarrierView: View {
     
     // MARK: - Properties
     
-    @Binding var isShowRoot: Bool
-    
-    var carrier: CarrierMock?
+    @EnvironmentObject var routeSelectionListViewModel: RouteSelectionListViewModel
     
     var body: some View {
         ZStack {
@@ -32,7 +30,10 @@ struct CarrierView: View {
         .navigationTitle("Carrier information")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
-        .backButtonToolbarItem(isShowRoot: $isShowRoot)
+        .backButtonToolbarItem(isShowRoot: $routeSelectionListViewModel.isCarrierPagePresented)
+        .onAppear {
+            AnalyticService.trackOpenScreen(screen: .carrier)
+        }
     }
 }
 
@@ -51,12 +52,31 @@ extension CarrierView {
     // MARK: - carrierLogo
     
     var carrierLogo: some View {
-        AsyncImage(url: URL(string: carrier?.logo ?? "")) { image in
-            image.resizable()
-        } placeholder: {
-            ProgressView()
+        AsyncImage(
+            url: URL(string: routeSelectionListViewModel.carrierForPresentation?.logo ?? ""),
+            transaction: Transaction(animation: .easeInOut)
+        ) { phase in
+            switch phase {
+            case .empty:
+                ZStack {
+                    Image(systemName: AppImages.carrierDefaultLogo)
+                        .resizable()
+                        .scaledToFit()
+                    ProgressView()
+                }
+            case .success(let image):
+                image
+                    .resizable()
+                    .transition(.scale(scale: 0.1, anchor: .center))
+            case .failure:
+                Image(systemName: AppImages.carrierDefaultLogo)
+                    .resizable()
+                    .scaledToFit()
+            @unknown default:
+                EmptyView()
+            }
         }
-        .frame(idealHeight: Constants.carrierLogoHeight)
+        .frame(height: Constants.carrierLogoHeight)
         .scaledToFit()
         .clipShape(RoundedRectangle(cornerRadius: Constants.carrierLogoCornerRadius))
     }
@@ -65,7 +85,7 @@ extension CarrierView {
     
     var carrierTitle: some View {
         HStack {
-            Text(carrier?.title ?? "")
+            Text(routeSelectionListViewModel.carrierForPresentation?.title ?? "")
                 .font(AppConstants.fontBold24)
             Spacer()
         }
@@ -78,11 +98,11 @@ extension CarrierView {
             Group {
                 carrierProperty(
                     caption: Text("E-mail"),
-                    value: carrier?.email ?? ""
+                    value: routeSelectionListViewModel.carrierForPresentation?.email ?? ""
                 )
                 carrierProperty(
                     caption: Text("Phone"),
-                    value: carrier?.phone ?? ""
+                    value: routeSelectionListViewModel.carrierForPresentation?.phone ?? ""
                 )
             }
             .listRowSeparator(.hidden)
@@ -107,13 +127,16 @@ extension CarrierView {
 }
 
 #Preview {
-    let carrier = CarrierMock(
-        title: "ОАО «РЖД»",
-        phone: "+7 (904) 329-27-71",
-        logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",
-        email: "i.lozgkina@yandex.ru"
-    )
+    var model = RouteSelectionListViewModel()
     NavigationStack {
-        CarrierView(isShowRoot: .constant(true), carrier: carrier)
+        model.carrierForPresentation = CarrierData(
+            code: 1,
+            title: "ОАО «РЖД»",
+            phone: "+7 (904) 329-27-71",
+            logo: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif",
+            email: "i.lozgkina@yandex.ru"
+        )
+        return CarrierView()
+            .environmentObject(model)
     }
 }

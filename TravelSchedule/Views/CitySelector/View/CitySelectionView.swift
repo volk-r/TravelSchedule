@@ -11,8 +11,7 @@ struct CitySelectionView: View {
     
     // MARK: - Properties
     
-    @Binding var stationData: StationData
-    @Binding var isShowRoot: Bool
+    @EnvironmentObject private var selectStationViewModel: SelectStationViewModel
     
     @StateObject private var viewModel: CitySelectionViewModel = CitySelectionViewModel()
     
@@ -21,28 +20,36 @@ struct CitySelectionView: View {
             AppColorSettings.backgroundColor
                 .edgesIgnoringSafeArea(.all)
             
-            if viewModel.isLoadingError {
-                NetworkErrorView(errorType: .noInternetConnection)
+            if let error = viewModel.isError {
+                NetworkErrorView(errorType: error)
             } else {
                 cityList
                 
-                customPlaceholder(
-                    placeholder: Text("City not found"),
-                    isVisible: viewModel.searchResult.isEmpty
-                )
+                if viewModel.isLoading {
+                    ProgressView()
+                }
+                
+                if !viewModel.isLoading {
+                    customPlaceholder(
+                        placeholder: Text("City not found"),
+                        isVisible: viewModel.searchResult.isEmpty
+                    )
+                }
             }
         }
+        .task {
+            await viewModel.fetchCities()
+        }
         .navigationDestination(isPresented: $viewModel.isCitySelected) {
-            StationSelectorView(
-                stationData: $stationData,
-                city: $viewModel.citySelected,
-                isShowRoot: $isShowRoot
-            )
+            StationSelectorView()
+                .environmentObject(viewModel)
+                .environmentObject(selectStationViewModel)
         }
         .navigationTitle("City selection")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
-        .backButtonToolbarItem(isShowRoot: $isShowRoot)
+        .backButtonToolbarItem(isShowRoot: $selectStationViewModel.isStationPresented)
+        .modifier(.iOS18PlusBugFix)
     }
 }
 
@@ -60,7 +67,7 @@ extension CitySelectionView {
         List(viewModel.searchResult, id: \.self) { city in
             HStack {
                 Button(action: { viewModel.selectCity(city) } ) {
-                    Text(city)
+                    Text(city.name)
                         .font(AppConstants.fontRegular17)
                 }
                 Spacer()
@@ -81,9 +88,11 @@ extension CitySelectionView {
 
 #Preview {
     NavigationStack {
-        CitySelectionView(
-            stationData: .constant(StationData(stationType: .from)),
-            isShowRoot: .constant(true)
-        )
+//        cities = [
+//            CityData(id: "1", name: "Москва", stations: []),
+//            CityData(id: "2", name: "Санкт-Петербург", stations: [])
+//        ]
+        CitySelectionView()
+            .environmentObject(SelectStationViewModel())
     }
 }

@@ -6,36 +6,25 @@
 //
 
 import SwiftUI
-import Combine
 
 struct StoriesProgressBarView: View {
     
     // MARK: - Properties
     
-    let storiesCount: Int
-    let timerConfiguration: TimerConfiguration
-    @Binding var currentProgress: CGFloat
-
-    @State private var cancellable: Cancellable?
-    @StateObject private var model: StoriesProgressBarViewModel
+    @EnvironmentObject private var storiesViewModel: StoriesViewModel
+    @EnvironmentObject private var selectStationViewModel: SelectStationViewModel
     
-    // MARK: - init
-    
-    init(storiesCount: Int, timerConfiguration: TimerConfiguration, currentProgress: Binding<CGFloat>) {
-        self.storiesCount = storiesCount
-        self.timerConfiguration = timerConfiguration
-        self._currentProgress = currentProgress
-        self._model = StateObject(wrappedValue: StoriesProgressBarViewModel(timerConfiguration: timerConfiguration))
-    }
+    @StateObject private var model: StoriesProgressBarViewModel = StoriesProgressBarViewModel()
     
     var body: some View {
         ProgressBar(
-            numberOfSections: storiesCount,
-            progress: currentProgress
+            numberOfSections: selectStationViewModel.stories.count,
+            progress: storiesViewModel.currentProgress
         )
         .padding(.top, Constants.progressBarPaddingTop)
         .padding(.horizontal, Constants.progressBarPaddingHorizontal)
         .onAppear {
+            model.setupTimer(timerConfiguration: storiesViewModel.timerConfiguration)
             model.startTimer()
         }
         .onDisappear {
@@ -60,21 +49,20 @@ extension StoriesProgressBarView {
     
     private func timerTick() {
         withAnimation {
-            currentProgress = timerConfiguration.nextProgress(progress: currentProgress)
+            guard let timerConfiguration = storiesViewModel.timerConfiguration else { return }
+            storiesViewModel.currentProgress = timerConfiguration.nextProgress(progress: storiesViewModel.currentProgress)
         }
     }
 }
 
 #Preview {
     let storiesCount = 3
-
+    
     ZStack {
         Color(.lightGray)
             .ignoresSafeArea()
-        StoriesProgressBarView(
-            storiesCount: storiesCount,
-            timerConfiguration: TimerConfiguration(storiesCount: storiesCount),
-            currentProgress: .constant(0.5)
-        )
+        StoriesProgressBarView()
+            .environmentObject(StoriesViewModel())
+            .environmentObject(SelectStationViewModel())
     }
 }

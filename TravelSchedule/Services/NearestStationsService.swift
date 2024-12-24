@@ -10,7 +10,7 @@ import Foundation
 import OpenAPIRuntime
 import OpenAPIURLSession
 
-final class NearestStationsService: NearestStationsServiceProtocol {
+actor NearestStationsService: NearestStationsServiceProtocol {
     private let client: Client
     
     init(client: Client) {
