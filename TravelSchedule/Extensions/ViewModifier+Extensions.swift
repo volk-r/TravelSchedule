@@ -12,5 +12,5 @@ extension ViewModifier where Self == DarkModeViewModifier {
 }
 
 extension ViewModifier where Self == NavigationViewBugFixViewModifier {
-    static var iOS_18_plus_bug_fix: NavigationViewBugFixViewModifier { NavigationViewBugFixViewModifier() }
+    static var iOS18PlusBugFix: NavigationViewBugFixViewModifier { NavigationViewBugFixViewModifier() }
 }

@@ -13,7 +13,7 @@ actor CarrierInfoDownloader {
     private let networkService = NetworkService()
 
     func downloadCarrierFor(carrierCode: Int) async throws -> Carrier? {
-        if let carrierInfo = cache[carrierCode] {
+        if cache.keys.contains(carrierCode), let carrierInfo = cache[carrierCode] {
             return carrierInfo
         }
 

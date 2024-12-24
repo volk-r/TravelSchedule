@@ -15,6 +15,10 @@ final class FiltersViewModel: ObservableObject {
     @Published var withTransfers: TransferOption? = nil
     @Published var filters: Filters?
     
+    var isFilterSelected: Bool {
+        withTransfers != nil
+    }
+    
     init() {
         AnalyticService.trackOpenScreen(screen: .filters)
     }
@@ -32,7 +36,7 @@ final class FiltersViewModel: ObservableObject {
     // MARK: - applyFilters
     
     func applyFilters(_ filters: inout Filters) {
-        filters.withTransfers = withTransfers == .yes ? true : false
+        filters.withTransfers = withTransfers == .yes
         
         var extraData: AnalyticsEventParams = [
             "withTransfers": withTransfers == .yes ? TransferOption.yes.rawValue : TransferOption.no.rawValue
@@ -41,11 +45,5 @@ final class FiltersViewModel: ObservableObject {
             extraData = extraData.merging([time.time.rawValue: time.isSelected], uniquingKeysWith: { $1 })
         }
         AnalyticService.trackClick(screen: .filters, item: .applyFilters, extraData: extraData)
-    }
-    
-    // MARK: - isFilterSelected
-    
-    func isFilterSelected() -> Bool {
-        withTransfers != nil
     }
 }

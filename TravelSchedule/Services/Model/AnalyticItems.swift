@@ -8,18 +8,18 @@
 import Foundation
 
 enum AnalyticItems: String, CaseIterable {
-    case darkModeEnabled = "darkModeEnabled"
-    case darkModeDisabled = "darkModeDisabled"
-    case selectStation = "selectStation"
-    case selectCity = "selectCity"
-    case tapFiltersButton = "tapFiltersButton"
-    case applyFilters = "applyFilters"
-    case tapChangeStationButton = "tapChangeStationButton"
-    case selectFromStation = "selectFromStation"
-    case selectToStation = "selectToStation"
-    case tapFindRoutesButton = "tapFindRoutesButton"
-    case openStories = "openStories"
-    case closeStories = "closeStories"
-    case showStory = "showStory"
-    case openCarrier = "openCarrier"
+    case darkModeEnabled
+    case darkModeDisabled
+    case selectStation
+    case selectCity
+    case tapFiltersButton
+    case applyFilters
+    case tapChangeStationButton
+    case selectFromStation
+    case selectToStation
+    case tapFindRoutesButton
+    case openStories
+    case closeStories
+    case showStory
+    case openCarrier
 }

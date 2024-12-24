@@ -20,12 +20,12 @@ final class CitySelectionViewModel: ObservableObject {
     
     @Published var searchText: String = ""
     
-    private let networkService: some NetworkServiceProtocol = NetworkService()
-    
     var searchResult: [CityData] {
         guard !searchText.isEmpty else { return cities }
         return cities.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
     }
+    
+    private let networkService: some NetworkServiceProtocol = NetworkService()
     
     private var cities: [CityData] = []
     

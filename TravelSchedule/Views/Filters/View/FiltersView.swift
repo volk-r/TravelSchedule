@@ -119,7 +119,7 @@ extension FiltersView {
         .foregroundStyle(Constants.applyButtonTextColor)
         .clipShape(RoundedRectangle(cornerRadius: AppConstants.defaultCornerRadius))
         .padding(.horizontal)
-        .opacity(model.isFilterSelected() ? 1 : 0)
+        .opacity(model.isFilterSelected ? 1 : 0)
     }
     
     // MARK: - applyButtonTap

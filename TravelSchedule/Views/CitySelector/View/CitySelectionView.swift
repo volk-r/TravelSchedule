@@ -49,7 +49,7 @@ struct CitySelectionView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
         .backButtonToolbarItem(isShowRoot: $selectStationViewModel.isStationPresented)
-        .modifier(.iOS_18_plus_bug_fix)
+        .modifier(.iOS18PlusBugFix)
     }
 }
 

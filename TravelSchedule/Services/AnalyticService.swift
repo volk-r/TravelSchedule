@@ -32,9 +32,9 @@ extension AnalyticService {
     static func trackClick(screen: AnalyticScreen, item: AnalyticItems, extraData: AnalyticsEventParams? = nil) {
         let params: AnalyticsEventParams
         if let extraData {
-            params = ["item": item.rawValue].merging(extraData, uniquingKeysWith: { $1 })
+            params = [ParamName.item.rawValue: item.rawValue].merging(extraData, uniquingKeysWith: { $1 })
         } else {
-            params = ["item": item.rawValue]
+            params = [ParamName.item.rawValue: item.rawValue]
         }
         
         reportEvent(event: Events.click.rawValue, screen: screen.rawValue, item: params)
@@ -45,9 +45,9 @@ private extension AnalyticService {
     static private func reportEvent(event: String, screen: String, item: AnalyticsEventParams? = nil) {
         let params: AnalyticsEventParams
         if let item {
-            params = ["event": event, "screen": screen].merging(item, uniquingKeysWith: { $1 })
+            params = [ParamName.event.rawValue: event, ParamName.screen.rawValue: screen].merging(item, uniquingKeysWith: { $1 })
         } else {
-            params = ["event": event, "screen": screen]
+            params = [ParamName.event.rawValue: event, ParamName.screen.rawValue: screen]
         }
         
         AppMetrica.reportEvent(name: "EVENT", parameters: params, onFailure: { (error) in
@@ -56,8 +56,10 @@ private extension AnalyticService {
     }
     
     private enum Events: String, CaseIterable {
-        case open = "open"
-        case close = "close"
-        case click = "click"
+        case open, close, click
+    }
+    
+    private enum ParamName: String, CaseIterable {
+        case event, screen, item
     }
 }
